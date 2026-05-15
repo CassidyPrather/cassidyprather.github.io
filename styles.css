@@ -403,24 +403,87 @@ h2 {
 }
 
 @keyframes hoverPortal {
+
   0%,
   100% {
     transform: translateY(0) rotate(2deg);
   }
+
   50% {
     transform: translateY(-0.55rem) rotate(-1deg);
   }
 }
 
 @keyframes blinkDot {
+
   0%,
   58% {
     opacity: 1;
   }
+
   59%,
   100% {
     opacity: 0.22;
   }
+}
+
+.site-footer {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding: 0.75rem 0;
+  text-align: center;
+  font-size: 0.82rem;
+  border-top: 1px solid rgba(231, 252, 255, 0.45);
+  color: rgba(39, 20, 82, 0.7);
+}
+
+.site-footer a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.license-main {
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.license-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.license-entry {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  backdrop-filter: blur(4px);
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.license-entry h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1.15rem;
+}
+
+.license-entry p {
+  margin-bottom: 0.5rem;
+  line-height: 1.55;
+}
+
+.license-entry p:last-child {
+  margin-bottom: 0;
+}
+
+.license-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  color: rgba(39, 20, 82, 0.65);
+  font-size: 0.88rem;
+}
+
+.license-files code {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
 }
 
 @media (max-width: 62rem) {
@@ -484,6 +547,7 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
