@@ -1,0 +1,9 @@
+<header class="site-header">
+  {{ if .IsHome }}
+    <img class="banner-image" src="{{ "images/banner-cassidyco.svg" | relURL }}" alt="Cassidy Co.">
+  {{ else }}
+    <a href="{{ site.Home.RelPermalink }}">
+      <img class="banner-image" src="{{ "images/banner-cassidyco.svg" | relURL }}" alt="Cassidy Co. — back to home">
+    </a>
+  {{ end }}
+</header>

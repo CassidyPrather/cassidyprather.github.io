@@ -1,0 +1,17 @@
+baseURL = "https://cassidyprather.github.io/cass-website/"
+languageCode = "en"
+title = "Cassidy Co. Index"
+enableRobotsTXT = true
+
+# Skip the unused taxonomies (tags/categories) and per-section RSS to keep
+# the published site to just the pages we author.
+disableKinds = ["taxonomy", "term", "RSS"]
+
+# CI passes --baseURL from the Pages configuration step, so the value above
+# is only a fallback for local builds.
+
+[params]
+  description = "Cassidy Co. — index, sites, projects, and notes."
+
+[markup.goldmark.renderer]
+  unsafe = true
