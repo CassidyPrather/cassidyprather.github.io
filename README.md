@@ -12,30 +12,6 @@ hugo server -D    # live-reload dev server on http://localhost:1313
 hugo --minify     # one-shot production build into ./public
 ```
 
-## Project layout
-
-```
-.
-├── hugo.toml                       # site config
-├── content/                        # page content (markdown front matter)
-│   ├── _index.md                   # home page
-│   └── licenses.md                 # /licenses/
-├── layouts/
-│   ├── _default/baseof.html        # shared page shell (head/body/chrome)
-│   ├── partials/
-│   │   ├── background.html         # wave-field, clouds, sigil
-│   │   ├── site-header.html        # banner
-│   │   └── site-footer.html        # footer link strip
-│   ├── index.html                  # home page template
-│   └── licenses/single.html        # licenses page template
-└── static/                         # served verbatim from site root
-    ├── fonts/                      # Unique.ttf + OFL license files
-    ├── images/                     # banners, clouds, waves, etc.
-    ├── LICENSE                     # symlink to repo-root LICENSE
-    ├── script.js
-    └── styles.css
-```
-
 ## Deployment
 
 Pushes to `main` trigger `.github/workflows/deploy.yml`, which:
