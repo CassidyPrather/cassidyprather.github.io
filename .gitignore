@@ -1,0 +1,10 @@
+# Hugo build output
+/public/
+/resources/_gen/
+/.hugo_build.lock
+
+# Local dev / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

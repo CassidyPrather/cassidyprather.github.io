@@ -1,0 +1,84 @@
+{{ define "title" }}{{ site.Title }}{{ end }}
+
+{{ define "main" }}
+<main class="layout-grid">
+  <nav class="link-rail" aria-label="Main links">
+    <a class="rail-link" href="#" data-label="social">
+      <img class="link-charm" src="{{ "images/link-charm.png" | relURL }}" alt="">
+      <span>Socials</span>
+    </a>
+    <a class="rail-link" href="#" data-label="web">
+      <img class="link-charm" src="{{ "images/link-charm.png" | relURL }}" alt="">
+      <span>Websites</span>
+    </a>
+    <a class="rail-link" href="#" data-label="archive">
+      <img class="link-charm" src="{{ "images/link-charm.png" | relURL }}" alt="">
+      <span>Static Archive</span>
+    </a>
+    <a class="rail-link" href="#" data-label="shop">
+      <img class="link-charm" src="{{ "images/link-charm.png" | relURL }}" alt="">
+      <span>Projects</span>
+    </a>
+    <a class="rail-link" href="#" data-label="mail">
+      <img class="link-charm" src="{{ "images/link-charm.png" | relURL }}" alt="">
+      <span>Contact</span>
+    </a>
+    <a class="rail-link" href="#" data-label="guestbook">
+      <img class="link-charm" src="{{ "images/link-charm.png" | relURL }}" alt="">
+      <span>Guestbook</span>
+    </a>
+  </nav>
+
+  <section class="index-window" aria-labelledby="index-title">
+    <div class="window-topline">
+      <h2 id="index-title">Index</h2>
+      <span class="status-light"><span class="blink-dot" aria-hidden="true"></span>Online</span>
+    </div>
+
+    <div class="content-grid">
+      <article class="intro-panel">
+        <h3>Signal Table</h3>
+        <p>
+          Placeholder home for socials, sites, static pages, experiments,
+          shrines, notes, and anything else you want orbiting the main index.
+        </p>
+      </article>
+
+      <article class="link-card">
+        <span>Social Node</span>
+        <a href="#">@placeholder</a>
+      </article>
+      <article class="link-card">
+        <span>Website Node</span>
+        <a href="#">your-site.example</a>
+      </article>
+      <article class="link-card">
+        <span>Static Content</span>
+        <a href="#">/archive/page.html</a>
+      </article>
+      <article class="link-card">
+        <span>Featured Link</span>
+        <a href="#">project-name</a>
+      </article>
+    </div>
+  </section>
+
+  <aside class="right-stack" aria-label="Webring and featured content">
+    <section class="webring" aria-labelledby="webring-title">
+      <img class="portal-image" src="{{ "images/Grid_asset_square.png" | relURL }}" alt="">
+      <h2 id="webring-title">Webring Spinner</h2>
+      <div class="spinner" data-spinner>
+        <a href="#" style="--i:0">Prev</a>
+        <a href="#" style="--i:1">Random</a>
+        <a href="#" style="--i:2">Next</a>
+        <a href="#" style="--i:3">Home</a>
+      </div>
+      <button class="spin-button" type="button" data-spin-button>Spin Ring</button>
+    </section>
+
+    <section class="feature-object" aria-label="Image placeholder">
+      <img class="feature-image" src="{{ "images/Poly_Bunyn-dithered_resize.png" | relURL }}" alt="">
+    </section>
+  </aside>
+</main>
+{{ end }}
