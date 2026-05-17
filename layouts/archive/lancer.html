@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} — {{ site.Title }}</title>
+    {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
+    <link href="{{ "lancer/utopiya.css" | relURL }}" rel="stylesheet" type="text/css" media="all">
+  </head>
+  <body>
+    <div class="page-background">
+      <div class="content">
+        {{ .Content }}
+        <hr/>
+        <p><a href="{{ .Parent.RelPermalink }}">← {{ .Parent.Title }}</a></p>
+      </div>
+    </div>
+  </body>
+</html>

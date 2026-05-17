@@ -1,0 +1,31 @@
+{{ define "main" }}
+<main class="license-main">
+  <section class="index-window">
+    <div class="window-topline">
+      <h2>{{ .Title }}</h2>
+      {{ if .Parent.IsHome }}
+        <a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+      {{ else }}
+        <a class="status-light" href="{{ .Parent.RelPermalink }}">← {{ .Parent.Title }}</a>
+      {{ end }}
+    </div>
+
+    {{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
+
+    <div class="license-list">
+      {{ range .Sections.ByTitle }}
+        <article class="license-entry">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          {{ with .Description }}<p>{{ . }}</p>{{ end }}
+        </article>
+      {{ end }}
+      {{ range .RegularPages.ByTitle }}
+        <article class="license-entry">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          {{ with .Description }}<p>{{ . }}</p>{{ end }}
+        </article>
+      {{ end }}
+    </div>
+  </section>
+</main>
+{{ end }}
