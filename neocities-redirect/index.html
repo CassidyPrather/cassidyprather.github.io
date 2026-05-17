@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cassidy Co. — Moved</title>
+  <meta name="description" content="This page has moved to a new home.">
+  <meta http-equiv="refresh" content="10; url=https://cassidyprather.github.io/cass-website/">
+  <style>
+    :root {
+      color-scheme: light;
+      --wave-gutter: clamp(7rem, 12vw, 12.5rem);
+      --sky: #5aa8dc;
+      --ice: #d7fbff;
+      --cyan: #73f4ff;
+      --blue: #365fc6;
+      --violet: #6d2c95;
+      --lavender: #b9a8ff;
+      --pink: #ffd6f5;
+      --ink: #271452;
+      --panel: rgba(216, 247, 255, 0.46);
+      --panel-strong: rgba(231, 252, 255, 0.72);
+      --line: rgba(231, 252, 255, 0.9);
+      --shadow: rgba(65, 24, 127, 0.28);
+      font-family: Unique, "Trebuchet MS", "Century Gothic", Arial, sans-serif;
+    }
+
+    @font-face {
+      font-family: Unique;
+      src: url("fonts/Unique.ttf") format("truetype");
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(155deg, #65b8e6 0%, #519ed5 48%, #8abbe9 100%);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+
+    .page-shell {
+      position: relative;
+      min-height: 100vh;
+      padding: clamp(1rem, 2.6vw, 2.4rem);
+      padding-left: var(--wave-gutter);
+      isolation: isolate;
+    }
+
+    .page-shell::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      pointer-events: none;
+      background-image:
+        url("images/volumetric_clouds.png"),
+        url("images/volumetric_clouds.png");
+      background-position:
+        center 8vh,
+        58% 78vh;
+      background-repeat: repeat-y, repeat-y;
+      background-size:
+        min(118rem, 115vw) auto,
+        min(92rem, 96vw) auto;
+      opacity: .5;
+    }
+
+    .wave-field {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: clamp(7rem, 12vw, 12.5rem);
+      height: 100vh;
+      background-image: url("images/waves.png");
+      background-position: left top;
+      background-repeat: repeat-y;
+      background-size: 100% auto;
+      z-index: -1;
+      filter: drop-shadow(0 0 1px var(--cyan));
+      opacity: 0.98;
+      pointer-events: none;
+    }
+
+    .cloud-field {
+      position: fixed;
+      z-index: -2;
+      width: min(34rem, 55vw);
+      height: auto;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    .cloud-field-one  { left: 6vw;   bottom: -2rem; }
+    .cloud-field-two  { right: -12rem; bottom: 1rem; width: min(46rem, 58vw); transform: scaleX(-1); opacity: 0.18; }
+    .cloud-field-three { left: 28vw;  top: 12vh;  width: min(30rem, 42vw); transform: rotate(-8deg); opacity: 0.18; }
+    .cloud-field-four { left: 18vw;  bottom: 18vh; width: min(42rem, 50vw); opacity: 0.13; }
+
+    .volume-cloud { mix-blend-mode: soft-light; }
+
+    .sigil-lines {
+      position: fixed;
+      left: 6vw;
+      bottom: -4rem;
+      width: 28rem;
+      max-width: 62vw;
+      aspect-ratio: 1;
+      z-index: -1;
+      border: 3px solid rgba(232, 246, 255, 0.42);
+      clip-path: polygon(50% 0, 82% 86%, 20% 72%);
+      transform: rotate(12deg);
+    }
+
+    /* ── header ── */
+    .site-header {
+      text-align: center;
+      width: calc(100% + var(--wave-gutter));
+      margin-left: calc(var(--wave-gutter) * -1);
+      margin-bottom: clamp(0.85rem, 1.8vw, 1.45rem);
+    }
+
+    .banner-image {
+      display: block;
+      width: min(100%, 64rem);
+      aspect-ratio: 2400 / 360;
+      height: auto;
+      margin: 0 auto;
+      object-fit: contain;
+    }
+
+    /* ── redirect card ── */
+    .redirect-stage {
+      display: grid;
+      place-items: center;
+      min-height: 60vh;
+    }
+
+    .redirect-card {
+      border: 5px double var(--line);
+      background:
+        repeating-linear-gradient(172deg, rgba(84, 80, 188, 0.2) 0 7px, rgba(111, 244, 255, 0.24) 8px 13px),
+        linear-gradient(160deg, rgba(78, 171, 216, 0.72), rgba(191, 171, 255, 0.74));
+      box-shadow: inset 0 0 4rem rgba(215, 251, 255, 0.18), 0 1.2rem 3.4rem var(--shadow);
+      padding: clamp(1.5rem, 4vw, 2.8rem) clamp(1.5rem, 5vw, 3.5rem);
+      max-width: 44rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .window-topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      gap: 1rem;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+    }
+
+    .status-light {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid var(--line);
+      background: rgba(215, 251, 255, 0.42);
+      white-space: nowrap;
+    }
+
+    .blink-dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0.75rem var(--cyan);
+      animation: blinkDot 1.1s steps(2, end) infinite;
+    }
+
+    .moved-panel {
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: var(--panel);
+      backdrop-filter: blur(4px);
+      padding: clamp(1rem, 2vw, 1.6rem);
+      margin-bottom: 1.2rem;
+    }
+
+    .moved-panel h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .moved-panel p {
+      margin: 0 0 0.5rem;
+      line-height: 1.55;
+    }
+
+    .moved-panel p:last-child { margin: 0; }
+
+    .new-url-link {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.55rem 1.2rem;
+      border: 2px double var(--line);
+      background: linear-gradient(100deg, rgba(62, 69, 196, 0.75), rgba(119, 221, 255, 0.08));
+      color: #effcff;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.36), 0 0.9rem 2rem rgba(74, 37, 132, 0.15);
+      transition: background 180ms ease, outline 180ms ease;
+      word-break: break-all;
+    }
+
+    .new-url-link:hover,
+    .new-url-link:focus-visible {
+      background: linear-gradient(100deg, rgba(89, 49, 184, 0.84), rgba(125, 246, 255, 0.28));
+      outline: 2px solid var(--pink);
+      outline-offset: 3px;
+    }
+
+    .countdown-line {
+      margin-top: 1rem;
+      font-size: 0.88rem;
+      color: rgba(39, 20, 82, 0.75);
+    }
+
+    #countdown-num {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* ── footer ── */
+    .site-footer {
+      margin-top: clamp(1.5rem, 3vw, 2.5rem);
+      padding: 0.75rem 0;
+      text-align: center;
+      font-size: 0.82rem;
+      border-top: 1px solid rgba(231, 252, 255, 0.45);
+      color: rgba(39, 20, 82, 0.7);
+    }
+
+    /* ── animations ── */
+    @keyframes blinkDot {
+      0%, 58% { opacity: 1; }
+      59%, 100% { opacity: 0.22; }
+    }
+
+    /* ── responsive ── */
+    @media (max-width: 40rem) {
+      .page-shell {
+        --wave-gutter: 0rem;
+        padding: 0.9rem;
+      }
+      .wave-field { opacity: 0.4; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+
+    <!-- background layer -->
+    <div class="wave-field" aria-hidden="true"></div>
+    <img class="cloud-field cloud-field-one" src="images/clouds.svg" alt="">
+    <img class="cloud-field volume-cloud cloud-field-two" src="images/volumetric_clouds.png" alt="">
+    <img class="cloud-field cloud-field-three" src="images/clouds.svg" alt="">
+    <img class="cloud-field volume-cloud cloud-field-four" src="images/volumetric_clouds.png" alt="">
+    <div class="sigil-lines" aria-hidden="true"></div>
+
+    <!-- header -->
+    <header class="site-header">
+      <img class="banner-image" src="images/banner-cassidyco.svg" alt="Cassidy Co.">
+    </header>
+
+    <!-- main -->
+    <main class="redirect-stage">
+      <div class="redirect-card">
+        <div class="window-topline">
+          <h2>Moved</h2>
+          <span class="status-light">
+            <span class="blink-dot" aria-hidden="true"></span>Redirecting
+          </span>
+        </div>
+
+        <div class="moved-panel">
+          <h3>New address</h3>
+          <p>This page has a new home. You'll be sent there automatically in a moment — or follow the link below.</p>
+          <a class="new-url-link" href="https://cassidyprather.github.io/cass-website/">
+            cassidyprather.github.io/cass-website/
+          </a>
+        </div>
+
+        <p class="countdown-line">
+          Redirecting in <span id="countdown-num">10</span> seconds&hellip;
+        </p>
+      </div>
+    </main>
+
+    <!-- footer -->
+    <footer class="site-footer">
+      <p>
+        Font: <a href="fonts/../fonts/OFL.txt">OFL</a> &middot;
+        Images: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
+        by <a href="https://pixel20012.neocities.org/">pixel20012</a>
+      </p>
+    </footer>
+
+  </div>
+
+  <script>
+    const target = "https://cassidyprather.github.io/cass-website/";
+    const el = document.getElementById("countdown-num");
+    let n = 10;
+    const t = setInterval(() => {
+      n--;
+      if (el) el.textContent = n;
+      if (n <= 0) { clearInterval(t); location.replace(target); }
+    }, 1000);
+  </script>
+</body>
+</html>

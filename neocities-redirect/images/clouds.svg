@@ -1,0 +1,8 @@
+<!-- CC0 Public Domain — Ron Kyle Almira (pixel20012) https://pixel20012.neocities.org/ -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">cloud placeholder</title>
+  <desc id="desc">Replaceable transparent cloud image.</desc>
+  <rect width="900" height="520" fill="none"/>
+  <path d="M54 360 L238 208 L364 226 L522 102 L680 350 L820 404 L332 468 Z" fill="none" stroke="#d7fbff" stroke-width="5" opacity=".68"/>
+  <path d="M244 210 L352 470 M522 104 L332 468 M680 350 L238 208" fill="none" stroke="#d7fbff" stroke-width="4" opacity=".42"/>
+</svg>
