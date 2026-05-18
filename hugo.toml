@@ -1,4 +1,4 @@
-baseURL = "https://cassidyprather.github.io/cass-website/"
+baseURL = "https://cassidyprather.github.io/"
 languageCode = "en"
 title = "Cassidy Co. Index"
 enableRobotsTXT = true
