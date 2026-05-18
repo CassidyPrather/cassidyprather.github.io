@@ -1,6 +1,10 @@
 ---
 title: "Omninet Elegy"
-description: "Утопия scenario two — the silent aftermath."
+description: "Утопия aftermath"
+type: lancer
+layout: lancer
+build:
+  list: never
 ---
 
 <h1>Утопия: Omninet Elegy</h1>

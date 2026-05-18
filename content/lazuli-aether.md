@@ -1,7 +1,11 @@
 ---
 title: "Lazuli (Aether)"
-description: "Character notes for Lazuli Calliope — out of date, kept for reference."
+description: "Old nostalgic Lazuli character sheet for Aether Chronicles"
 author: "Cassidy Prather"
+type: vrchat
+layout: vrchat
+build:
+  list: never
 ---
 
 <script>
@@ -33,7 +37,7 @@ author: "Cassidy Prather"
   <h1>Lazuli Calliope (Aether)</h1>
 </div>
 <div class="contentBubble">
-  <img class="HorizontalImage" src="../../../vrchat/media/extra_art.png"/>
+  <img class="HorizontalImage" src="../vrchat/media/extra_art.png"/>
 </div>
 <div class="contentBubble">
   <p>Hey there! Been a minute, hasn't it? Wild that anyone still has a link to this webpage.</p>

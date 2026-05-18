@@ -1,0 +1,22 @@
+{{ define "main" }}
+<main class="license-main">
+  <section class="index-window">
+    <div class="window-topline">
+      <h2>{{ .Title }}</h2>
+      <a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+    </div>
+
+    {{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
+
+    <div class="license-list">
+      {{ $pages := where site.RegularPages "Type" "in" (slice "lancer" "vrchat") }}
+      {{ range $pages.ByTitle }}
+        <article class="license-entry">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          {{ with .Description }}<p>{{ . }}</p>{{ end }}
+        </article>
+      {{ end }}
+    </div>
+  </section>
+</main>
+{{ end }}
