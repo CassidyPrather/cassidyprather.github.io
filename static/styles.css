@@ -138,8 +138,6 @@ a {
 
 .site-header {
   text-align: center;
-  width: calc(100% + var(--wave-gutter));
-  margin-left: calc(var(--wave-gutter) * -1);
   margin-bottom: clamp(0.85rem, 1.8vw, 1.45rem);
 }
 
@@ -497,6 +495,7 @@ h2 {
   }
 
   .link-rail {
+    position: static;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-content: stretch;
   }
