@@ -161,14 +161,22 @@
   </section>
 
   <aside class="right-stack" aria-label="Webring and featured content">
+    {{ $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal }}
+    {{ $members := $webring.members }}
+    {{ $count := len $members }}
     <section class="webring" aria-labelledby="webring-title">
       <img class="portal-image" src="{{ "images/Grid_asset_square.png" | relURL }}" alt="">
-      <h2 id="webring-title">Webring Spinner</h2>
-      <div class="spinner" data-spinner>
-        <a href="#" style="--i:0">Prev</a>
-        <a href="#" style="--i:1">Random</a>
-        <a href="#" style="--i:2">Next</a>
-        <a href="#" style="--i:3">Home</a>
+      <h2 id="webring-title">{{ $webring.name }} Webring</h2>
+      <div class="spinner" data-spinner style="--count:{{ $count }}">
+        {{ range $i, $member := $members }}
+        <a href="{{ $member.url }}" style="--i:{{ $i }}" rel="noopener" target="_blank" title="{{ $member.name }}">
+          {{ with $member.button }}
+          <img src="{{ . }}" alt="{{ $member.name }}" loading="lazy">
+          {{ else }}
+          <span>{{ $member.name }}</span>
+          {{ end }}
+        </a>
+        {{ end }}
       </div>
       <button class="spin-button" type="button" data-spin-button>Spin Ring</button>
     </section>
