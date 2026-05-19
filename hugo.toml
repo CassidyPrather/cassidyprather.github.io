@@ -1,6 +1,6 @@
 baseURL = "https://cassidyprather.github.io/"
 languageCode = "en"
-title = "Cassidy Co. Index"
+title = "wirenook"
 enableRobotsTXT = true
 
 # Skip the unused taxonomies (tags/categories) and per-section RSS to keep
@@ -11,7 +11,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
 # is only a fallback for local builds.
 
 [params]
-  description = "Cassidy Co. — index, sites, projects, and notes."
+  description = "Cassidy Prather's Website"
 
 [markup.goldmark.renderer]
   unsafe = true
