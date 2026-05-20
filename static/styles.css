@@ -568,6 +568,28 @@ h2 {
   border-radius: 3px;
 }
 
+.guestbook-intro {
+  max-width: 54ch;
+  margin-bottom: 1rem;
+  line-height: 1.55;
+}
+
+.guestbook-frame-wrap {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  backdrop-filter: blur(4px);
+  padding: 0.5rem;
+}
+
+.guestbook-frame {
+  display: block;
+  width: 100%;
+  height: min(80vh, 50rem);
+  min-height: 28rem;
+  border: 0;
+  background: var(--panel-strong);
+}
+
 @media (max-width: 62rem) {
   .page-shell {
     --wave-gutter: clamp(1rem, 2.6vw, 2.4rem);

@@ -1,0 +1,27 @@
+{{ define "main" }}
+<main class="license-main">
+  <section class="index-window">
+    <div class="window-topline">
+      <h2>{{ .Title }}</h2>
+      <a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+    </div>
+
+    <p class="guestbook-intro">
+      Drop a note in the guestbook — it's hosted on
+      <a href="https://atabook.org/" rel="noopener" target="_blank">atabook.org</a>.
+      If the embed below doesn't load,
+      <a href="https://wirenook.atabook.org/" rel="noopener" target="_blank">open it in a new tab</a>.
+    </p>
+
+    <div class="guestbook-frame-wrap">
+      <iframe
+        class="guestbook-frame"
+        src="https://wirenook.atabook.org/"
+        title="wirenook guestbook on atabook.org"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </section>
+</main>
+{{ end }}
