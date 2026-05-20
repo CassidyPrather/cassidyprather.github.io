@@ -569,25 +569,36 @@ h2 {
 }
 
 .guestbook-intro {
-  max-width: 54ch;
-  margin-bottom: 1rem;
+  max-width: 60ch;
+  margin: 0 auto 1.2rem;
+  padding: clamp(0.85rem, 1.7vw, 1.2rem);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  backdrop-filter: blur(4px);
   line-height: 1.55;
 }
 
 .guestbook-frame-wrap {
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  background: var(--panel);
-  backdrop-filter: blur(4px);
-  padding: 0.5rem;
+  position: relative;
+  margin: 0 auto;
+  max-width: 44rem;
+  padding: clamp(0.75rem, 1.7vw, 1.2rem);
+  border: 3px double var(--line);
+  background: var(--panel-strong);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    inset 0 0 1rem rgba(115, 244, 255, 0.25),
+    0 0.9rem 2.2rem var(--shadow);
 }
 
 .guestbook-frame {
   display: block;
   width: 100%;
   height: min(80vh, 50rem);
-  min-height: 28rem;
-  border: 0;
-  background: var(--panel-strong);
+  min-height: 32rem;
+  border: 1px solid rgba(232, 246, 255, 0.55);
+  background: var(--ice);
+  color-scheme: light;
 }
 
 @media (max-width: 62rem) {
