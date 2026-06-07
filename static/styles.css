@@ -286,22 +286,22 @@ h2 {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.6rem;
 }
 
 .social-button {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  width: 100%;
-  padding: 0.6rem 0.85rem;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.65rem;
   border: 1px solid var(--line);
   background: var(--panel-strong);
   color: var(--ink);
   font: inherit;
-  text-align: left;
   text-decoration: none;
   cursor: pointer;
   box-shadow: inset 0 0 0.6rem rgba(115, 244, 255, 0.18), 0 0.35rem 0.85rem rgba(65, 24, 127, 0.12);
@@ -316,29 +316,34 @@ h2 {
   outline-offset: 2px;
 }
 
+.social-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 0.45rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #e8f9ff;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
+  z-index: 10;
+}
+
+.social-button:hover::after,
+.social-button:focus-visible::after {
+  opacity: 1;
+}
+
 .social-icon {
   flex: 0 0 auto;
   width: 1.6rem;
   height: 1.6rem;
   color: var(--violet);
-}
-
-.social-text {
-  display: grid;
-  line-height: 1.2;
-  min-width: 0;
-}
-
-.social-platform {
-  font-weight: 700;
-}
-
-.social-handle {
-  font-size: 0.85rem;
-  color: rgba(39, 20, 82, 0.72);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .social-button[data-copy].is-copied {
