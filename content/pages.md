@@ -1,5 +1,5 @@
 ---
 title: "Pages"
-description: "Notes and guides."
+description: "Misc."
 type: archive
 ---
