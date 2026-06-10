@@ -2,7 +2,6 @@
 title: "Arms Derby"
 description: "Утопия invitation"
 type: lancer
-layout: lancer
 ---
 
 <h1>Утопия: Arms Derby</h1>

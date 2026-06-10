@@ -3,7 +3,6 @@ title: "Lazuli (Aether)"
 description: "Old nostalgic Lazuli character sheet for Aether Chronicles"
 author: "Cassidy Prather"
 type: vrchat
-layout: vrchat
 build:
   list: never
 ---

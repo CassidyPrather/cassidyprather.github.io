@@ -3,7 +3,6 @@ title: "VRChat Attendee's Guide"
 description: "So VRChat doesn't crash in big instances"
 author: "Cassidy Prather"
 type: vrchat
-layout: vrchat
 ---
 
 <div class="contentBubble">

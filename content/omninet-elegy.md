@@ -2,7 +2,6 @@
 title: "Omninet Elegy"
 description: "Утопия aftermath"
 type: lancer
-layout: lancer
 build:
   list: never
 ---
