@@ -29,28 +29,21 @@
         </p>
       </article>
 
+      {{/* Image licensing is per-directory; data/image_licenses.toml is the
+           single source of truth, shared with the style-page gallery. */}}
+      {{ $sections := slice }}
+      {{ range $dir, $meta := site.Data.image_licenses }}
+        {{ $sections = $sections | append (merge $meta (dict "dir" $dir)) }}
+      {{ end }}
+      {{ range sort $sections "weight" }}
       <article class="license-entry">
-        <h3>Images — CC0 Public Domain</h3>
-        <p class="license-files">
-          <code>images/2400x360px_cassidyco_ banner.png</code>
-          <code>images/banner-cassidyco.svg</code>
-          <code>images/cassidy_grill.png</code>
-          <code>images/clouds.svg</code>
-          <code>images/gridasset_cone.png</code>
-          <code>images/Grid_asset_square.png</code>
-          <code>images/link-charm.png</code>
-          <code>images/Poly_Bunyn-dithered_resize.png</code>
-          <code>images/volumetric_clouds.png</code>
-          <code>images/waves.png</code>
-          <code>images/waves.svg</code>
-        </p>
-        <p>
-          All images are gifted to the public domain under
-          <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero (CC0) 1.0</a>
-          by <a href="https://pixel20012.neocities.org/">Ron Kyle Almira</a>.
-          No rights reserved.
-        </p>
+        <h3>Images: {{ .title }} — {{ .license }}</h3>
+        <p class="license-files"><code>images/{{ .dir }}/</code></p>
+        <p>{{ .blurb | markdownify }}</p>
       </article>
+      {{ end }}
+
+      <p>Every image is previewed on the <a href="{{ "style/" | relURL }}">style reference</a> page.</p>
     </div>
   </section>
 </main>

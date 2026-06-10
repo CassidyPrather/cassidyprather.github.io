@@ -24,6 +24,26 @@ hugo --minify     # one-shot production build into ./public
   Their markdown files are URL stubs; the body lives in the template so it
   can use template functions like `relURL`.
 
+## Images
+
+All images live under `static/images/`, one subdirectory per license tier —
+see [`static/images/README.md`](./static/images/README.md) for the layout,
+naming, and source-file conventions. `data/image_licenses.toml` is the single
+source of truth per directory; it drives both the licenses page and the
+gallery on [`/style/`](https://wirenook.net/style/).
+
+CI keeps XMP metadata on the raster files consistent. After adding or editing
+images (needs [exiftool](https://exiftool.org/)):
+
+```bash
+python3 tools/images.py check   # what CI runs
+python3 tools/images.py fix     # strip + restamp non-compliant files
+```
+
+Python under `tools/` lints with the ruff/ty config from
+[python-template](https://github.com/CassidyPrather/python-template)
+(see `pyproject.toml`).
+
 ## Licenses
 
 See [`/licenses/`](https://wirenook.net/licenses/)

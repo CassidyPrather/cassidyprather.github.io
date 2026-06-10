@@ -16,7 +16,7 @@
 
 .page-background { /* scroll for me hun */
   background-color: var(--amplify-white);
-  background: url(media/GridBGElement.png);
+  background: url(../images/lancer/grid-bg.png);
   animation: GridAnimation 600s linear infinite;
   width: 100%;
   height: 100vh;

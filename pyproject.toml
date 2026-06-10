@@ -1,0 +1,95 @@
+# Lint/format/type-check configuration for the Python under tools/.
+# The ruff configuration mirrors github.com/CassidyPrather/python-template
+# so Python here is held to the same standard as everywhere else.
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+preview = true # I'm not a coward!
+
+select = [
+    "AIR", # airflow
+    "ERA", # eradicate
+    "FAST", # FastAPI
+    "YTT", # flake8-2020
+    "ANN", # flake8-annotations
+    "ASYNC", # flake8-async
+    "S", # flake8-bandit
+    "BLE", # flake8-blind-except
+    "FBT", # flake-boolean-trap
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "COM", # flake8-commas
+    "C4", # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "T10", # flake8-debugger
+    "DJ", # flake8-django
+    "EM", # flake8-errmsg
+    "EXE", # flake8-executable
+    "FIX", # flake8-fixme
+    "FA", # flake8-future-annotations
+    "INT", # flake8-gettext
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "LOG", # flake8-logging
+    "G", # flake8-logging-format
+    "INP", # flake8-no-pep420
+    "PIE", # flake8-PIE
+    "T20", # flake8-print
+    "PYI", # flake8-pyi
+    "PT", # flake8-pytest-style
+    "Q", # flake8-quotes
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SLF", # flake8-self
+    "SIM", # flake8-simplify
+    "SLOT", # flake8-slots
+    "TID", # flake8-tidy-imports
+    "TD", # flake8-todos
+    "TC", # flake8-type-checking
+    "ARG", # flake8-unused-arguments
+    "PTH", # flake8-use-pathlib
+    "FLY", # flynt
+    "I", # isort
+    "NPY", # NumPy-specific rules
+    "PD", # pandas-vet
+    "N", # pep8-naming
+    "PERF", # Perflint
+    "E", # pycodestyle error
+    "W", # pycodestyle warning
+    "DOC", # pydoclint
+    "D", # pydocstyle
+    "F", # pyflakes
+    "PGH", # pygrep-hooks
+    "PLC", # Pylint Convention
+    "PLE", # Pylint Error
+    "PLR", # Pylint Refactor
+    "PLW", # Pylint Warning
+    "UP", # pyupgrade
+    "FURB", # refurb
+    "RUF", # ruff-specific rules
+    "TRY", # tryceratops
+]
+ignore = [
+    "D10", # Undocumented stuff (not everything needs a docblock you dumb little [___])
+    "D203", # Ruff throws a warning if you include both this and D211
+    "D213", # Ruff throws a warning if you include both this and D212
+    "DOC201", # Rule is broken and doesn't detect :return: clauses
+    "DOC501", # Doesn't detect :raises: clauses and fails to ignore abstract
+    "EM101", # Doesn't account for custom constructors
+    "PLR09", # Complexity begets defects, and these rules promote Complexity
+    "PLR1702", # Redundant with max line width
+    "PLR6301", # Rule is broken (doesn't work for implementations of abstract)
+    "PLR2004", # Magic values aren't always bad. Sometimes, fewer lines are nice
+    "COM812", # Broken, see: https://github.com/astral-sh/ruff/issues/9216
+    "TRY400", # ??? https://docs.python.org/3/library/logging.html#logging-levels
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tools/**/*.py" = [
+    "INP001", # tools/ holds standalone scripts, not a package
+]
+
+[tool.ruff.format]
+preview = true # No cowards allowed!
