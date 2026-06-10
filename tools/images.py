@@ -38,7 +38,7 @@ STAMPABLE = frozenset({".png", ".gif"})
 
 # Directory -> XMP tags every stampable file in it must carry. "borrowed"
 # is deliberately absent: those files stay byte-identical to upstream.
-# TODO update wirenook license 
+# The wirenook license still needs updating once the IP transfer concludes.
 POLICIES: dict[str, dict[str, str]] = {
     "wirenook": {
         "XMP-dc:Creator": "Ron Kyle Almira",
