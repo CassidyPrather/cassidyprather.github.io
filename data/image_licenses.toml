@@ -1,31 +1,25 @@
-# One entry per directory under static/images/. This file is the single
-# source of truth for what each directory means: the licenses page and the
-# style-reference gallery both render from it, and tools/images.py stamps
-# matching XMP metadata into the files themselves.
-#
-# When Ron's IP transfer concludes, flip the wirenook entry to AGPLv3 here
-# and in tools/images.py, then run `python3 tools/images.py fix`.
+# TODO; license migrate wirenook
 
 [wirenook]
 weight = 1
 title = "Original wirenook.net art"
 license = "CC0 1.0"
-blurb = "Art made for this site, including the source files it was made from — exports keep the same stem as their source (`waves.svg` → `waves.png`). Gifted to the public domain under [Creative Commons Zero (CC0) 1.0](https://creativecommons.org/publicdomain/zero/1.0/) by [Ron Kyle Almira](https://pixel20012.neocities.org/). No rights reserved."
+blurb = "Gifted to the public domain under [Creative Commons Zero (CC0) 1.0](https://creativecommons.org/publicdomain/zero/1.0/) by [Ron Kyle Almira](https://pixel20012.neocities.org/). No rights reserved."
 
 [captures]
 weight = 2
 title = "VRChat captures"
 license = "No license granted"
-blurb = "Screenshots taken in [VRChat](https://vrchat.com/). The worlds, avatars, and UI they depict belong to their respective creators, so unlike the rest of the site no license is granted on these files."
+blurb = "Screenshots, no license granted."
 
 [lancer]
 weight = 3
-title = "Утопия / Lancer fan assets"
+title = "Lancer fan assets"
 license = "GPL-3.0"
-blurb = "Assets for the Утопия campaign pages, ancestrally derived from [COMP/CON](https://github.com/massif-press/compcon) and therefore licensed under the [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html) like it. Lancer and COMP/CON are © Massif Press; this site is unaffiliated fan work."
+blurb = "Derived from [COMP/CON](https://github.com/massif-press/compcon) [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html). Lancer and COMP/CON are © Massif Press; this site is unaffiliated fan work."
 
 [borrowed]
 weight = 4
 title = "Borrowed badges"
-license = "Upstream terms"
-blurb = "Badges and buttons made by other people, kept byte-identical to how upstream ships them. Each remains under its creator's terms — see `images/borrowed/README.md` for per-file provenance."
+license = "i dunno"
+blurb = "yippee"
