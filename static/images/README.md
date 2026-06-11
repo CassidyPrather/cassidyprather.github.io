@@ -1,10 +1,44 @@
-Replace these placeholder images with your own files when ready.
+# Images
 
-- `banner-placeholder.svg`: current banner slot, designed for 2400 x 360 px. You can replace the HTML path with `images/banner.png`.
-- `link-charm.svg`: left-side rail charm. Use a transparent PNG/SVG around 192 x 224 px.
-- `waves.svg`: left-side wave art. Use a transparent PNG/SVG around 520 x 2400 px or taller.
-- `waves.png`: used as a vertical repeating CSS background. For the cleanest repeat, crop one tile so the left/right edges stay consistent and the top and bottom curve positions match. Then export it with transparent background; CSS repeats it with `background-repeat: repeat-y`.
-- `clouds.svg`: transparent cloud/line art. Use a transparent PNG/SVG around 1800 x 1040 px.
-- `volume_clouds.png`: page background cloud texture. Use a wide transparent PNG, around 2400 x 1400 px or larger. It scrolls with the page.
-- `webring-placeholder.svg`: top image in the webring panel. Use around 900 x 620 px.
-- `feature-placeholder.svg`: transparent feature art. Use around 700 x 520 px.
+Every image the site serves lives under this directory, one subdirectory per
+*license situation*. The [style reference](https://wirenook.net/style/)
+renders a gallery of everything here, and `data/image_licenses.toml` is the
+single source of truth for what each directory means — the licenses page and
+the gallery both read it.
+
+| Directory   | Contents                                       | License                                  |
+| ----------- | ---------------------------------------------- | ---------------------------------------- |
+| `wirenook/` | Original wirenook.net art and its source files | CC0 1.0 (AGPLv3 transfer in progress)    |
+| `captures/` | VRChat screenshots                             | None granted — depicted content belongs to its creators |
+| `lancer/`   | Утопия assets derived from COMP/CON            | GPL-3.0                                  |
+| `borrowed/` | Other people's badges, byte-identical to upstream | Upstream terms (see its README)       |
+
+## Conventions
+
+- **Naming**: lowercase kebab-case (`volumetric-clouds.png`). Dots are only
+  for domain-named files (`lobste.rs.svg`); a `-WxH` suffix is welcome where
+  the dimensions are culturally load-bearing (`agplv3-155x51.png`).
+- **Sources sit next to exports, same stem**: `waves.svg` is the source of
+  `waves.png`; `extra-art.xcf` would be the source of `extra-art.png`. If no
+  same-stem source file exists, the committed file *is* the source. Since
+  `static/` is published verbatim, the live site serves its own sources.
+  (Pending: the XCF and component SVGs for `extra-art.png` still need to be
+  retrieved and dropped in under that stem.)
+
+## Metadata
+
+PNG/GIF files in managed directories are stripped of incidental metadata
+(GIMP junk, screenshot world/instance details, …) and stamped with XMP
+license/creator tags by [`tools/images.py`](../../tools/images.py), which
+needs [exiftool](https://exiftool.org/) on the PATH (`apt install
+libimage-exiftool-perl`, `brew install exiftool`, `winget install exiftool`).
+CI fails when a file drifts; to fix locally:
+
+```sh
+python3 tools/images.py check   # report drift, bad names, stray files
+python3 tools/images.py fix     # strip + restamp anything non-compliant
+```
+
+`borrowed/` is never stamped — those files stay exactly as upstream ships
+them. exiftool cannot write SVG or XCF, so vector and source files are
+exempt; their license is declared by the directory they sit in.

@@ -1,0 +1,56 @@
+{{ define "main" }}
+<main class="license-main">
+  <section class="index-window">
+    <div class="window-topline">
+      <h2>Licenses</h2>
+      <a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+    </div>
+
+    <div class="license-list">
+      <article class="license-entry">
+        <h3>Site Code — AGPLv3</h3>
+        <p class="license-files"><code>index.html</code> <code>script.js</code> <code>styles.css</code></p>
+        <p>
+          Licensed under the
+          <a href="{{ "LICENSE" | relURL }}">GNU Affero General Public License v3.0</a>.
+          Any modified version of this site served over a network must
+          make its source available under the same terms.
+        </p>
+      </article>
+
+      <article class="license-entry">
+        <h3>Typeface — SIL Open Font License 1.1</h3>
+        <p class="license-files">
+          <code>fonts/Unique.ttf</code>
+          <code>fonts/Atkinson-Hyperlegible.ttf</code>
+          <code>fonts/Atkinson-Hyperlegible-Bold.ttf</code>
+          <code>fonts/Atkinson-Hyperlegible-Italic.ttf</code>
+          <code>fonts/Atkinson-Hyperlegible-BoldItalic.ttf</code>
+        </p>
+        <p>
+          Licensed under the
+          <a href="{{ "fonts/OFL.txt" | relURL }}">SIL Open Font License 1.1</a>.
+          See the <a href="{{ "fonts/OFL-FAQ.txt" | relURL }}">OFL FAQ</a> for common questions
+          about use, embedding, and redistribution.
+        </p>
+      </article>
+
+      {{/* Image licensing is per-directory; data/image_licenses.toml is the
+           single source of truth, shared with the style-page gallery. */}}
+      {{ $sections := slice }}
+      {{ range $dir, $meta := site.Data.image_licenses }}
+        {{ $sections = $sections | append (merge $meta (dict "dir" $dir)) }}
+      {{ end }}
+      {{ range sort $sections "weight" }}
+      <article class="license-entry">
+        <h3>Images: {{ .title }} — {{ .license }}</h3>
+        <p class="license-files"><code>images/{{ .dir }}/</code></p>
+        <p>{{ .blurb | markdownify }}</p>
+      </article>
+      {{ end }}
+
+      <p>Every image is previewed on the <a href="{{ "style/" | relURL }}">style reference</a> page.</p>
+    </div>
+  </section>
+</main>
+{{ end }}

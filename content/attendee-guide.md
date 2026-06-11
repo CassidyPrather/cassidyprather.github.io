@@ -3,7 +3,6 @@ title: "VRChat Attendee's Guide"
 description: "So VRChat doesn't crash in big instances"
 author: "Cassidy Prather"
 type: vrchat
-layout: vrchat
 ---
 
 <div class="contentBubble">
@@ -12,13 +11,13 @@ layout: vrchat
 </div>
 <div class="contentBubble">
   <p>On the <u>shield</u> tab, set the "shield level" to normal":</p>
-  <img class="HorizontalImage" src="../vrchat/media/ShieldSlide.png"/>
+  <img class="HorizontalImage" src="../images/captures/slide-shield.png"/>
 </div>
 <div class="contentBubble">
   <p>On the <u>cogwheel (settings) tab</u>, in the <strong>Audio & Voice</strong> section, set tight limits for <u>earmuffs</u> to make it easier to hear the person you're talking to in noisy rooms:</p>
-  <img class="HorizontalImage" src="../vrchat/media/EarmuffSlide.png"/>
+  <img class="HorizontalImage" src="../images/captures/slide-earmuff.png"/>
 </div>
 <div class="contentBubble">
   <p>On the <u>cogwheel (settings) tab</u>, in the <strong>Avatar</strong> section, set tight limits for <u>Avatar Optimizations</u> and <u>Avatar Culling</u>:</p>
-  <img class="HorizontalImage" src="../vrchat/media/CullingAndMaxPerformanceSlide.png"/>
+  <img class="HorizontalImage" src="../images/captures/slide-culling-performance.png"/>
 </div>

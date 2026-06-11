@@ -4,16 +4,18 @@ Cassidy Prather's personal website.
 
 https://wirenook.net/
 
-## Local development
+## Development
 
-Hugo extended v0.140.0+
+[Hugo](https://gohugo.io/) extended v0.140.0+
 
-```bash
+```sh
 hugo server -D    # live-reload dev server on http://localhost:1313
 hugo --minify     # one-shot production build into ./public
 ```
 
-## Licenses
+```sh
+python3 tools/images.py check   # report drift, bad names, stray files
+python3 tools/images.py fix     # strip + restamp anything non-compliant
+```
 
-See [`/licenses/`](https://wirenook.net/licenses/)
-or [`LICENSE`](./LICENSE).
+[`/licenses/`](https://wirenook.net/licenses/) / [`LICENSE`](./LICENSE).

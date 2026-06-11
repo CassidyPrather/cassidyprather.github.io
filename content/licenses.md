@@ -1,5 +1,4 @@
 ---
 title: "Licenses"
-type: "licenses"
-layout: "single"
+layout: "licenses"
 ---

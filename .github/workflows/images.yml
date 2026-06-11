@@ -1,0 +1,52 @@
+name: Images
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "static/images/**"
+      - "tools/**"
+      - "pyproject.toml"
+      - ".github/workflows/images.yml"
+  pull_request:
+    paths:
+      - "static/images/**"
+      - "tools/**"
+      - "pyproject.toml"
+      - ".github/workflows/images.yml"
+  workflow_dispatch:
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install exiftool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libimage-exiftool-perl
+
+      - name: Check image metadata
+        run: python3 tools/images.py check
+
+  python-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Lint with ruff
+        run: uvx ruff check tools
+
+      - name: Check formatting
+        run: uvx ruff format --check tools
+
+      - name: Type check
+        run: uvx ty check tools

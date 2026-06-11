@@ -1,0 +1,25 @@
+# TODO; license migrate wirenook
+
+[wirenook]
+weight = 1
+title = "Original wirenook.net art"
+license = "CC0 1.0"
+blurb = "Gifted to the public domain under [Creative Commons Zero (CC0) 1.0](https://creativecommons.org/publicdomain/zero/1.0/) by [Ron Kyle Almira](https://pixel20012.neocities.org/). No rights reserved."
+
+[captures]
+weight = 2
+title = "VRChat captures"
+license = "No license granted"
+blurb = "Screenshots, no license granted."
+
+[lancer]
+weight = 3
+title = "Lancer fan assets"
+license = "GPL-3.0"
+blurb = "Derived from [COMP/CON](https://github.com/massif-press/compcon) [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html). Lancer and COMP/CON are © Massif Press; this site is unaffiliated fan work."
+
+[borrowed]
+weight = 4
+title = "Borrowed badges"
+license = "i dunno"
+blurb = "yippee"
