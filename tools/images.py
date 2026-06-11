@@ -56,6 +56,11 @@ POLICIES: dict[str, dict[str, str]] = {
         "XMP-dc:Rights": "GPL-3.0; Lancer and COMP/CON are (c) Massif Press",
         "XMP-cc:License": "https://www.gnu.org/licenses/gpl-3.0.html",
     },
+    "OPL": {
+        "XMP-dc:Creator": "Ron Kyle Almira",
+        "XMP-dc:Rights": "Open Pixel License version 1.1",
+        "XMP-cc:License": "https://pixel20012.github.io/OPLV1.1.html",
+    },
 }
 UNMANAGED = frozenset({"borrowed"})
 

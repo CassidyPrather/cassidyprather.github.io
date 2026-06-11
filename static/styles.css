@@ -68,7 +68,7 @@ body {
   overflow-x: hidden;
 }
 
-/*This does the hyperlink styling :p*/ 
+/*This does the hyperlink styling*/ 
 a {
   color: inherit;
   text-decoration: underline;
@@ -82,6 +82,7 @@ a:focus {
 a:active {
   color: var(--cyan);
 }
+/*end*/
 
 .page-shell {
   position: relative;
@@ -118,8 +119,8 @@ in order to accommodate the new wave-gutter variable which allows for more dynam
 The wave-field is created using two layered SVG backgrounds that repeat to form a pattern, with a mask applied to create a fading effect on the right edge. 
 background-image uses data URIs to embed the SVG directly in the CSS, which allows for easy customization of the wave pattern's colors and opacity.
 The drop-shadow filter adds depth to the waves, and pointer-events are disabled to allow interactions with elements behind it.
-- pixel20012 - 8th June, 2026
 */
+
 .wave-field {
   position: fixed;
   inset: 0 auto 0 0;
