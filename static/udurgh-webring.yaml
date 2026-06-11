@@ -2,10 +2,11 @@ name: "UDURGH"
 members:
   - url: https://cor.gg
     name: cor
-    button: https://wirenook.net/images/wirenook/placeholder.png
-  - url: https://pixel20012.neocities.org/
+    button: https://pixel20012.neocities.org/placeholder.png
+  - url: https://pixel20012.github.io
     name: pixel20012
-    button: https://wirenook.net/images/wirenook/placeholder.png
+    button: https://pixel20012.neocities.org/Pixel_button-1.png
   - url: https://wirenook.net/
     name: wirenook
-    button: https://wirenook.net/images/wirenook/webring-button-200x59.png
+    button: https://wirenook.net/images/wirenook/webring-button-200x59.png 
+# new line goes below here 
