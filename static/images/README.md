@@ -12,6 +12,7 @@ the gallery both read it.
 | `captures/` | VRChat screenshots                             | None granted — depicted content belongs to its creators |
 | `lancer/`   | Утопия assets derived from COMP/CON            | GPL-3.0                                  |
 | `no-relicensing/` | Other people's assets, byte-identical to upstream (incl. `archive/` for flagged files) | Upstream terms (see its README) |
+| 'OPL/'      | Open Pixel License Media, authored by Ron Kyle Almira |OPL v1.1 | 
 
 ## Conventions
 

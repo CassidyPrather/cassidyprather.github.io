@@ -23,3 +23,9 @@ weight = 4
 title = "No relicensing"
 license = "i dunno"
 blurb = "yippee"
+
+[OPL]
+weight = 5 
+title = "OPL Media"
+license = "OPL v1.1" 
+blurb = "OPLv1.1 seen here: https://pixel20012.github.io/OPLV1.1.html" 
