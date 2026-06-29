@@ -1,0 +1,95 @@
+{{ define "main" }}
+{{- $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal -}}
+{{- $members := $webring.members -}}
+{{- $widgetBase := "webring/widget/" | absURL -}}
+{{- $demo := printf "%s?id=%s" $widgetBase "wirenook" -}}
+{{- $snippet := printf "<iframe src=\"%s?id=YOUR-ID\" width=\"350\" height=\"60\" style=\"border:0\" title=\"%s webring\" loading=\"lazy\"></iframe>" $widgetBase $webring.name -}}
+<main class="license-main">
+  <section class="index-window" aria-labelledby="webring-page-title">
+    <div class="window-topline">
+      <h2 id="webring-page-title">{{ .Title }}</h2>
+      <a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+    </div>
+
+    {{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
+
+    <section class="webring-demo" aria-label="Live widget preview">
+      <h3>The widget</h3>
+      <p>Every member shows this on their own site. It's a single self-contained
+        iframe — here's the live one for <code>wirenook</code>:</p>
+      <iframe class="webring-demo-frame" src="{{ $demo }}" width="350" height="60"
+        style="border:0" title="{{ $webring.name }} webring preview" loading="lazy"></iframe>
+    </section>
+
+    <section class="webring-roster" aria-label="Ring members">
+      <h3>Members <span class="webring-count">({{ len $members }})</span></h3>
+      <ul class="webring-members">
+        {{ range $members }}
+        {{ $name := .name }}
+        <li class="webring-member">
+          <a href="{{ .url }}" rel="noopener" target="_blank">
+            {{ with .button }}<img src="{{ . }}" alt="{{ $name }} button" loading="lazy">{{ end }}
+            <span class="webring-member-name">{{ .name }}</span>
+          </a>
+          <code class="webring-member-id">id: {{ .id }}</code>
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+
+    <section class="webring-join" aria-label="How to join">
+      <h3>Join the ring</h3>
+      <p>Want in? Once you've got an <code>id</code> on the roster above, paste
+        this onto your site — swap <code>YOUR-ID</code> for yours:</p>
+
+      <div class="webring-embed">
+        <pre><code>{{ $snippet }}</code></pre>
+        <button type="button" class="webring-copy" data-embed="{{ $snippet }}">Copy embed code</button>
+      </div>
+
+      <details class="webring-howto" open>
+        <summary>On Wix</summary>
+        <ol>
+          <li>Edit your page, then <strong>Add</strong> (the <strong>+</strong>) →
+            <strong>Embed Code</strong> → <strong>Embed HTML</strong> (the
+            "Embed a Widget" / iframe element).</li>
+          <li>Click <strong>Enter Code</strong> and paste the snippet above.</li>
+          <li>Drag the box to roughly <strong>350 × 60</strong> and place it
+            wherever you like (a footer is traditional).</li>
+          <li><strong>Publish.</strong> That's it — no plugins, no code panel.</li>
+        </ol>
+      </details>
+
+      <details class="webring-howto">
+        <summary>Anywhere else (Neocities, plain HTML, etc.)</summary>
+        <p>Drop the same snippet into your page's HTML wherever you want the
+          ring to appear. It works in any host that allows an
+          <code>&lt;iframe&gt;</code>.</p>
+      </details>
+
+      <p class="webring-ask">Not on the roster yet? Ping
+        <a href="mailto:cassidy@wirenook.net">cassidy@wirenook.net</a> with your
+        site's URL and a name, and I'll add you.</p>
+    </section>
+  </section>
+</main>
+
+<script>
+  document.querySelectorAll(".webring-copy").forEach(function (btn) {
+    var code = btn.getAttribute("data-embed");
+    var original = btn.textContent;
+    btn.addEventListener("click", function () {
+      navigator.clipboard.writeText(code).then(function () {
+        btn.textContent = "Copied!";
+        btn.classList.add("is-copied");
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove("is-copied");
+        }, 1600);
+      }).catch(function () {
+        btn.textContent = "Press Ctrl+C to copy";
+      });
+    });
+  });
+</script>
+{{ end }}

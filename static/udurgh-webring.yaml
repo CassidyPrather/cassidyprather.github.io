@@ -1,11 +1,26 @@
+# Canonical UDURGH webring roster.
+#
+# Single source of truth for every consumer:
+#   - the homepage "spinner" carousel (layouts/index.html)
+#   - the embeddable widget every member puts on their own site
+#     (layouts/_default/webring-widget.html -> /webring/widget/)
+#   - the human-facing join/info page
+#     (layouts/_default/webring.html -> /webring/)
+#
+# To add a member: append an entry with a unique, lowercase `id`
+# (their embed is .../webring/widget/?id=<id>), a display `name`,
+# their `url`, and optionally a `button` image (88x31 or similar).
 name: "UDURGH"
 members:
-  - url: https://cor.gg
+  - id: cor
+    url: https://cor.gg
     name: cor
     button: https://wirenook.net/images/wirenook/placeholder.png
-  - url: https://pixel20012.neocities.org/
+  - id: pixel20012
+    url: https://pixel20012.neocities.org/
     name: pixel20012
     button: https://wirenook.net/images/wirenook/placeholder.png
-  - url: https://wirenook.net/
+  - id: wirenook
+    url: https://wirenook.net/
     name: wirenook
     button: https://wirenook.net/images/wirenook/webring-button-200x59.png
