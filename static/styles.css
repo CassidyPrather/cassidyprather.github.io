@@ -747,25 +747,9 @@ h2 {
   }
 }
 
-/* Webring: homepage "join" link + the /webring/ join page. The spinner and
-   widget both read static/udurgh-webring.yaml, so this just dresses the
-   human-facing entry points. */
-.webring-join-link {
-  display: block;
-  margin-top: 0.6rem;
-  text-align: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-decoration: none;
-  opacity: 0.85;
-}
-
-.webring-join-link:hover,
-.webring-join-link:focus-visible {
-  opacity: 1;
-  text-decoration: underline;
-}
-
+/* Webring: the /webring/ info page. The homepage spinner and the embeddable
+   widget both read static/udurgh-webring.yaml; this just dresses the
+   human-facing instructions page. */
 .webring-demo,
 .webring-roster,
 .webring-join {
