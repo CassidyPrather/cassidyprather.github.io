@@ -36,7 +36,7 @@ build:
   <h1>Lazuli Calliope (Aether)</h1>
 </div>
 <div class="contentBubble">
-  <img class="HorizontalImage" src="../images/wirenook/extra-art.png"/>
+  <img class="HorizontalImage" src="../images/no-relicensing/archive/extra-art.png"/>
 </div>
 <div class="contentBubble">
   <p>Hey there! Been a minute, hasn't it? Wild that anyone still has a link to this webpage.</p>

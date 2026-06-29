@@ -14,8 +14,8 @@ hugo --minify     # one-shot production build into ./public
 ```
 
 ```sh
-python3 tools/images.py check   # report drift, bad names, stray files
-python3 tools/images.py fix     # strip + restamp anything non-compliant
+python tools/images.py check   # report drift, bad names, stray files
+python tools/images.py fix     # strip + restamp anything non-compliant
 ```
 
 [`/licenses/`](https://wirenook.net/licenses/) / [`LICENSE`](./LICENSE).

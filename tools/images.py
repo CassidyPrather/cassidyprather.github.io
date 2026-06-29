@@ -9,8 +9,8 @@ license tags instead, using exiftool.
 
 Usage::
 
-    python3 tools/images.py check   # report drift; exit 1 if any
-    python3 tools/images.py fix     # restamp non-compliant files
+    python tools/images.py check   # report drift; exit 1 if any
+    python tools/images.py fix     # restamp non-compliant files
 """
 
 from __future__ import annotations
@@ -36,7 +36,7 @@ NAME_RE = re.compile(r"^[a-z0-9]+(?:[.-][a-z0-9]+)*$")
 # exiftool and carry their license by directory instead.
 STAMPABLE = frozenset({".png", ".gif"})
 
-# Directory -> XMP tags every stampable file in it must carry. "borrowed"
+# Directory -> XMP tags every stampable file in it must carry. "no-relicensing"
 # is deliberately absent: those files stay byte-identical to upstream.
 # The wirenook license still needs updating once the IP transfer concludes.
 POLICIES: dict[str, dict[str, str]] = {
@@ -57,7 +57,7 @@ POLICIES: dict[str, dict[str, str]] = {
         "XMP-cc:License": "https://www.gnu.org/licenses/gpl-3.0.html",
     },
 }
-UNMANAGED = frozenset({"borrowed"})
+UNMANAGED = frozenset({"no-relicensing"})
 
 
 def _as_text(value: object) -> str:
@@ -74,14 +74,18 @@ def _as_text(value: object) -> str:
 def _read_tags(
     exiftool: str, tier_dir: Path, tags: list[str]
 ) -> dict[str, dict[str, str]]:
-    """Read the given XMP tags from every stampable file in a directory.
+    """Read the given XMP tags from every stampable file in a tier.
+
+    Recurses into nested subdirectories; a subdir inherits its tier's policy.
 
     :param exiftool: Path to the exiftool executable.
-    :param tier_dir: Directory to scan (not recursive).
+    :param tier_dir: Tier directory to scan, including nested subdirectories.
     :param tags: Tag names in exiftool GROUP:Name form.
-    :return: Mapping of file name to the tags present on it.
+    :return: Mapping of each file's path (as exiftool reports it) to its tags.
     """
-    files = sorted(p for p in tier_dir.iterdir() if p.suffix.lower() in STAMPABLE)
+    files = sorted(
+        p for p in tier_dir.rglob("*") if p.is_file() and p.suffix.lower() in STAMPABLE
+    )
     if not files:
         return {}
     cmd = [
@@ -98,8 +102,8 @@ def _read_tags(
     )
     found: dict[str, dict[str, str]] = {}
     for entry in json.loads(result.stdout):
-        name = Path(entry["SourceFile"]).name
-        found[name] = {k: _as_text(v) for k, v in entry.items() if k != "SourceFile"}
+        source = entry["SourceFile"]
+        found[source] = {k: _as_text(v) for k, v in entry.items() if k != "SourceFile"}
     return found
 
 
@@ -125,7 +129,9 @@ def _stamp(exiftool: str, files: list[Path], tags: dict[str, str]) -> None:
 
 
 def _check_layout() -> list[str]:
-    """Validate the directory structure and file naming convention.
+    """Validate the directory structure and naming convention.
+
+    Tiers may nest subdirectories freely; names are checked at every depth.
 
     :return: Human-readable problem descriptions.
     """
@@ -148,13 +154,12 @@ def _check_layout() -> list[str]:
         if not tier_dir.is_dir():
             problems.append(f"missing directory {tier_dir}")
             continue
-        for entry in sorted(tier_dir.iterdir()):
+        for entry in sorted(tier_dir.rglob("*")):
             if entry.name == "README.md":
                 continue
-            if entry.is_dir():
-                problems.append(f"unexpected nested directory {entry}")
-            elif not NAME_RE.fullmatch(entry.name):
-                problems.append(f"bad name {entry}: use lowercase kebab-case")
+            if not NAME_RE.fullmatch(entry.name):
+                kind = "directory" if entry.is_dir() else "file"
+                problems.append(f"bad {kind} name {entry}: use lowercase kebab-case")
     return problems
 
 
@@ -171,8 +176,8 @@ def _find_drift(exiftool: str) -> dict[str, list[Path]]:
             continue
         actual = _read_tags(exiftool, tier_dir, list(policy))
         bad = sorted(
-            tier_dir / name
-            for name, tags in actual.items()
+            Path(source)
+            for source, tags in actual.items()
             if any(tags.get(tag) != value for tag, value in policy.items())
         )
         if bad:
@@ -196,7 +201,7 @@ def cmd_check(exiftool: str) -> int:
     total = len(problems) + sum(len(files) for files in drift.values())
     if total:
         _logger.error(
-            "%d problem(s); run `python3 tools/images.py fix` to restamp", total
+            "%d problem(s); run `python tools/images.py fix` to restamp", total
         )
         return 1
     _logger.info("all image metadata is consistent")

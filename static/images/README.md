@@ -11,7 +11,7 @@ the gallery both read it.
 | `wirenook/` | Original wirenook.net art and its source files | CC0 1.0 (AGPLv3 transfer in progress)    |
 | `captures/` | VRChat screenshots                             | None granted — depicted content belongs to its creators |
 | `lancer/`   | Утопия assets derived from COMP/CON            | GPL-3.0                                  |
-| `borrowed/` | Other people's badges, byte-identical to upstream | Upstream terms (see its README)       |
+| `no-relicensing/` | Other people's assets, byte-identical to upstream (incl. `archive/` for flagged files) | Upstream terms (see its README) |
 
 ## Conventions
 
@@ -19,11 +19,9 @@ the gallery both read it.
   for domain-named files (`lobste.rs.svg`); a `-WxH` suffix is welcome where
   the dimensions are culturally load-bearing (`agplv3-155x51.png`).
 - **Sources sit next to exports, same stem**: `waves.svg` is the source of
-  `waves.png`; `extra-art.xcf` would be the source of `extra-art.png`. If no
+  `waves.png`; a `foo.xcf` would likewise be the source of `foo.png`. If no
   same-stem source file exists, the committed file *is* the source. Since
   `static/` is published verbatim, the live site serves its own sources.
-  (Pending: the XCF and component SVGs for `extra-art.png` still need to be
-  retrieved and dropped in under that stem.)
 
 ## Metadata
 
@@ -35,10 +33,10 @@ libimage-exiftool-perl`, `brew install exiftool`, `winget install exiftool`).
 CI fails when a file drifts; to fix locally:
 
 ```sh
-python3 tools/images.py check   # report drift, bad names, stray files
-python3 tools/images.py fix     # strip + restamp anything non-compliant
+python tools/images.py check   # report drift, bad names, stray files
+python tools/images.py fix     # strip + restamp anything non-compliant
 ```
 
-`borrowed/` is never stamped — those files stay exactly as upstream ships
+`no-relicensing/` is never stamped — those files stay exactly as upstream ships
 them. exiftool cannot write SVG or XCF, so vector and source files are
 exempt; their license is declared by the directory they sit in.

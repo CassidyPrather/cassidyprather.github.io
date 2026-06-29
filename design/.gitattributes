@@ -1,0 +1,8 @@
+# Source/working art library — large binaries tracked via Git LFS.
+# Scoped to design/ so the small, web-ready exports under static/ stay as
+# ordinary git objects (Hugo serves those; nothing here is published).
+*.png   filter=lfs diff=lfs merge=lfs -text
+*.svg   filter=lfs diff=lfs merge=lfs -text
+*.kra   filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.af    filter=lfs diff=lfs merge=lfs -text
