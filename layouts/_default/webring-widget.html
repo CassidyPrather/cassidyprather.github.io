@@ -1,15 +1,6 @@
-{{- /*
-  UDURGH webring widget — the embeddable backend every member drops on their
-  own site as an iframe:
-
-      <iframe src="https://cassidyprather.github.io/webring/widget/?id=YOUR-ID"
-              width="350" height="60" style="border:0" title="UDURGH webring"></iframe>
-
-  It is a complete, standalone HTML document (no site chrome) so it renders
-  cleanly inside an iframe on any host, including Wix's sandboxed embeds. The
-  roster is baked in at build time from static/udurgh-webring.yaml, so adding a
-  member updates every embedded copy on next load. All navigation targets _top
-  so clicks move the visitor's whole window, not just the iframe.
+{{- /* Usage:
+  <iframe src="https://cassidyprather.github.io/webring/widget/?id=YOUR-ID"
+          width="350" height="60" style="border:0" title="UDURGH webring"></iframe>
 */ -}}
 {{- $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal -}}
 {{- $members := $webring.members -}}
@@ -71,13 +62,13 @@
 </head>
 <body>
   <div class="ring">
-    <a class="brand" id="ring-home" href="{{ "webring/" | absURL }}" target="_top" rel="noopener">{{ $webring.name }}</a>
+    <a class="brand" id="ring-home" href="{{ site.Home.Permalink }}" target="_top" rel="noopener">{{ $webring.name }}</a>
     <nav aria-label="{{ $webring.name }} webring">
-      <a id="ring-prev" href="{{ "webring/" | absURL }}" target="_top" rel="noopener" title="Previous site">‹ prev</a>
+      <a id="ring-prev" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Previous site">‹ prev</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a id="ring-rand" href="{{ "webring/" | absURL }}" target="_top" rel="noopener" title="Random site">rand</a>
+      <a id="ring-rand" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Random site">rand</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a id="ring-next" href="{{ "webring/" | absURL }}" target="_top" rel="noopener" title="Next site">next ›</a>
+      <a id="ring-next" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Next site">next ›</a>
     </nav>
   </div>
 
