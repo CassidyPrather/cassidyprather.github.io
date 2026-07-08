@@ -146,7 +146,7 @@
     {{ $members := $webring.members }}
     {{ $count := len $members }}
     <section class="webring" aria-labelledby="webring-title">
-      <img class="portal-image" src="{{ "images/Cassidy_pylon_web.png" | relURL }}" alt="">
+      <img class="portal-image" src="{{ "images/OPL/cassidy-pylon-web.png" | relURL }}" alt="">
       <h2 id="webring-title">{{ $webring.name }} Webring</h2>
       <div class="spinner" data-spinner style="--count:{{ $count }}">
         {{ range $i, $member := $members }}
