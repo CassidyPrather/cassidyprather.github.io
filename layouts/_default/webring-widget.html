@@ -1,6 +1,6 @@
 {{- /* Usage:
   <iframe src="https://cassidyprather.github.io/webring/widget/?id=YOUR-ID"
-          width="350" height="60" style="border:0" title="UDURGH webring"></iframe>
+          width="350" height="60" style="border:0" title="UDURGH"></iframe>
 */ -}}
 {{- $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal -}}
 {{- $members := $webring.members -}}
