@@ -19,7 +19,9 @@
   background: url(../images/lancer/grid-bg.png);
   animation: GridAnimation 600s linear infinite;
   width: 100%;
-  height: 100vh;
+  /* min-height so the grid keeps painting past the first screenful on tall
+     (or narrow) pages instead of cutting off at the fold. */
+  min-height: 100vh;
 }
 
 @keyframes GridAnimation {
@@ -30,11 +32,17 @@
 
 .content {
   background-color: var(--v-background);
-  width: 50%;
+  box-sizing: border-box;
+  /* Half-width on desktop (as designed), but never narrower than ~17rem so
+     it doesn't collapse to a sliver on phones, and capped on huge screens. */
+  width: clamp(17rem, 50%, 50rem);
   margin-left:auto;
   margin-right:auto;
   color: var(--v-background-contrast);
   padding:1em;
+  /* Long e-mail addresses / URLs in the invite must wrap rather than push the
+     column wider than the viewport (inherited by .quote and its paragraphs). */
+  overflow-wrap: break-word;
 }
 
 .quote {

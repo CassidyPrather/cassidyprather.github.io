@@ -90,6 +90,12 @@ a:active {
   padding: clamp(1rem, 2.6vw, 2.4rem);
   padding-left: var(--wave-gutter);
   isolation: isolate;
+  /* The wave-field, clouds, and the feature bunny are all meant to bleed to
+     (or off) the edges. Clip horizontally so those bleeds never become a
+     horizontal scrollbar. overflow-x on <body> alone doesn't hold because
+     <html> stays visible; clip (not hidden) keeps the sticky link-rail working
+     and doesn't force a vertical scroll container. */
+  overflow-x: clip;
 }
 
 .page-shell::before {
@@ -216,6 +222,7 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
 .banner-image {
   display: block;
   width: clamp(24rem, 45vw, 60rem);
+  max-width: 100%;
   height: auto;
   margin: 0 auto;
   object-fit: contain;
