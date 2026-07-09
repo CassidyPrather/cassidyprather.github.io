@@ -9,4 +9,5 @@ the galleries until sorted.
 | `agplv3-155x51.png`        | [gnu.org license logos](https://www.gnu.org/graphics/license-logos.html) |
 | `corru.observer-88x31.gif` | [corru.observer](https://corru.observer/)                                |
 | `neocities.png`            | [Neocities](https://neocities.org/)                                      |
+| `thegorkhonarchives.net-88x31.png` | [The Gorkhon Archives](https://thegorkhonarchives.net/)          |
 | `vrchat-background-lines.svg` | [VRChat](https://hello.vrchat.com/)                                         |
