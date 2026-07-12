@@ -467,7 +467,9 @@ h2 {
 
 .badge-card {
   align-content: start;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  min-height: 0;
 }
 
 .badge-grid {
