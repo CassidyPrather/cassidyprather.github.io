@@ -465,6 +465,41 @@ h2 {
   text-underline-offset: 0.22em;
 }
 
+.badge-card {
+  align-content: start;
+  gap: 0.6rem;
+}
+
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 88px);
+  gap: 2px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.badge-grid a {
+  display: block;
+  line-height: 0;
+}
+
+.badge-grid img {
+  display: block;
+  image-rendering: pixelated;
+}
+
+.badge-grid .badge-wide {
+  grid-column: 1 / -1;
+}
+
+.badge-note {
+  margin: 0;
+  font-size: 0.78rem;
+  text-align: center;
+  color: rgba(39, 20, 82, 0.72);
+}
+
 .right-stack {
   display: grid;
   align-content: center;
