@@ -61,11 +61,12 @@
 }
 
 html {
-  /* Firefox paints the elastic overscroll bounce area (top/bottom rubber-band
-     on trackpad scroll) using the root element's background. Without this,
-     that area is unstyled and the gradient/pattern layers below appear to
-     "disappear" during the bounce. */
   background: linear-gradient(155deg, #65b8e6 0%, #519ed5 48%, #8abbe9 100%);
+  /* Firefox's elastic overscroll bounce (trackpad scroll past the top/bottom)
+     reveals a strip of raw browser canvas beyond the rendered document that
+     CSS backgrounds can't paint into, showing white. Disabling the bounce
+     keeps scrolling clamped at the document edge instead. */
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -74,6 +75,7 @@ body {
   color: var(--ink);
   background: linear-gradient(155deg, #65b8e6 0%, #519ed5 48%, #8abbe9 100%);
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
 /*This does the hyperlink styling*/ 
