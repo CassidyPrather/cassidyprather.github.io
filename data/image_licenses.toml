@@ -1,10 +1,8 @@
-# TODO; license migrate wirenook
-
 [wirenook]
 weight = 1
-title = "Original wirenook.net art"
-license = "CC0 1.0"
-blurb = "Gifted to the public domain under [Creative Commons Zero (CC0) 1.0](https://creativecommons.org/publicdomain/zero/1.0/) by [Ron Kyle Almira](https://pixel20012.neocities.org/). No rights reserved."
+title = "wirenook.net"
+license = "AGPLv3"
+blurb = "Default license. Older versions may have alternative available licenses under VCS."
 
 [captures]
 weight = 2
