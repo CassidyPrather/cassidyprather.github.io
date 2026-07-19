@@ -11,3 +11,6 @@ the galleries until sorted.
 | `neocities.png`            | [Neocities](https://neocities.org/)                                      |
 | `thegorkhonarchives.net-88x31.png` | [The Gorkhon Archives](https://thegorkhonarchives.net/)          |
 | `vrchat-background-lines.svg` | [VRChat](https://hello.vrchat.com/)                                         |
+| `slide-shield.png`         | Screenshot taken in [VRChat](https://hello.vrchat.com/)                  |
+| `slide-earmuff.png`        | Screenshot taken in [VRChat](https://hello.vrchat.com/)                  |
+| `slide-culling-performance.png` | Screenshot taken in [VRChat](https://hello.vrchat.com/)             |

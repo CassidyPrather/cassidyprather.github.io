@@ -45,12 +45,6 @@ POLICIES: dict[str, dict[str, str]] = {
         "XMP-dc:Rights": "CC0 1.0 - no rights reserved",
         "XMP-cc:License": "https://creativecommons.org/publicdomain/zero/1.0/",
     },
-    "captures": {
-        "XMP-dc:Source": "Screenshot taken in VRChat",
-        "XMP-dc:Rights": (
-            "Depicted content belongs to its respective creators; no license granted"
-        ),
-    },
     "lancer": {
         "XMP-dc:Source": "https://github.com/massif-press/compcon",
         "XMP-dc:Rights": "GPL-3.0; Lancer and COMP/CON are (c) Massif Press",
