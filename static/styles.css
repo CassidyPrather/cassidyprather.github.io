@@ -374,13 +374,7 @@ h2 {
 }
 
 .socials-panel {
-  grid-column: 1 / -1;
   padding: clamp(1rem, 2vw, 1.4rem);
-}
-
-.socials-panel h3 {
-  margin-bottom: 0.7rem;
-  font-size: 1.15rem;
 }
 
 .socials-list {
@@ -452,12 +446,11 @@ h2 {
 
 .intro-panel {
   grid-column: 1 / -1;
+  /* Hug the poem's longest line rather than spanning the whole window;
+     fit-content still allows wrapping when the column gets narrow. */
+  width: fit-content;
+  justify-self: center;
   padding: clamp(1rem, 2vw, 1.4rem);
-}
-
-.intro-panel h3 {
-  margin-bottom: 0.4rem;
-  font-size: 1.15rem;
 }
 
 .intro-panel p {
@@ -693,6 +686,20 @@ h2 {
 .license-main {
   max-width: 56rem;
   margin: 0 auto;
+}
+
+.archive-intro {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  backdrop-filter: blur(4px);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  margin-bottom: 1rem;
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.archive-intro > :last-child {
+  margin-bottom: 0;
 }
 
 .license-list {

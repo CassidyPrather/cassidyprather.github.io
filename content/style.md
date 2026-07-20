@@ -9,5 +9,3 @@ layout: style
 
 Credit "Cassidy Prather" <a href="mailto:cassidy@wirenook.net">cassidy@wirenook.net</a> as needed.
 
-## Useful Images
-

@@ -3,10 +3,6 @@
 {{ define "main" }}
 <main class="layout-grid">
 	<nav class="link-rail" aria-label="Main links">
-		<a class="rail-link" href="#connect" data-label="social">
-			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
-			<span>Connect</span>
-		</a>
 		<a class="rail-link" href="{{ "pages/" | relURL }}" data-label="archive">
 			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
 			<span>Works</span>
@@ -45,8 +41,7 @@
 				</p>
 			</article>
 
-			<article class="socials-panel" id="connect" aria-labelledby="connect-title">
-				<h3 id="connect-title">Connect</h3>
+			<article class="socials-panel" id="connect" aria-label="Connect">
 				<ul class="socials-list">
 					<li>
 						<a class="social-button" href="https://bsky.app/profile/cassidyco.bsky.social" rel="me noopener" target="_blank" aria-label="Bluesky — @cassidyco.bsky.social" data-tooltip="Bluesky — @cassidyco.bsky.social">
@@ -115,11 +110,6 @@
 			</article>
 
 			<article class="link-card">
-				<h3>Baubles</h3>
-				<p>I'll put photos here eventually.</p>
-			</article>
-			<article class="link-card">
-				<h3>Cool stuff</h3>
 				<a href="https://bogleech.com/">bogleech.com</a>
 				<a href="https://vgel.me/fiction/gyre/">vgel.me/fiction/gyre</a>
 				<a href="https://simonwillison.net/">simonwillison.net/</a>
@@ -159,9 +149,8 @@
 		{{ $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal }}
 		{{ $members := $webring.members }}
 		{{ $count := len $members }}
-		<section class="webring" aria-labelledby="webring-title">
+		<section class="webring" aria-label="{{ $webring.name }} Webring">
 			<img class="portal-image" src="{{ "images/OPL/cassidy-pylon-web.png" | relURL }}" alt="">
-			<h2 id="webring-title">{{ $webring.name }} Webring</h2>
 			<div class="spinner" data-spinner style="--count:{{ $count }}">
 				{{ range $i, $member := $members }}
 					<a href="{{ $member.url }}" style="--i:{{ $i }}" rel="noopener" target="_blank" title="{{ $member.name }}">
