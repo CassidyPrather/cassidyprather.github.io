@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.Lang }}">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{ with .Params.author }}<meta name="author" content="{{ . }}">{{ end }}
-    <title>{{ .Title }} — {{ site.Title }}</title>
-    {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
-    <link href="{{ "vrchat/VRChatStylesheetMinimized.css" | relURL }}" rel="stylesheet" type="text/css" media="all">
-    <link href="{{ "vrchat/fx.css" | relURL }}" rel="stylesheet" type="text/css" media="all">
-  </head>
-  <body class="FauxSidebars">
-    <div class="content-outer">
-      {{ .Content }}
-    </div>
-  </body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		{{ with .Params.author }}<meta name="author" content="{{ . }}">{{ end }}
+		<title>{{ .Title }} — {{ site.Title }}</title>
+		{{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
+		<link href="{{ "vrchat/VRChatStylesheetMinimized.css" | relURL }}" rel="stylesheet" type="text/css" media="all">
+		<link href="{{ "vrchat/fx.css" | relURL }}" rel="stylesheet" type="text/css" media="all">
+	</head>
+	<body class="FauxSidebars">
+		<div class="content-outer">
+			{{ .Content }}
+		</div>
+	</body>
 </html>

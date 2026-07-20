@@ -1,8 +1,5 @@
 {
-    // Hugo templates (layouts/*.html) contain Go template syntax ({{ ... }})
-    // that VSCode's built-in HTML formatter doesn't understand. It reindents
-    // the whole file on save, turning one-line edits into whole-file diffs.
     "[html]": {
-        "editor.formatOnSave": false
+        "editor.defaultFormatter": "gohugoio.gotmplfmt"
     }
 }

@@ -1,0 +1,38 @@
+name: Templates
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "layouts/**"
+      - ".github/workflows/templates.yml"
+  pull_request:
+    paths:
+      - "layouts/**"
+      - ".github/workflows/templates.yml"
+  workflow_dispatch:
+
+jobs:
+  template-format:
+    runs-on: ubuntu-latest
+    env:
+      GOTMPLFMT_VERSION: 0.4.1
+    steps:
+      - name: Install gotmplfmt
+        run: |
+          wget -O "${{ runner.temp }}/gotmplfmt.deb" \
+            "https://github.com/gohugoio/gotmplfmt/releases/download/v${GOTMPLFMT_VERSION}/gotmplfmt_${GOTMPLFMT_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${{ runner.temp }}/gotmplfmt.deb"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check template formatting
+        run: |
+          if [ -n "$(gotmplfmt -l layouts/)" ]; then
+            echo "::error::Templates are not gotmplfmt-formatted. Run 'gotmplfmt -w layouts/' locally to fix:"
+            gotmplfmt -l layouts/
+            gotmplfmt -d layouts/
+            exit 1
+          fi
+          echo "All templates are gotmplfmt-clean."

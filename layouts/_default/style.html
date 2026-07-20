@@ -1,45 +1,45 @@
 {{ define "main" }}
 <main class="license-main">
-  <section class="index-window">
-    <div class="window-topline">
-      <h2>{{ .Title }}</h2>
-      <a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
-    </div>
+	<section class="index-window">
+		<div class="window-topline">
+			<h2>{{ .Title }}</h2>
+			<a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+		</div>
 
-    {{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
+		{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
 
-    {{/* Gallery sections mirror static/images/ one-to-one; section metadata
+		{{/* Gallery sections mirror static/images/ one-to-one; section metadata
          comes from data/image_licenses.toml, shared with the licenses page. */}}
-    {{ $sections := slice }}
-    {{ range $dir, $meta := site.Data.image_licenses }}
-      {{ $sections = $sections | append (merge $meta (dict "dir" $dir)) }}
-    {{ end }}
-    {{ range sort $sections "weight" }}
-    {{ $dir := .dir }}
-    <section class="gallery-section">
-      <h3>{{ .title }} <span class="gallery-license">{{ .license }}</span></h3>
-      <p>{{ .blurb | markdownify }}</p>
-      <div class="gallery-grid">
-        {{ range os.ReadDir (printf "static/images/%s" $dir) }}
-          {{ if and (not .IsDir) (ne .Name "README.md") }}
-            {{ $src := printf "images/%s/%s" $dir .Name | relURL }}
-            {{ $ext := strings.TrimPrefix "." (path.Ext .Name) | lower }}
-            {{ if in (slice "png" "svg" "gif" "webp" "jpg" "jpeg") $ext }}
-            <figure class="gallery-item">
-              <a href="{{ $src }}"><img src="{{ $src }}" alt="{{ .Name }}" loading="lazy"></a>
-              <figcaption><code>{{ .Name }}</code></figcaption>
-            </figure>
-            {{ else }}
-            <figure class="gallery-item gallery-item-source">
-              <a href="{{ $src }}"><code>{{ .Name }}</code></a>
-              <figcaption>source file</figcaption>
-            </figure>
-            {{ end }}
-          {{ end }}
-        {{ end }}
-      </div>
-    </section>
-    {{ end }}
-  </section>
+		{{ $sections := slice }}
+		{{ range $dir, $meta := site.Data.image_licenses }}
+			{{ $sections = $sections | append (merge $meta (dict "dir" $dir)) }}
+		{{ end }}
+		{{ range sort $sections "weight" }}
+			{{ $dir := .dir }}
+			<section class="gallery-section">
+				<h3>{{ .title }} <span class="gallery-license">{{ .license }}</span></h3>
+				<p>{{ .blurb | markdownify }}</p>
+				<div class="gallery-grid">
+					{{ range os.ReadDir (printf "static/images/%s" $dir) }}
+						{{ if and (not .IsDir) (ne .Name "README.md") }}
+							{{ $src := printf "images/%s/%s" $dir .Name | relURL }}
+							{{ $ext := strings.TrimPrefix "." (path.Ext .Name) | lower }}
+							{{ if in (slice "png" "svg" "gif" "webp" "jpg" "jpeg") $ext }}
+								<figure class="gallery-item">
+									<a href="{{ $src }}"><img src="{{ $src }}" alt="{{ .Name }}" loading="lazy"></a>
+									<figcaption><code>{{ .Name }}</code></figcaption>
+								</figure>
+							{{ else }}
+								<figure class="gallery-item gallery-item-source">
+									<a href="{{ $src }}"><code>{{ .Name }}</code></a>
+									<figcaption>source file</figcaption>
+								</figure>
+							{{ end }}
+						{{ end }}
+					{{ end }}
+				</div>
+			</section>
+		{{ end }}
+	</section>
 </main>
 {{ end }}

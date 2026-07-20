@@ -6,11 +6,11 @@
 {{- $members := $webring.members -}}
 <!doctype html>
 <html lang="{{ site.Language.Lang }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex">
-  <title>{{ $webring.name }} webring</title>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="robots" content="noindex">
+		<title>{{ $webring.name }} webring</title>
   <style>
     :root { color-scheme: light dark; }
     * { box-sizing: border-box; }
@@ -59,18 +59,18 @@
       .ring { background: #271452; border-color: #b9a8ff; }
     }
   </style>
-</head>
-<body>
-  <div class="ring">
-    <a class="brand" id="ring-home" href="{{ site.Home.Permalink }}" target="_top" rel="noopener">{{ $webring.name }}</a>
-    <nav aria-label="{{ $webring.name }} webring">
-      <a id="ring-prev" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Previous site">‹ prev</a>
-      <span class="sep" aria-hidden="true">·</span>
-      <a id="ring-rand" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Random site">rand</a>
-      <span class="sep" aria-hidden="true">·</span>
-      <a id="ring-next" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Next site">next ›</a>
-    </nav>
-  </div>
+	</head>
+	<body>
+		<div class="ring">
+			<a class="brand" id="ring-home" href="{{ site.Home.Permalink }}" target="_top" rel="noopener">{{ $webring.name }}</a>
+			<nav aria-label="{{ $webring.name }} webring">
+				<a id="ring-prev" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Previous site">‹ prev</a>
+				<span class="sep" aria-hidden="true">·</span>
+				<a id="ring-rand" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Random site">rand</a>
+				<span class="sep" aria-hidden="true">·</span>
+				<a id="ring-next" href="{{ site.Home.Permalink }}" target="_top" rel="noopener" title="Next site">next ›</a>
+			</nav>
+		</div>
 
   <script>
     (function () {
@@ -102,5 +102,5 @@
       set("ring-rand", rand);
     })();
   </script>
-</body>
+	</body>
 </html>

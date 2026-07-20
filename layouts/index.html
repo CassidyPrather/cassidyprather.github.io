@@ -2,183 +2,183 @@
 
 {{ define "main" }}
 <main class="layout-grid">
-  <nav class="link-rail" aria-label="Main links">
-    <a class="rail-link" href="#connect" data-label="social">
-      <img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
-      <span>Connect</span>
-    </a>
-    <a class="rail-link" href="{{ "pages/" | relURL }}" data-label="archive">
-      <img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
-      <span>Works</span>
-    </a>
-<a class="rail-link" href="{{ "guestbook/" | relURL }}" data-label="guestbook">
-      <img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
-      <span>Guestbook</span>
-    </a>
-  </nav>
+	<nav class="link-rail" aria-label="Main links">
+		<a class="rail-link" href="#connect" data-label="social">
+			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
+			<span>Connect</span>
+		</a>
+		<a class="rail-link" href="{{ "pages/" | relURL }}" data-label="archive">
+			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
+			<span>Works</span>
+		</a>
+		<a class="rail-link" href="{{ "guestbook/" | relURL }}" data-label="guestbook">
+			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
+			<span>Guestbook</span>
+		</a>
+	</nav>
 
-  <section class="index-window" aria-labelledby="index-title">
-    <div class="window-topline">
-      <h2 id="index-title">Index</h2>
-      <span class="status-light"><span class="blink-dot" aria-hidden="true"></span>Online</span>
-    </div>
+	<section class="index-window" aria-labelledby="index-title">
+		<div class="window-topline">
+			<h2 id="index-title">Index</h2>
+			<span class="status-light"><span class="blink-dot" aria-hidden="true"></span>Online</span>
+		</div>
 
-    <div class="content-grid">
-      <article class="intro-panel">
-        <p>
-          I met a traveller from an antique land<br/>
-          Who said: Two vast and trunkless legs of stone<br/>
-          Stand in the desart. Near them, on the sand,<br/>
-          Half sunk, a shattered visage lies, whose frown,<br/>
-          And wrinkled lip, and sneer of cold command,<br/>
-          Tell that its sculptor well those passions read<br/>
-          Which yet survive, stamped on these lifeless things,<br/>
-          The hand that mocked them and the heart that fed:<br/>
-          And on the pedestal these words appear:<br/>
-          "My name is Ozymandias, King of Kings:<br/>
-          Look on my works, ye Mighty, and despair!"<br/>
-          Nothing beside remains. Round the decay<br/>
-          Of that colossal wreck, boundless and bare<br/>
-          The lone and level sands stretch far away.<br/><br/>
+		<div class="content-grid">
+			<article class="intro-panel">
+				<p>
+					I met a traveller from an antique land<br/>
+					Who said: Two vast and trunkless legs of stone<br/>
+					Stand in the desart. Near them, on the sand,<br/>
+					Half sunk, a shattered visage lies, whose frown,<br/>
+					And wrinkled lip, and sneer of cold command,<br/>
+					Tell that its sculptor well those passions read<br/>
+					Which yet survive, stamped on these lifeless things,<br/>
+					The hand that mocked them and the heart that fed:<br/>
+					And on the pedestal these words appear:<br/>
+					"My name is Ozymandias, King of Kings:<br/>
+					Look on my works, ye Mighty, and despair!"<br/>
+					Nothing beside remains. Round the decay<br/>
+					Of that colossal wreck, boundless and bare<br/>
+					The lone and level sands stretch far away.<br/><br/>
 
-          — Percy Shelley, "Ozymandias", 1819 edition
-        </p>
-      </article>
+					— Percy Shelley, "Ozymandias", 1819 edition
+				</p>
+			</article>
 
-      <article class="socials-panel" id="connect" aria-labelledby="connect-title">
-        <h3 id="connect-title">Connect</h3>
-        <ul class="socials-list">
-          <li>
-            <a class="social-button" href="https://bsky.app/profile/cassidyco.bsky.social" rel="me noopener" target="_blank" aria-label="Bluesky — @cassidyco.bsky.social" data-tooltip="Bluesky — @cassidyco.bsky.social">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.911.58-7.386 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a class="social-button" href="https://x.com/cassidy_prather" rel="me noopener" target="_blank" aria-label="X — @cassidy_prather" data-tooltip="X — @cassidy_prather">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a class="social-button" href="https://github.com/CassidyPrather" rel="me noopener" target="_blank" aria-label="GitHub — CassidyPrather" data-tooltip="GitHub — CassidyPrather">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <button class="social-button" href="https://discord.com/users/102813625248419840" rel="me noopener" target="_blank" aria-label="Discord — cassidy" data-tooltip="Discord — cassidy">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
-              </svg>
-            </button>
-          </li>
-          <li>
-            <a class="social-button" href="https://vrchat.com/home/user/usr_54aff6fc-0509-4603-b8ad-dbf9422b3d6a" rel="me noopener" target="_blank" aria-label="VRChat — CassidyCo" data-tooltip="VRChat — CassidyCo">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v8.5A2.75 2.75 0 0 1 18.25 18h-2.69a2.5 2.5 0 0 1-1.77-.73l-1.26-1.26a.75.75 0 0 0-1.06 0l-1.26 1.26A2.5 2.5 0 0 1 8.44 18H5.75A2.75 2.75 0 0 1 3 15.25Zm5.25 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm7.5 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a class="social-button" href="https://vndb.org/u183483" rel="me noopener" target="_blank" aria-label="VNDB — u183483" data-tooltip="VNDB — u183483">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.828a1 1 0 0 0-.293-.707l-5.828-5.828A1 1 0 0 0 10.172 3H4zm7 1.414L16.586 10H12a1 1 0 0 1-1-1V4.414zM6 12h8v2H6v-2zm0 4h5v2H6v-2z"/>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a class="social-button" href="https://steamcommunity.com/profiles/76561198042226688/" rel="me noopener" target="_blank" aria-label="Steam — Cassidy" data-tooltip="Steam — Cassidy">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a class="social-button" href="https://www.goodreads.com/user/show/88078370-cassidy" rel="me noopener" target="_blank" aria-label="Goodreads — cassidy" data-tooltip="Goodreads — cassidy">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M17.346.026c.422-.083.859.037 1.179.325.346.284.55.705.557 1.153-.023.457-.247.88-.612 1.156l-2.182 1.748a.601.601 0 0 0-.255.43.52.52 0 0 0 .11.424 5.886 5.886 0 0 1 .832 6.58c-1.394 2.79-4.503 3.99-7.501 2.927a.792.792 0 0 0-.499-.01c-.224.07-.303.18-.453.383l-.014.02-.941 1.254s-.792.985.457.935c3.027-.119 3.817-.119 5.439-.01 2.641.18 3.806 1.903 3.806 3.275 0 1.623-1.036 3.383-3.809 3.383a117.46 117.46 0 0 0-5.517-.03c-.31.005-.597.013-.835.02-.228.006-.41.011-.52.011-.712 0-1.648-.186-1.66-1.068-.008-.729.624-1.12 1.11-1.172.43-.045.815.007 1.24.064.252.034.518.07.815.088.185.011.366.025.552.038.53.038 1.102.08 1.926.087.427.005.759.01 1.025.015.695.012.941.016 1.28-.015 1.248-.112 1.832-.61 1.832-1.376 0-.805-.584-1.264-1.698-1.414-1.564-.213-2.33-.163-3.72-.074a87.66 87.66 0 0 1-1.669.095c-.608.029-2.449.026-2.682-1.492-.053-.416-.073-1.116.807-2.325l.75-1.003c.36-.49.582-.898.053-1.559 0 0-.39-.468-.52-.638-1.215-1.587-1.512-4.08-.448-6.114 1.577-3.011 5.4-4.26 8.37-2.581.253.143.438.203.655.163.201-.032.27-.167.363-.344.02-.04.042-.082.067-.126.004-.01.241-.465.535-1.028l.734-1.41a1.493 1.493 0 0 1 1.041-.785ZM9.193 13.243c1.854.903 3.912.208 5.254-2.47 1.352-2.699.827-5.11-1.041-6.023C10.918 3.537 8.81 5.831 8.017 7.41c-1.355 2.698-.717 4.886 1.147 5.818Z"/>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a class="social-button" href="mailto:cassidy@wirenook.net" aria-label="Email — cassidy@wirenook.net" data-tooltip="Email — cassidy@wirenook.net">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 2-8 5-8-5Zm0 12H4V8.5l8 5 8-5Z"/>
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </article>
+			<article class="socials-panel" id="connect" aria-labelledby="connect-title">
+				<h3 id="connect-title">Connect</h3>
+				<ul class="socials-list">
+					<li>
+						<a class="social-button" href="https://bsky.app/profile/cassidyco.bsky.social" rel="me noopener" target="_blank" aria-label="Bluesky — @cassidyco.bsky.social" data-tooltip="Bluesky — @cassidyco.bsky.social">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.911.58-7.386 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<a class="social-button" href="https://x.com/cassidy_prather" rel="me noopener" target="_blank" aria-label="X — @cassidy_prather" data-tooltip="X — @cassidy_prather">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<a class="social-button" href="https://github.com/CassidyPrather" rel="me noopener" target="_blank" aria-label="GitHub — CassidyPrather" data-tooltip="GitHub — CassidyPrather">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<button class="social-button" href="https://discord.com/users/102813625248419840" rel="me noopener" target="_blank" aria-label="Discord — cassidy" data-tooltip="Discord — cassidy">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
+							</svg>
+						</button>
+					</li>
+					<li>
+						<a class="social-button" href="https://vrchat.com/home/user/usr_54aff6fc-0509-4603-b8ad-dbf9422b3d6a" rel="me noopener" target="_blank" aria-label="VRChat — CassidyCo" data-tooltip="VRChat — CassidyCo">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v8.5A2.75 2.75 0 0 1 18.25 18h-2.69a2.5 2.5 0 0 1-1.77-.73l-1.26-1.26a.75.75 0 0 0-1.06 0l-1.26 1.26A2.5 2.5 0 0 1 8.44 18H5.75A2.75 2.75 0 0 1 3 15.25Zm5.25 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm7.5 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<a class="social-button" href="https://vndb.org/u183483" rel="me noopener" target="_blank" aria-label="VNDB — u183483" data-tooltip="VNDB — u183483">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.828a1 1 0 0 0-.293-.707l-5.828-5.828A1 1 0 0 0 10.172 3H4zm7 1.414L16.586 10H12a1 1 0 0 1-1-1V4.414zM6 12h8v2H6v-2zm0 4h5v2H6v-2z"/>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<a class="social-button" href="https://steamcommunity.com/profiles/76561198042226688/" rel="me noopener" target="_blank" aria-label="Steam — Cassidy" data-tooltip="Steam — Cassidy">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<a class="social-button" href="https://www.goodreads.com/user/show/88078370-cassidy" rel="me noopener" target="_blank" aria-label="Goodreads — cassidy" data-tooltip="Goodreads — cassidy">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M17.346.026c.422-.083.859.037 1.179.325.346.284.55.705.557 1.153-.023.457-.247.88-.612 1.156l-2.182 1.748a.601.601 0 0 0-.255.43.52.52 0 0 0 .11.424 5.886 5.886 0 0 1 .832 6.58c-1.394 2.79-4.503 3.99-7.501 2.927a.792.792 0 0 0-.499-.01c-.224.07-.303.18-.453.383l-.014.02-.941 1.254s-.792.985.457.935c3.027-.119 3.817-.119 5.439-.01 2.641.18 3.806 1.903 3.806 3.275 0 1.623-1.036 3.383-3.809 3.383a117.46 117.46 0 0 0-5.517-.03c-.31.005-.597.013-.835.02-.228.006-.41.011-.52.011-.712 0-1.648-.186-1.66-1.068-.008-.729.624-1.12 1.11-1.172.43-.045.815.007 1.24.064.252.034.518.07.815.088.185.011.366.025.552.038.53.038 1.102.08 1.926.087.427.005.759.01 1.025.015.695.012.941.016 1.28-.015 1.248-.112 1.832-.61 1.832-1.376 0-.805-.584-1.264-1.698-1.414-1.564-.213-2.33-.163-3.72-.074a87.66 87.66 0 0 1-1.669.095c-.608.029-2.449.026-2.682-1.492-.053-.416-.073-1.116.807-2.325l.75-1.003c.36-.49.582-.898.053-1.559 0 0-.39-.468-.52-.638-1.215-1.587-1.512-4.08-.448-6.114 1.577-3.011 5.4-4.26 8.37-2.581.253.143.438.203.655.163.201-.032.27-.167.363-.344.02-.04.042-.082.067-.126.004-.01.241-.465.535-1.028l.734-1.41a1.493 1.493 0 0 1 1.041-.785ZM9.193 13.243c1.854.903 3.912.208 5.254-2.47 1.352-2.699.827-5.11-1.041-6.023C10.918 3.537 8.81 5.831 8.017 7.41c-1.355 2.698-.717 4.886 1.147 5.818Z"/>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<a class="social-button" href="mailto:cassidy@wirenook.net" aria-label="Email — cassidy@wirenook.net" data-tooltip="Email — cassidy@wirenook.net">
+							<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 2-8 5-8-5Zm0 12H4V8.5l8 5 8-5Z"/>
+							</svg>
+						</a>
+					</li>
+				</ul>
+			</article>
 
-      <article class="link-card">
-        <h3>Baubles</h3>
-        <p>I'll put photos here eventually.</p>
-      </article>
-      <article class="link-card">
-        <h3>Cool stuff</h3>
-        <a href="https://bogleech.com/">bogleech.com</a>
-        <a href="https://vgel.me/fiction/gyre/">vgel.me/fiction/gyre</a>
-        <a href="https://simonwillison.net/">simonwillison.net/</a>
-        <a href="https://springhole.net/">springhole.net</a>
-      </article>
+			<article class="link-card">
+				<h3>Baubles</h3>
+				<p>I'll put photos here eventually.</p>
+			</article>
+			<article class="link-card">
+				<h3>Cool stuff</h3>
+				<a href="https://bogleech.com/">bogleech.com</a>
+				<a href="https://vgel.me/fiction/gyre/">vgel.me/fiction/gyre</a>
+				<a href="https://simonwillison.net/">simonwillison.net/</a>
+				<a href="https://springhole.net/">springhole.net</a>
+			</article>
 
-      <article class="link-card badge-card">
-        <div class="badge-grid">
-          <a href="https://wirenook.net">
-            <img src="{{ "images/wirenook/wirenook-88x31.gif" | relURL }}" width="88" height="31" alt="wirenook.net">
-          </a>
-          <a href="https://pixel20012.github.io/">
-            <img src="{{ "images/no-relicensing/pixel-88x31.gif" | relURL }}" width="88" height="31" alt="pixel20012.github.io">
-          </a>
-          <a href="https://cor.gg">
-            <img src="{{ "images/no-relicensing/cor.gg-88x31.gif" | relURL }}" width="88" height="31" alt="cor.gg">
-          </a>
-          <a href="https://corru.observer/">
-            <img src="{{ "images/no-relicensing/corru.observer-88x31.gif" | relURL }}" width="88" height="31" alt="corru.observer">
-          </a>
-          <a href="https://thegorkhonarchives.net/index.html">
-            <img src="{{ "images/no-relicensing/thegorkhonarchives.net-88x31.png" | relURL }}" width="88" height="31" alt="The Gorkhon Archives">
-          </a>
-          <a href="https://lobste.rs/" title="please invite me to lobste.rs!!!">
-            <img src="{{ "images/wirenook/lobste.rs.svg" | relURL }}" width="88" height="31" alt="Lobsters">
-          </a>
-          <a class="badge-wide" href="https://www.gnu.org/licenses/agpl-3.0.en.html">
-            <img src="{{ "images/no-relicensing/agplv3-155x51.png" | relURL }}" width="155" height="51" alt="AGPLv3">
-          </a>
-        </div>
-        <p class="badge-note">(please invite me to lobste.rs!!!)</p>
-      </article>
-    </div>
-  </section>
+			<article class="link-card badge-card">
+				<div class="badge-grid">
+					<a href="https://wirenook.net">
+						<img src="{{ "images/wirenook/wirenook-88x31.gif" | relURL }}" width="88" height="31" alt="wirenook.net">
+					</a>
+					<a href="https://pixel20012.github.io/">
+						<img src="{{ "images/no-relicensing/pixel-88x31.gif" | relURL }}" width="88" height="31" alt="pixel20012.github.io">
+					</a>
+					<a href="https://cor.gg">
+						<img src="{{ "images/no-relicensing/cor.gg-88x31.gif" | relURL }}" width="88" height="31" alt="cor.gg">
+					</a>
+					<a href="https://corru.observer/">
+						<img src="{{ "images/no-relicensing/corru.observer-88x31.gif" | relURL }}" width="88" height="31" alt="corru.observer">
+					</a>
+					<a href="https://thegorkhonarchives.net/index.html">
+						<img src="{{ "images/no-relicensing/thegorkhonarchives.net-88x31.png" | relURL }}" width="88" height="31" alt="The Gorkhon Archives">
+					</a>
+					<a href="https://lobste.rs/" title="please invite me to lobste.rs!!!">
+						<img src="{{ "images/wirenook/lobste.rs.svg" | relURL }}" width="88" height="31" alt="Lobsters">
+					</a>
+					<a class="badge-wide" href="https://www.gnu.org/licenses/agpl-3.0.en.html">
+						<img src="{{ "images/no-relicensing/agplv3-155x51.png" | relURL }}" width="155" height="51" alt="AGPLv3">
+					</a>
+				</div>
+				<p class="badge-note">(please invite me to lobste.rs!!!)</p>
+			</article>
+		</div>
+	</section>
 
-  <aside class="right-stack" aria-label="Webring and featured content">
-    {{ $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal }}
-    {{ $members := $webring.members }}
-    {{ $count := len $members }}
-    <section class="webring" aria-labelledby="webring-title">
-      <img class="portal-image" src="{{ "images/OPL/cassidy-pylon-web.png" | relURL }}" alt="">
-      <h2 id="webring-title">{{ $webring.name }} Webring</h2>
-      <div class="spinner" data-spinner style="--count:{{ $count }}">
-        {{ range $i, $member := $members }}
-        <a href="{{ $member.url }}" style="--i:{{ $i }}" rel="noopener" target="_blank" title="{{ $member.name }}">
-          {{ with $member.button }}
-          <img src="{{ . }}" alt="{{ $member.name }}" loading="lazy">
-          {{ else }}
-          <span>{{ $member.name }}</span>
-          {{ end }}
-        </a>
-        {{ end }}
-      </div>
-      <button class="spin-button" type="button" data-spin-button>SPIN</button>
-    </section>
+	<aside class="right-stack" aria-label="Webring and featured content">
+		{{ $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal }}
+		{{ $members := $webring.members }}
+		{{ $count := len $members }}
+		<section class="webring" aria-labelledby="webring-title">
+			<img class="portal-image" src="{{ "images/OPL/cassidy-pylon-web.png" | relURL }}" alt="">
+			<h2 id="webring-title">{{ $webring.name }} Webring</h2>
+			<div class="spinner" data-spinner style="--count:{{ $count }}">
+				{{ range $i, $member := $members }}
+					<a href="{{ $member.url }}" style="--i:{{ $i }}" rel="noopener" target="_blank" title="{{ $member.name }}">
+						{{ with $member.button }}
+							<img src="{{ . }}" alt="{{ $member.name }}" loading="lazy">
+						{{ else }}
+							<span>{{ $member.name }}</span>
+						{{ end }}
+					</a>
+				{{ end }}
+			</div>
+			<button class="spin-button" type="button" data-spin-button>SPIN</button>
+		</section>
 
-    <section class="feature-object" aria-label="Image placeholder">
-      <img class="feature-image" src="{{ "images/wirenook/poly-bunyn-dithered.png" | relURL }}" alt="">
-    </section>
-  </aside>
+		<section class="feature-object" aria-label="Image placeholder">
+			<img class="feature-image" src="{{ "images/wirenook/poly-bunyn-dithered.png" | relURL }}" alt="">
+		</section>
+	</aside>
 </main>
 {{ end }}

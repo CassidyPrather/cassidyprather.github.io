@@ -1,27 +1,27 @@
 <!doctype html>
 <html lang="{{ site.Language.Lang }}">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ block "title" . }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
-  {{ with site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
-  <link rel="icon" href="{{ "images/wirenook/link-charm.png" | relURL }}">
-  <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
-</head>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{{ block "title" . }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
+		{{ with site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+		<link rel="icon" href="{{ "images/wirenook/link-charm.png" | relURL }}">
+		<link rel="stylesheet" href="{{ "styles.css" | relURL }}">
+	</head>
 
-<body>
-  <div class="page-shell">
-    {{ partial "background.html" . }}
+	<body>
+		<div class="page-shell">
+			{{ partial "background.html" . }}
 
-    {{ block "header" . }}{{ partial "site-header.html" . }}{{ end }}
+			{{ block "header" . }}{{ partial "site-header.html" . }}{{ end }}
 
-    {{ block "main" . }}{{ end }}
+			{{ block "main" . }}{{ end }}
 
-    {{ block "footer" . }}{{ partial "site-footer.html" . }}{{ end }}
-  </div>
+			{{ block "footer" . }}{{ partial "site-footer.html" . }}{{ end }}
+		</div>
 
   <script src="{{ "script.js" | relURL }}"></script>
-</body>
+	</body>
 
 </html>

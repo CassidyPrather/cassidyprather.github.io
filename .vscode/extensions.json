@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "gohugoio.gotmplfmt",
+        "budparr.language-hugo-vscode"
+    ]
+}

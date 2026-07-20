@@ -1,9 +1,9 @@
 <header class="site-header">
-  {{ if .IsHome }}
-    <img class="banner-image" src="{{ "images/OPL/wirenook-banner-v2.png" | relURL }}" alt="wirenook">
-  {{ else }}
-    <a href="{{ site.Home.RelPermalink }}">
-      <img class="banner-image" src="{{ "images/OPL/wirenook-banner-v2.png" | relURL }}" alt="wirenook - back to home">
-    </a>
-  {{ end }}
+	{{ if .IsHome }}
+		<img class="banner-image" src="{{ "images/OPL/wirenook-banner-v2.png" | relURL }}" alt="wirenook">
+	{{ else }}
+		<a href="{{ site.Home.RelPermalink }}">
+			<img class="banner-image" src="{{ "images/OPL/wirenook-banner-v2.png" | relURL }}" alt="wirenook - back to home">
+		</a>
+	{{ end }}
 </header>
