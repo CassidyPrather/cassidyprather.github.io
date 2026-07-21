@@ -4,8 +4,8 @@ date: 2026-07-21T00:00:00Z
 highlight: true
 ---
 
-There's a blog here now. Long-form posts get a title and a summary on the
-feed, with the full text a click away; micro-posts show up on the feed whole.
+There's a blog here now. Long posts get collapsed to a summary on the feed,
+with the full text a click away; short posts show up on the feed whole.
 
 <!--more-->
 

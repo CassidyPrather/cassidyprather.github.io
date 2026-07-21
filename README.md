@@ -9,13 +9,20 @@ https://wirenook.net/
 Posts live in `content/blog/` as Markdown files. Front matter:
 
 - `date` — required; drives feed order, timestamps, and permalink `#` anchors.
-- `micro: true` — the whole post renders on the feed (no title, no "read the rest").
+  Future-dated posts still publish (`buildFuture`), so a timestamp a few hours
+  ahead never silently hides a post.
+- `title` — optional; untitled posts render with no heading on the feed,
+  which suits micro-posts.
 - `highlight: true` — adds the post to the Highlights column beside the feed.
-- `description` — optional; shown on the feed for major posts instead of the
-  auto summary. A `<!--more-->` line in the body marks the summary cut.
+- `description` — optional; shown on the feed instead of the auto summary
+  when a post is collapsed.
+
+The feed decides collapsing automatically: posts short enough to fit render
+whole; longer posts show a summary plus a "read the rest" link. A `<!--more-->`
+line in the body sets the summary cut explicitly.
 
 Search is client-side over `/blog/index.json`, generated at build time from
-the full text of every post.
+the full text of every post. The RSS feed is at `/blog/index.xml`.
 
 ## Development
 

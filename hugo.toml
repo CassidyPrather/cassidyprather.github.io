@@ -3,9 +3,18 @@ languageCode = "en"
 title = "wirenook"
 enableRobotsTXT = true
 
-# Skip the unused taxonomies (tags/categories) and per-section RSS to keep
-# the published site to just the pages we author.
-disableKinds = ["taxonomy", "term", "RSS"]
+# Skip the unused taxonomies (tags/categories) to keep the published site to
+# just the pages we author. RSS is off by default too ([outputs] below); the
+# blog section opts back in via its front matter.
+disableKinds = ["taxonomy", "term"]
+
+# Publish future-dated posts immediately — a timestamp a few hours ahead
+# should never silently drop a post from a deploy.
+buildFuture = true
+
+[outputs]
+  home = ["html"]
+  section = ["html"]
 
 # CI passes --baseURL from the Pages configuration step, so the value above
 # is only a fallback for local builds.

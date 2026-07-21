@@ -11,8 +11,11 @@
   --magenta: #ff00e6; 
   --ink: #271452;
   --banana: #fff9b1;
-  --panel: rgba(216, 247, 255, 0.46);
-  --panel-strong: rgba(231, 252, 255, 0.72);
+  /* Text-bearing panels are fully opaque on purpose: the striped
+     index-window behind them otherwise bleeds through and makes prose hard
+     to read. Keep any translucency to decorative surfaces only. */
+  --panel: #d8f7ff;
+  --panel-strong: #e7fcff;
   --line: rgba(231, 252, 255, 0.9);
   --shadow: rgba(65, 24, 127, 0.28);
   font-family:  Unique, "Trebuchet MS", "Century Gothic", Arial, sans-serif;
@@ -347,7 +350,14 @@ h2 {
   gap: 0.45rem;
   padding: 0.3rem 0.6rem;
   border: 1px solid var(--line);
-  background: rgba(215, 251, 255, 0.42);
+  background: var(--panel-strong);
+}
+
+.topline-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
 }
 
 .blink-dot {
@@ -370,7 +380,6 @@ h2 {
 .socials-panel {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
-  backdrop-filter: blur(4px);
 }
 
 .socials-panel {
@@ -694,7 +703,6 @@ h2 {
 .archive-intro {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
-  backdrop-filter: blur(4px);
   padding: clamp(1rem, 2vw, 1.4rem);
   margin-bottom: 1rem;
   line-height: 1.55;
@@ -713,7 +721,6 @@ h2 {
 .license-entry {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
-  backdrop-filter: blur(4px);
   padding: clamp(1rem, 2vw, 1.4rem);
 }
 
@@ -750,7 +757,6 @@ h2 {
   margin-top: 1.4rem;
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
-  backdrop-filter: blur(4px);
   padding: clamp(1rem, 2vw, 1.4rem);
 }
 
@@ -821,7 +827,6 @@ h2 {
   padding: clamp(0.85rem, 1.7vw, 1.2rem);
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
-  backdrop-filter: blur(4px);
   line-height: 1.55;
 }
 
@@ -832,7 +837,6 @@ h2 {
   padding: clamp(0.75rem, 1.7vw, 1.2rem);
   border: 3px double var(--line);
   background: var(--panel-strong);
-  backdrop-filter: blur(6px);
   box-shadow:
     inset 0 0 1rem rgba(115, 244, 255, 0.25),
     0 0.9rem 2.2rem var(--shadow);
@@ -889,7 +893,6 @@ h2 {
 .blog-entry {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
-  backdrop-filter: blur(4px);
   padding: clamp(1rem, 2vw, 1.4rem);
 }
 
@@ -938,7 +941,7 @@ h2 {
   position: sticky;
   top: clamp(0.75rem, 2vw, 1.5rem);
   border: 2px solid rgba(232, 246, 255, 0.75);
-  background: rgba(216, 247, 255, 0.35);
+  background: var(--panel);
   padding: 1rem;
 }
 
@@ -974,7 +977,6 @@ h2 {
 .post-body {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
-  backdrop-filter: blur(4px);
   padding: clamp(1rem, 2vw, 1.4rem);
   line-height: 1.55;
   font-family: Atkinson-Regular, arial, sans-serif;

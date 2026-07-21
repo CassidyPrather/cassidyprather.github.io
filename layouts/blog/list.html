@@ -3,7 +3,12 @@
 	<section class="index-window">
 		<div class="window-topline">
 			<h2>{{ .Title }}</h2>
-			<a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+			<p class="topline-links">
+				{{ with .OutputFormats.Get "rss" }}
+					<a class="status-light" href="{{ .RelPermalink }}">RSS</a>
+				{{ end }}
+				<a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+			</p>
 		</div>
 
 		{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
@@ -18,18 +23,21 @@
 				<p class="search-status" data-search-status aria-live="polite" hidden></p>
 
 				{{ range .Pages.ByDate.Reverse }}
-					<article class="blog-entry{{ if .Params.micro }} blog-entry-micro{{ end }}" data-entry data-url="{{ .RelPermalink }}">
-						{{ if .Params.micro }}
-							<div class="entry-body">{{ .Content }}</div>
-						{{ else }}
+					{{ $label := .Title | default (.Date.Format "2 January 2006") }}
+					<article class="blog-entry" data-entry data-url="{{ .RelPermalink }}">
+						{{ if .Title }}
 							<h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+						{{ end }}
+						{{ if .Truncated }}
 							<div class="entry-body">
 								{{ with .Description }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
 							</div>
 							<p class="entry-more"><a href="{{ .RelPermalink }}">Read the rest →</a></p>
+						{{ else }}
+							<div class="entry-body">{{ .Content }}</div>
 						{{ end }}
 						<p class="entry-meta">
-							<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink to “{{ .Title }}”">#</a>
+							<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink to “{{ $label }}”">#</a>
 							<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
 						</p>
 					</article>
@@ -43,7 +51,7 @@
 					<ul>
 						{{ range $highlights }}
 							<li>
-								<a href="{{ .RelPermalink }}">{{ .Title }}</a>
+								<a href="{{ .RelPermalink }}">{{ .Title | default (.Date.Format "2 January 2006") }}</a>
 								<span class="highlight-date">{{ .Date.Format "January 2006" }}</span>
 							</li>
 						{{ end }}

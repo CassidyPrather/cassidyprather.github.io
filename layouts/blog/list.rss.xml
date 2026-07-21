@@ -1,0 +1,22 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>{{ .Title }} — {{ site.Title }}</title>
+		<link>{{ .Permalink }}</link>
+		<description>Posts from {{ site.Title }}</description>
+		<generator>Hugo</generator>
+		<language>{{ site.Language.Lang }}</language>
+		{{ with .OutputFormats.Get "rss" }}
+			<atom:link href="{{ .Permalink }}" rel="self" type="application/rss+xml" />
+		{{ end }}
+		{{ range .Pages.ByDate.Reverse }}
+			<item>
+				<title>{{ .Title | default (.Date.Format "2 January 2006") }}</title>
+				<link>{{ .Permalink }}</link>
+				<pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+				<guid>{{ .Permalink }}</guid>
+				<description>{{ .Content | transform.XMLEscape | safeHTML }}</description>
+			</item>
+		{{ end }}
+	</channel>
+</rss>
