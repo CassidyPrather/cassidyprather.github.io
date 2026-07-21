@@ -1,0 +1,58 @@
+{{ define "main" }}
+<main class="blog-main">
+	<section class="index-window">
+		<div class="window-topline">
+			<h2>{{ .Title }}</h2>
+			<a class="status-light" href="{{ site.Home.RelPermalink }}">← Index</a>
+		</div>
+
+		{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
+
+		<div class="blog-columns">
+			<div class="blog-feed">
+				{{/* Hidden until script.js wires it up, so a JS-less visitor never
+					sees a search box that does nothing. */}}
+				<form class="blog-search" role="search" data-blog-search data-index="{{ "blog/index.json" | relURL }}" hidden>
+					<input type="search" name="q" placeholder="Search posts…" aria-label="Search posts">
+				</form>
+				<p class="search-status" data-search-status aria-live="polite" hidden></p>
+
+				{{ range .Pages.ByDate.Reverse }}
+					<article class="blog-entry{{ if .Params.micro }} blog-entry-micro{{ end }}" data-entry data-url="{{ .RelPermalink }}">
+						{{ if .Params.micro }}
+							<div class="entry-body">{{ .Content }}</div>
+						{{ else }}
+							<h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+							<div class="entry-body">
+								{{ with .Description }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
+							</div>
+							<p class="entry-more"><a href="{{ .RelPermalink }}">Read the rest →</a></p>
+						{{ end }}
+						<p class="entry-meta">
+							<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink to “{{ .Title }}”">#</a>
+							<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
+						</p>
+					</article>
+				{{ end }}
+			</div>
+
+			<aside class="blog-highlights" aria-label="Highlights">
+				<h3>Highlights</h3>
+				{{ $highlights := (where .Pages ".Params.highlight" true).ByDate.Reverse }}
+				{{ if $highlights }}
+					<ul>
+						{{ range $highlights }}
+							<li>
+								<a href="{{ .RelPermalink }}">{{ .Title }}</a>
+								<span class="highlight-date">{{ .Date.Format "January 2006" }}</span>
+							</li>
+						{{ end }}
+					</ul>
+				{{ else }}
+					<p class="highlight-empty">Nothing highlighted yet.</p>
+				{{ end }}
+			</aside>
+		</div>
+	</section>
+</main>
+{{ end }}

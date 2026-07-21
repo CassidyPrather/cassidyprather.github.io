@@ -1,0 +1,17 @@
+{{ define "main" }}
+<main class="blog-main">
+	<section class="index-window">
+		<div class="window-topline">
+			<h2>{{ .Title }}</h2>
+			<a class="status-light" href="{{ .CurrentSection.RelPermalink }}">← Blog</a>
+		</div>
+
+		<article class="post-single">
+			<p class="post-meta">
+				<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
+			</p>
+			<div class="post-body">{{ .Content }}</div>
+		</article>
+	</section>
+</main>
+{{ end }}

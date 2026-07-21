@@ -4,6 +4,19 @@ Cassidy Prather's personal website.
 
 https://wirenook.net/
 
+## Blog
+
+Posts live in `content/blog/` as Markdown files. Front matter:
+
+- `date` — required; drives feed order, timestamps, and permalink `#` anchors.
+- `micro: true` — the whole post renders on the feed (no title, no "read the rest").
+- `highlight: true` — adds the post to the Highlights column beside the feed.
+- `description` — optional; shown on the feed for major posts instead of the
+  auto summary. A `<!--more-->` line in the body marks the summary cut.
+
+Search is client-side over `/blog/index.json`, generated at build time from
+the full text of every post.
+
 ## Development
 
 [Hugo](https://gohugo.io/) extended v0.140.0+

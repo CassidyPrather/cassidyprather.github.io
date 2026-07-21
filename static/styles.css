@@ -848,6 +848,142 @@ h2 {
   color-scheme: light;
 }
 
+.blog-main {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.blog-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(13rem, 17rem);
+  gap: 1rem;
+  align-items: start;
+}
+
+.blog-feed {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.blog-search input[type="search"] {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--ink);
+  font: inherit;
+}
+
+.blog-search input[type="search"]:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.search-status {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(39, 20, 82, 0.72);
+}
+
+.blog-entry {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  backdrop-filter: blur(4px);
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.entry-title {
+  margin-bottom: 0.4rem;
+  font-size: 1.3rem;
+}
+
+.entry-body {
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.entry-body > :last-child {
+  margin-bottom: 0;
+}
+
+.entry-more {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+}
+
+.entry-meta,
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  color: rgba(39, 20, 82, 0.72);
+}
+
+.entry-meta {
+  margin: 0.85rem 0 0;
+  padding-top: 0.55rem;
+  border-top: 1px dashed rgba(39, 20, 82, 0.25);
+}
+
+.entry-permalink {
+  text-decoration: none;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  padding: 0 0.45em;
+}
+
+.blog-highlights {
+  position: sticky;
+  top: clamp(0.75rem, 2vw, 1.5rem);
+  border: 2px solid rgba(232, 246, 255, 0.75);
+  background: rgba(216, 247, 255, 0.35);
+  padding: 1rem;
+}
+
+.blog-highlights h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+}
+
+.blog-highlights ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.highlight-date {
+  display: block;
+  font-size: 0.78rem;
+  color: rgba(39, 20, 82, 0.65);
+}
+
+.highlight-empty {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(39, 20, 82, 0.65);
+}
+
+.post-meta {
+  margin: 0 0 1rem;
+}
+
+.post-body {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  backdrop-filter: blur(4px);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.post-body > :last-child {
+  margin-bottom: 0;
+}
+
 /* The three-column layout needs the wave gutter (16vw) plus all three
    columns near their preferred widths; below ~86rem the middle column gets
    squeezed toward its minimum and its contents clip, so stack well before
@@ -884,6 +1020,14 @@ h2 {
   .page-shell {
     --wave-gutter: clamp(1rem, 2.6vw, 2.4rem);
     padding-left: clamp(1rem, 2.6vw, 2.4rem);
+  }
+
+  .blog-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-highlights {
+    position: static;
   }
 }
 
