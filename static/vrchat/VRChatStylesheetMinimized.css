@@ -520,3 +520,26 @@ display:inline-block
   margin-right:4%;
   max-width:92%;
 }
+
+/* The faux sidebars only work while 60% of the viewport is still a
+   comfortable reading column; hand that space back as the screen narrows. */
+@media (max-width: 70em) {
+  .content-outer {
+    width: 85%;
+  }
+}
+
+@media (max-width: 45em) {
+  .content-outer {
+    width: 100%;
+  }
+
+  .content {
+    margin: 2em 1em;
+  }
+
+  .contentBubble {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+}

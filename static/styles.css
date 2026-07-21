@@ -475,6 +475,9 @@ h2 {
   font-weight: 700;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.22em;
+  /* Long bare URLs have no natural break points; wrap them rather than
+     letting them clip out of the card when the column runs narrow. */
+  overflow-wrap: anywhere;
 }
 
 .badge-card {
@@ -845,12 +848,11 @@ h2 {
   color-scheme: light;
 }
 
-@media (max-width: 62rem) {
-  .page-shell {
-    --wave-gutter: clamp(1rem, 2.6vw, 2.4rem);
-    padding-left: clamp(1rem, 2.6vw, 2.4rem);
-  }
-
+/* The three-column layout needs the wave gutter (16vw) plus all three
+   columns near their preferred widths; below ~86rem the middle column gets
+   squeezed toward its minimum and its contents clip, so stack well before
+   that happens. The wave gutter itself stays until 62rem (further down). */
+@media (max-width: 86rem) {
   .layout-grid {
     grid-template-columns: 1fr;
   }
@@ -875,6 +877,13 @@ h2 {
 
   .right-stack {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 62rem) {
+  .page-shell {
+    --wave-gutter: clamp(1rem, 2.6vw, 2.4rem);
+    padding-left: clamp(1rem, 2.6vw, 2.4rem);
   }
 }
 
