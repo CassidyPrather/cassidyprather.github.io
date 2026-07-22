@@ -170,7 +170,21 @@
 					</a>
 				{{ end }}
 			</div>
-			<button class="spin-button" type="button" data-spin-button>SPIN</button>
+			{{/* Traditional webring controls: the chevrons link to our neighbors in
+			     ring order, and SPIN is the kitschy stand-in for "random". */}}
+			{{ $selfIndex := 0 }}
+			{{ range $i, $m := $members }}{{ if eq $m.id "wirenook" }}{{ $selfIndex = $i }}{{ end }}{{ end }}
+			{{ $prev := index $members (mod (add $selfIndex $count -1) $count) }}
+			{{ $next := index $members (mod (add $selfIndex 1) $count) }}
+			<div class="spin-controls">
+				<a class="spin-button spin-step" href="{{ $prev.url }}" rel="noopener" target="_blank" title="Previous ring site — {{ $prev.name }}" aria-label="Previous ring site — {{ $prev.name }}">
+					<span class="spin-step-glyph spin-step-glyph-prev" aria-hidden="true"></span>
+				</a>
+				<button class="spin-button" type="button" data-spin-button>SPIN</button>
+				<a class="spin-button spin-step" href="{{ $next.url }}" rel="noopener" target="_blank" title="Next ring site — {{ $next.name }}" aria-label="Next ring site — {{ $next.name }}">
+					<span class="spin-step-glyph spin-step-glyph-next" aria-hidden="true"></span>
+				</a>
+			</div>
 		</section>
 
 		<section class="neolink-panel" aria-label="Neolink — a link exchange between small sites">
