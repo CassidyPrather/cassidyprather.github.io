@@ -533,11 +533,21 @@ h2 {
 }
 
 .webring,
+.neolink-panel,
 .feature-object {
   position: relative;
   border: 2px solid rgba(232, 246, 255, 0.75);
   background: rgba(216, 247, 255, 0.24);
   padding: 1rem;
+}
+
+.neolink-panel {
+  display: grid;
+  justify-items: center;
+}
+
+.neolink-panel iframe {
+  max-width: 100%;
 }
 
 .portal-image {
@@ -1015,6 +1025,11 @@ h2 {
 
   .right-stack {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  /* Webring and neolink pair up side by side; the bunny gets the full row. */
+  .right-stack .feature-object {
+    grid-column: 1 / -1;
   }
 }
 
