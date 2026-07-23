@@ -24,7 +24,7 @@
 			{{ block "footer" . }}{{ partial "site-footer.html" . }}{{ end }}
 		</div>
 
-  {{ with resources.Get "script.js" | fingerprint }}<script src="{{ .RelPermalink }}"></script>{{ end }}
+		{{ with resources.Get "script.js" | fingerprint }}<script src="{{ .RelPermalink }}"></script>{{ end }}
 	</body>
 
 </html>
