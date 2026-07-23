@@ -1,0 +1,28 @@
+{{/* A memento mori widget, inspired by inqfactory's Death Clock. The dates
+     and the actuarial hand-waving live at the bottom of assets/script.js;
+     the alive/overtime copy lives in the data attributes below. Preview the
+     overtime state with ?dies=2020-01-01. */}}
+<section class="death-clock" aria-label="Death clock — estimated time remaining" data-death-clock>
+	<div class="death-clock-topline">
+		<h3 class="death-clock-title">Death Clock</h3>
+		<span class="status-light death-clock-status">
+			<span class="blink-dot" aria-hidden="true"></span>
+			<span data-death-status data-status-alive="Alive" data-status-overtime="Overtime">Alive</span>
+		</span>
+	</div>
+	<p class="death-clock-readout" role="timer" aria-live="off">
+		<span class="death-cell"><span class="death-num" data-death-years>—</span><span class="death-unit">yrs</span></span>
+		<span class="death-cell"><span class="death-num" data-death-days>—</span><span class="death-unit">days</span></span>
+		<span class="death-cell"><span class="death-num" data-death-hours>—</span><span class="death-unit">hrs</span></span>
+		<span class="death-cell"><span class="death-num" data-death-minutes>—</span><span class="death-unit">min</span></span>
+		<span class="death-cell"><span class="death-num" data-death-seconds>—</span><span class="death-unit">sec</span></span>
+	</p>
+	<div class="death-clock-bar" aria-hidden="true">
+		<span class="death-clock-fill" data-death-fill></span>
+	</div>
+	<p class="death-clock-percent" data-death-percent role="timer" aria-live="off"></p>
+	<p class="death-clock-note" data-death-note data-note-alive="every day counts. spend them like you mean it." data-note-overtime="you've outlived the actuaries. welcome to the bonus round.">every day counts. spend them like you mean it.</p>
+	<noscript>
+		<p class="death-clock-note">you are going to die. (the details require javascript.)</p>
+	</noscript>
+</section>

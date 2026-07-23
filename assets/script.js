@@ -75,6 +75,85 @@ if (searchForm) {
   }
 }
 
+// Death clock. The actuarial hand-waving, shown honestly: the SSA period
+// life table gives a 27-year-old woman ~55 more years, landing around 82.
+// Good sleep and a stable relationship/job/family (the strongest predictors
+// anyone has found) roughly cancel out a desk-shaped exercise routine, and
+// secular mortality improvement for a late-90s birth cohort adds a couple
+// more. Call it 84. The birthday is a placeholder — Cassidy, put yours in.
+//
+// To peek past the end of the clock without editing code: ?dies=2020-01-01
+const deathClock = document.querySelector("[data-death-clock]");
+if (deathClock) {
+  const BORN = Date.UTC(1999, 0, 1);
+  const DIES = Date.UTC(1999 + 84, 0, 1);
+
+  const override = Date.parse(new URLSearchParams(location.search).get("dies"));
+  const dies = Number.isNaN(override) ? DIES : override;
+
+  const num = {
+    years: deathClock.querySelector("[data-death-years]"),
+    days: deathClock.querySelector("[data-death-days]"),
+    hours: deathClock.querySelector("[data-death-hours]"),
+    minutes: deathClock.querySelector("[data-death-minutes]"),
+    seconds: deathClock.querySelector("[data-death-seconds]"),
+  };
+  const status = deathClock.querySelector("[data-death-status]");
+  const note = deathClock.querySelector("[data-death-note]");
+  const fill = deathClock.querySelector("[data-death-fill]");
+  const percent = deathClock.querySelector("[data-death-percent]");
+
+  const MINUTE = 60 * 1000;
+  const HOUR = 60 * MINUTE;
+  const DAY = 24 * HOUR;
+  const YEAR = 365.2425 * DAY;
+  const pad = (n) => String(n).padStart(2, "0");
+
+  let wasOvertime = null;
+
+  const tick = () => {
+    const now = Date.now();
+    const overtime = now >= dies;
+
+    let rem = Math.abs(dies - now);
+    const years = Math.floor(rem / YEAR);
+    rem -= years * YEAR;
+    const days = Math.floor(rem / DAY);
+    rem -= days * DAY;
+    const hours = Math.floor(rem / HOUR);
+    rem -= hours * HOUR;
+    const minutes = Math.floor(rem / MINUTE);
+    const seconds = Math.floor((rem - minutes * MINUTE) / 1000);
+
+    num.years.textContent = overtime ? `+${years}` : String(years);
+    num.days.textContent = String(days);
+    num.hours.textContent = pad(hours);
+    num.minutes.textContent = pad(minutes);
+    num.seconds.textContent = pad(seconds);
+
+    // Eight decimals so the spend is visible every single second.
+    const spent = ((now - BORN) / (dies - BORN)) * 100;
+    fill.style.width = `${Math.min(Math.max(spent, 0), 100)}%`;
+    percent.textContent = `life spent: ${spent.toFixed(8)}%${overtime ? " — new game+" : ""}`;
+
+    if (overtime !== wasOvertime) {
+      wasOvertime = overtime;
+      deathClock.classList.toggle("is-overtime", overtime);
+      status.textContent = overtime ? status.dataset.statusOvertime : status.dataset.statusAlive;
+      note.textContent = overtime ? note.dataset.noteOvertime : note.dataset.noteAlive;
+    }
+  };
+
+  // Chain timeouts aligned to the wall clock so the seconds never stutter —
+  // a death clock that skips seconds sends the wrong message entirely.
+  const schedule = () => setTimeout(() => {
+    tick();
+    schedule();
+  }, 1000 - (Date.now() % 1000));
+  tick();
+  schedule();
+}
+
 document.querySelectorAll("[data-copy]").forEach((button) => {
   const value = button.getAttribute("data-copy");
   const label = button.querySelector("[data-copy-text]");

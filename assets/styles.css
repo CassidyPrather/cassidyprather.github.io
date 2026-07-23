@@ -534,6 +534,7 @@ h2 {
 
 .webring,
 .neolink-panel,
+.death-clock,
 .feature-object {
   position: relative;
   border: 2px solid rgba(232, 246, 255, 0.75);
@@ -548,6 +549,136 @@ h2 {
 
 .neolink-panel iframe {
   max-width: 100%;
+}
+
+.death-clock {
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+}
+
+.death-clock-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.death-clock-title {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.death-clock-status {
+  font-size: 0.82rem;
+}
+
+/* The index window's dot announces "Online"; this one is a heartbeat. */
+.death-clock .blink-dot {
+  background: var(--magenta);
+  box-shadow: 0 0 0.75rem var(--magenta);
+  animation: heartbeatDot 1.1s ease-in-out infinite;
+}
+
+@keyframes heartbeatDot {
+
+  0%,
+  48%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+
+  12% {
+    transform: scale(1.45);
+    opacity: 1;
+  }
+
+  30% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.death-clock-readout {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.death-cell {
+  flex: 1 1 0;
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  padding: 0.45rem 0.15rem 0.35rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  box-shadow: inset 0 0 0.6rem rgba(115, 244, 255, 0.18);
+}
+
+.death-num {
+  font-family: Atkinson-Bold, arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.death-unit {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(39, 20, 82, 0.65);
+}
+
+.death-clock-bar {
+  height: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  overflow: hidden;
+}
+
+.death-clock-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
+}
+
+.death-clock-percent {
+  margin: -0.35rem 0 0;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: rgba(39, 20, 82, 0.72);
+}
+
+.death-clock-note {
+  margin: 0;
+  font-size: 0.82rem;
+  font-family: Atkinson-Italic, arial, sans-serif;
+  font-style: italic;
+  color: rgba(39, 20, 82, 0.8);
+}
+
+/* The bonus round: past the estimate the heartbeat settles into a steady
+   gold glow and the bar overflows into candy stripes. Mostly for people who
+   mess with the clock (?dies=2020-01-01) — or for Cassidy in 2083. */
+.death-clock.is-overtime {
+  border-color: var(--banana);
+  box-shadow: 0 0 1.1rem rgba(255, 0, 230, 0.35);
+}
+
+.death-clock.is-overtime .blink-dot {
+  animation: none;
+  background: var(--banana);
+  box-shadow: 0 0 0.75rem var(--banana);
+}
+
+.death-clock.is-overtime .death-clock-fill {
+  background: repeating-linear-gradient(135deg, var(--magenta) 0 8px, var(--banana) 8px 16px);
 }
 
 .portal-image {
@@ -1061,7 +1192,9 @@ h2 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  /* Webring and neolink pair up side by side; the bunny gets the full row. */
+  /* Webring and neolink pair up side by side; the death clock and the bunny
+     each get a full row. */
+  .right-stack .death-clock,
   .right-stack .feature-object {
     grid-column: 1 / -1;
   }
