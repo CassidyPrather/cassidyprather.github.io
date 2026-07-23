@@ -611,9 +611,8 @@ h2 {
 .death-cell {
   flex: 1 1 0;
   display: grid;
-  justify-items: center;
-  gap: 0.15rem;
-  padding: 0.45rem 0.15rem 0.35rem;
+  place-items: center;
+  padding: 0.5rem 0.15rem;
   border: 1px solid var(--line);
   background: var(--panel-strong);
   box-shadow: inset 0 0 0.6rem rgba(115, 244, 255, 0.18);
@@ -625,13 +624,6 @@ h2 {
   font-size: 1.1rem;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
-}
-
-.death-unit {
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(39, 20, 82, 0.65);
 }
 
 .death-clock-bar {
@@ -646,13 +638,6 @@ h2 {
   width: 0;
   height: 100%;
   background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
-}
-
-.death-clock-percent {
-  margin: -0.35rem 0 0;
-  font-size: 0.78rem;
-  font-variant-numeric: tabular-nums;
-  color: rgba(39, 20, 82, 0.72);
 }
 
 .death-clock-note {

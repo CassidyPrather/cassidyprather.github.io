@@ -80,13 +80,13 @@ if (searchForm) {
 // Good sleep and a stable relationship/job/family (the strongest predictors
 // anyone has found) roughly cancel out a desk-shaped exercise routine, and
 // secular mortality improvement for a late-90s birth cohort adds a couple
-// more. Call it 84. The birthday is a placeholder — Cassidy, put yours in.
+// more. Call it 84.
 //
 // To peek past the end of the clock without editing code: ?dies=2020-01-01
 const deathClock = document.querySelector("[data-death-clock]");
 if (deathClock) {
-  const BORN = Date.UTC(1999, 0, 1);
-  const DIES = Date.UTC(1999 + 84, 0, 1);
+  const BORN = Date.UTC(1999, 4, 12);
+  const DIES = Date.UTC(1999 + 84, 4, 12);
 
   const override = Date.parse(new URLSearchParams(location.search).get("dies"));
   const dies = Number.isNaN(override) ? DIES : override;
@@ -99,9 +99,7 @@ if (deathClock) {
     seconds: deathClock.querySelector("[data-death-seconds]"),
   };
   const status = deathClock.querySelector("[data-death-status]");
-  const note = deathClock.querySelector("[data-death-note]");
   const fill = deathClock.querySelector("[data-death-fill]");
-  const percent = deathClock.querySelector("[data-death-percent]");
 
   const MINUTE = 60 * 1000;
   const HOUR = 60 * MINUTE;
@@ -131,16 +129,13 @@ if (deathClock) {
     num.minutes.textContent = pad(minutes);
     num.seconds.textContent = pad(seconds);
 
-    // Eight decimals so the spend is visible every single second.
     const spent = ((now - BORN) / (dies - BORN)) * 100;
     fill.style.width = `${Math.min(Math.max(spent, 0), 100)}%`;
-    percent.textContent = `life spent: ${spent.toFixed(8)}%${overtime ? " — new game+" : ""}`;
 
     if (overtime !== wasOvertime) {
       wasOvertime = overtime;
       deathClock.classList.toggle("is-overtime", overtime);
       status.textContent = overtime ? status.dataset.statusOvertime : status.dataset.statusAlive;
-      note.textContent = overtime ? note.dataset.noteOvertime : note.dataset.noteAlive;
     }
   };
 
