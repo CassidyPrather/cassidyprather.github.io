@@ -169,53 +169,109 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
   );
 }
 
+/* Each cloud stacks three independent motions without fighting over one
+   property: scroll parallax rides the `translate` property (driven by the
+   --scrolly counter script.js keeps on <html>), the ambient drift keyframes
+   own `transform`, and the static per-layer flips/turns live on the
+   individual `scale`/`rotate` properties. Negative animation-delays and
+   co-prime durations keep the five layers from ever breathing in sync. */
 .cloud-field {
   position: fixed;
   z-index: -2;
   width: min(34rem, 55vw);
   height: auto;
   pointer-events: none;
-  opacity: 0.20;
+  --cloud-o: 0.2;
+  --drift-x: 2.6rem;
+  --drift-y: 0.9rem;
+  --parallax: 0.05;
+  opacity: var(--cloud-o);
+  translate: 0 calc(var(--scrolly, 0) * var(--parallax) * -1px);
   transform: translateZ(0);
-  will-change: transform;
+  will-change: transform, translate, opacity;
+  animation: cloudDrift 90s ease-in-out infinite;
 }
 
 .cloud-field-one {
   left: 6vw;
   bottom: -2rem;
   width: min(46rem, 58vw);
-  opacity: 0.18;
+  --cloud-o: 0.18;
+  --parallax: 0.11;
+  --drift-x: 3.4rem;
+  animation-duration: 110s;
 }
 
 .cloud-field-two {
   right: -12rem;
   bottom: 1rem;
   width: min(46rem, 58vw);
-  transform: translateZ(0) scaleX(-1);
-  opacity: 0.22;
+  scale: -1 1;
+  --cloud-o: 0.22;
+  --parallax: 0.085;
+  --drift-x: 3.1rem;
+  animation-duration: 133s;
+  animation-delay: -47s;
 }
 
 .cloud-field-three {
   left: 28vw;
   top: 12vh;
   width: min(30rem, 42vw);
-  transform: translateZ(0) rotate(-8deg);
-  opacity: 0.18;
+  rotate: -8deg;
+  --cloud-o: 0.18;
+  --parallax: 0.06;
+  animation-duration: 97s;
+  animation-delay: -71s;
 }
 
 .cloud-field-four {
   left: 18vw;
   bottom: 18vh;
   width: min(42rem, 50vw);
-  opacity: 0.13;
+  --cloud-o: 0.13;
+  --parallax: 0.075;
+  animation-duration: 149s;
+  animation-delay: -12s;
 }
 
 .cloud-field-five {
   right: 4vw;
   top: 18vh;
   width: min(42rem, 50vw);
-  transform: translateZ(0) scaleX(-1);
-  opacity: 0.13;
+  scale: -1 1;
+  --cloud-o: 0.13;
+  --parallax: 0.045;
+  animation-duration: 121s;
+  animation-delay: -88s;
+}
+
+/* A slow wandering loop rather than a metronome bob: the waypoints trace a
+   lopsided ellipse while opacity swells and thins, so clouds read as forming
+   and dissipating as they float through. Opacity bottoms out well above zero
+   to avoid a popping in/out feel. */
+@keyframes cloudDrift {
+
+  0%,
+  100% {
+    transform: translateZ(0) translate3d(calc(var(--drift-x) * -1), calc(var(--drift-y) * 0.4), 0);
+    opacity: calc(var(--cloud-o) * 0.45);
+  }
+
+  30% {
+    transform: translateZ(0) translate3d(calc(var(--drift-x) * 0.2), calc(var(--drift-y) * -1), 0);
+    opacity: var(--cloud-o);
+  }
+
+  55% {
+    transform: translateZ(0) translate3d(var(--drift-x), calc(var(--drift-y) * 0.3), 0);
+    opacity: calc(var(--cloud-o) * 0.85);
+  }
+
+  80% {
+    transform: translateZ(0) translate3d(calc(var(--drift-x) * -0.25), var(--drift-y), 0);
+    opacity: calc(var(--cloud-o) * 0.95);
+  }
 }
 
 .volume-cloud {
@@ -233,6 +289,22 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
   border: 3px solid rgba(232, 246, 255, 0.42);
   clip-path: polygon(50% 0, 82% 86%, 20% 72%);
   transform: translateZ(0) rotate(12deg);
+  will-change: transform;
+}
+
+/* Technical-drawing rulers along the top and right viewport edges, drawn by
+   script.js. Purely decorative: fixed so it never takes layout space, and it
+   sits with the other background layers behind all content. Same z-index as
+   the wave-field but later in the DOM, so it paints above the clouds and
+   waves without ever reaching the foreground. */
+.tick-rulers {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  transform: translateZ(0);
   will-change: transform;
 }
 
@@ -1207,6 +1279,12 @@ h2 {
 
   .wave-field {
     opacity: 0.4;
+  }
+
+  /* Panels run nearly edge-to-edge here, so the rulers sit behind content
+     more often — fade them like the wave-field rather than dropping them. */
+  .tick-rulers {
+    opacity: 0.55;
   }
 
   .link-rail,
