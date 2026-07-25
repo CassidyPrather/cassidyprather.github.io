@@ -1218,6 +1218,23 @@ h2 {
   margin-bottom: 0;
 }
 
+/* ```goat fences become inline SVG during Hugo's own markdown pass, via the
+   embedded render-codeblock-goat.html hook — no client-side renderer. GoAT
+   strokes everything with currentColor, so the diagram picks up --ink from
+   body without any help. It emits a viewBox and no width/height, though, so
+   the sizing below is what actually makes it lay out. */
+.goat {
+  margin: 1.4rem 0;
+}
+
+.goat svg {
+  display: block;
+  width: 100%;
+  max-width: 38rem;
+  height: auto;
+  margin: 0 auto;
+}
+
 /* The three-column layout needs the wave gutter (16vw) plus all three
    columns near their preferred widths; below ~86rem the middle column gets
    squeezed toward its minimum and its contents clip, so stack well before

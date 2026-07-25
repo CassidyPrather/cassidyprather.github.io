@@ -10,23 +10,33 @@ But what I *really* want to drive home is "how do we prove things scientifically
 
 <!--more-->
 
-```mermaid
-flowchart TD;
-hypothesis["Hypothesis"]
-experiment["Experiment"]
-choice
-hypothesis true
-hypothesis false
-
-hypothesis->experiment
-experiment->choice
-choice->true
-choice->false
+```goat
+                              +--------------+
+                              |  Hypothesis  |
+                              +-------+------+
+                                      |
+                                      v
+                              +--------------+
+                              |  Experiment  |
+                              +-------+------+
+                                      |
+                                      v
+                 .-----------------------------------------.
+                 |  Does the result match the prediction?  |
+                 '--------------------+--------------------'
+                                      |
+                 .--------------------+-----------------------.
+                 |                                            |
+                 | yes                                        | no
+                 v                                            v
+      +--------------------+                      +-----------------------+
+      |  Hypothesis holds  |                      |  Hypothesis is wrong  |
+      +--------------------+                      +-----------------------+
 ```
 
 That's it. That's all you have to do, my guys. I am begging you.
 
-Your middle-school science teacher over-complicated it. You don't need those  7 step posters that were hanging in the classroom. And a bunch of stuff like peer-review, replication, control vs. treatment trials, statistics, and etc. all serves to improve the quality of those two steps.
+Your middle-school science teacher over-complicated it. You don't need those  7 step posters that were hanging in the classroom. And a bunch of stuff like peer-review, replication, control vs. treatment trials, statistics, and etc. all **exists only to aid** those two steps.
 
 ## Yes This Is About The Jarred Blog Post
 
