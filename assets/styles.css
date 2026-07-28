@@ -1053,6 +1053,70 @@ h2 {
   border-radius: 3px;
 }
 
+/* Cards with no preview (an offsite source file) still have to hold a grid
+   cell the same size as the ones carrying a 7rem image. */
+.gallery-item-source {
+  min-height: 9.6rem;
+}
+
+.gallery-note {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: rgba(39, 20, 82, 0.55);
+}
+
+.gallery-alt,
+.gallery-offsite {
+  display: inline-block;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  padding: 0.05em 0.4em;
+  border-radius: 3px;
+  font-size: 0.7rem;
+}
+
+.gallery-alt {
+  margin-left: 0.3rem;
+}
+
+/* Placeholders keep the grid's rhythm while reading as not-yet-shipped. */
+.gallery-item-coming {
+  opacity: 0.62;
+}
+
+.gallery-coming {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 7rem;
+  border: 1px dashed rgba(39, 20, 82, 0.35);
+  font-size: 0.78rem;
+  color: rgba(39, 20, 82, 0.6);
+}
+
+.press-kit-note,
+.license-callout {
+  margin-top: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.press-kit-note p,
+.license-callout p {
+  margin-bottom: 0.5rem;
+}
+
+.press-kit-note > p:last-child,
+.license-callout > p:last-child {
+  margin-bottom: 0;
+}
+
 .guestbook-intro {
   max-width: 60ch;
   margin: 0 auto 1.2rem;

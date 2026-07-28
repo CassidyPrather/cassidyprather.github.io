@@ -1,10 +1,13 @@
 # Images
 
 Every image the site serves lives under this directory, one subdirectory per
-*license situation*. The [style reference](https://wirenook.net/style/)
-renders a gallery of everything here, and `data/image_licenses.toml` is the
-single source of truth for what each directory means — the licenses page and
-the gallery both read it.
+*license situation*. `data/image_licenses.toml` is the single source of truth
+for what each directory means, and the [licenses](https://wirenook.net/licenses/)
+page reads it.
+
+The [press kit](https://wirenook.net/style/) is *not* a listing of this
+directory — it is the hand-picked set in `data/press_kit.toml`, so adding a
+file here does not put it on that page.
 
 | Directory   | Contents                                       | License                                  |
 | ----------- | ---------------------------------------------- | ---------------------------------------- |

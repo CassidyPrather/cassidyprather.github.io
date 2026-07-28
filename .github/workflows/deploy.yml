@@ -41,6 +41,31 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      # design/ is ~800 MB of Git LFS art the site does not publish, so the
+      # checkout above deliberately leaves LFS alone (no `lfs: true`). hugo.toml
+      # mounts a few of those files into the press kit on /style/, and without
+      # their content Hugo would happily publish 130-byte pointer files under
+      # .png names. Read the paths back out of hugo.toml so the two never drift,
+      # then fail loudly if anything is still a pointer afterwards.
+      - name: Fetch press-kit assets from Git LFS
+        run: |
+          mapfile -t paths < <(sed -n 's/^ *source = "\(design\/[^"]*\)"/\1/p' hugo.toml)
+          if [ "${#paths[@]}" -eq 0 ]; then
+            echo "::error::no design/ mounts found in hugo.toml"
+            exit 1
+          fi
+          printf 'fetching %s\n' "${paths[@]}"
+          git lfs install --local
+          git lfs pull --include="$(IFS=,; echo "${paths[*]}")" --exclude=""
+          status=0
+          for path in "${paths[@]}"; do
+            if head -c 40 "$path" | grep -q 'git-lfs.github.com'; then
+              echo "::error file=$path::still an LFS pointer after git lfs pull"
+              status=1
+            fi
+          done
+          exit "$status"
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5

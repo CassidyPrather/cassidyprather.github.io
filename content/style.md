@@ -7,5 +7,5 @@ layout: style
 **Assets:** [on github](https://github.com/CassidyPrather/cassidyprather.github.io)
 **Legal:** [licenses](../licenses/)
 
-Credit "Cassidy Prather" <a href="mailto:cassidy@wirenook.net">cassidy@wirenook.net</a> as needed.
+Credit "Cassidy Prather" <cassidy@wirenook.net> as needed.
 
