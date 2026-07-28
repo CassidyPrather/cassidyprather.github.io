@@ -24,3 +24,56 @@ buildFuture = true
 
 [markup.goldmark.renderer]
   unsafe = true
+
+# design/ is the working art library: ~800 MB of Git LFS sources that the site
+# deliberately does not publish. The press kit on /style/ offers a handful of
+# those files, so each one is mounted individually — a whole-directory mount
+# would put the multi-hundred-megabyte sources on the deploy, and globbing
+# would publish new art the moment it landed in the library.
+#
+# Declaring any mount for the "static" target replaces Hugo's default for that
+# target, so the default is restated first. Names are rewritten to the
+# lowercase kebab-case the rest of static/ uses (static/images/README.md).
+#
+# .github/workflows/deploy.yml fetches exactly these paths from LFS; keep the
+# two lists in step or the build publishes 130-byte pointer files as art.
+[module]
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/Wirenook_design_1.svg"
+    target = "static/press-kit/logo/wirenook-logo-1.svg"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/Wirenook_design_1.png"
+    target = "static/press-kit/logo/wirenook-logo-1.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/Wirenook_design_2.svg"
+    target = "static/press-kit/logo/wirenook-logo-2.svg"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/Wirenook_design_2.png"
+    target = "static/press-kit/logo/wirenook-logo-2.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/Wirenook_co_design_4.svg"
+    target = "static/press-kit/logo/wirenook-logo-co-4.svg"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/Wirenook_co_design_4.png"
+    target = "static/press-kit/logo/wirenook-logo-co-4.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/phone/Wirenook_phone_resized.png"
+    target = "static/press-kit/customization/wirenook-phone.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/phone/socket/wirenook_d20_v2.png"
+    target = "static/press-kit/customization/wirenook-d20-v2.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/phone/socket/wirenook_d20_v2_resize_notext-FINAL.png"
+    target = "static/press-kit/customization/wirenook-d20-v2-notext.png"
