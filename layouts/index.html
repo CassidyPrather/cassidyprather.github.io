@@ -161,7 +161,7 @@
 		{{ $members := $webring.members }}
 		{{ $count := len $members }}
 		<section class="webring" aria-label="{{ $webring.name }} Webring">
-			<img class="portal-image" src="{{ "images/OPL/cassidy-pylon-web.png" | relURL }}" alt="">
+			<img class="portal-image" src="{{ "images/OPL/wirenook-pylon-web.png" | relURL }}" alt="">
 			<div class="spinner" data-spinner style="--count:{{ $count }}">
 				{{ range $i, $member := $members }}
 					<a href="{{ $member.url }}" style="--i:{{ $i }}" rel="noopener" target="_blank" title="{{ $member.name }}">
