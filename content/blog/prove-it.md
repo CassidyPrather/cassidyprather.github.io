@@ -98,7 +98,7 @@ So I figured, "before I publish this blog post, I had better at least *try* to t
 
 Honestly, I wasn't expecting to find anything interesting. I wanted to criticize the Bun blog post because it left itself open to huge gaping criticisms from a massive audience and didn't treat the impact it was going to have with the level of diligence it deserved... I didn't expect that when I ran an experiment that I'd *not find a measurable improvement at all.* It's more likely the relationship tends to *the opposite direction*, if it exist at all.
 
-![]()
+![Did review reduce regressions?](../../images/wirenook/blog/prove-it/fig1-forest-ci.png)
 
 Yup. It appears that blinded adversarial review doesn't as a blanket rule, find issues in the code. In fact, sometimes it's worse! You're better off just letting the agent check its own work. If there *is* a positive effect, it's so noisy and small that it'll take a massive study with budget I could only dream of to tease out.
 
