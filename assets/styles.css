@@ -18,6 +18,20 @@
   --panel-strong: #e7fcff;
   --line: rgba(231, 252, 255, 0.9);
   --shadow: rgba(65, 24, 127, 0.28);
+  /* Link states are tokens rather than literals because a legible accent
+     depends on what the link sits on, and links here inherit their colour
+     from whatever panel holds them. These two values clear 4.5:1 on every
+     panel surface (--panel, --panel-strong, --ice, --pink, white); the two
+     surfaces they don't clear — the mid-blue page background under the
+     footer, and the violet link-rail — re-point them further down. */
+  --link-hover: #a3006d;
+  --link-active: #6d2c95;
+  /* One near-black focus ring for the whole site. Every ring here is drawn
+     outside its element (outline-offset), so what it needs contrast against
+     is the page behind the control, not the control's own fill — and that is
+     light or mid-tone everywhere, including behind the dark link-rail.
+     Measured 5.2:1 (rail) to 16.8:1 (panels). */
+  --focus-ring: #1a0d33;
   font-family:  Unique, "Trebuchet MS", "Century Gothic", Arial, sans-serif;
 }
 
@@ -87,13 +101,20 @@ a {
   text-decoration: underline;
 }
 
-a:hover,
-a:focus {
-  color: var(--banana);
+a:hover {
+  color: var(--link-hover);
 }
 
 a:active {
-  color: var(--cyan);
+  color: var(--link-active);
+}
+
+/* :focus-visible, not :focus — :focus also fires on mouse-down, which made
+   every click flash the hover colour. The rest of the file already uses
+   :focus-visible for its components. */
+a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 /*end*/
 
@@ -352,8 +373,18 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
   min-height: 4.2rem;
   padding: 0.8rem 0.75rem 0.8rem 3.1rem;
   border: 2px double var(--line);
-  background: linear-gradient(100deg, rgba(62, 69, 196, 0.75), rgba(119, 221, 255, 0.08));
+  /* The gradient used to fade out to near-transparent (alpha 0.08) on the
+     right, which left the label sitting on raw page background at 1.8:1 —
+     worst for the even-numbered rails, which right-align their text straight
+     onto that end. It still travels violet -> blue, just dark enough the
+     whole way that --ice stays above 4.5:1. */
+  background: linear-gradient(100deg, rgba(62, 69, 196, 0.86), rgba(34, 88, 180, 0.85));
   color: var(--ice);
+  /* Light-on-dark surface: the page-wide accents are dark and would vanish
+     here, so the rail is where the yellow hover still belongs — it reads at
+     6.7:1 against the violet. */
+  --link-hover: var(--banana);
+  --link-active: var(--cyan);
   text-decoration: none;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.36), 0 0.9rem 2rem rgba(74, 37, 132, 0.15);
   transition: transform 180ms ease, background 180ms ease;
@@ -368,8 +399,14 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
 .rail-link:hover,
 .rail-link:focus-visible {
   transform: translateX(0.35rem);
-  background: linear-gradient(100deg, rgba(89, 49, 184, 0.84), rgba(125, 246, 255, 0.28));
-  outline: 2px solid var(--pink);
+  background: linear-gradient(100deg, rgba(89, 49, 184, 0.92), rgba(40, 86, 192, 0.9));
+}
+
+/* Focus-only. The old rule handed the same --pink outline to :hover, where
+   it read as a mouse affordance while only managing 1.7-2.3:1 against the
+   surfaces behind it. */
+.rail-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -487,7 +524,10 @@ h2 {
 .social-button:focus-visible {
   transform: translateY(-1px);
   background: var(--ice);
-  outline: 2px solid var(--cyan);
+}
+
+.social-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -833,10 +873,16 @@ h2 {
   transform: translateX(-15%) rotate(-45deg);
 }
 
+/* The chevrons are <a>, SPIN is a <button>; setting colour here rather than
+   letting a:hover reach only the anchors keeps all three in step. */
 .spin-button:hover,
 .spin-button:focus-visible {
   background: var(--pink);
-  outline: 2px solid var(--cyan);
+  color: var(--link-hover);
+}
+
+.spin-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -895,7 +941,15 @@ h2 {
   text-align: center;
   font-size: 0.82rem;
   border-top: 1px solid rgba(231, 252, 255, 0.45);
-  color: rgba(39, 20, 82, 0.7);
+  /* The only text on the site that sits straight on the page gradient rather
+     than on a panel. At 0.7 it managed 3.5:1 over the gradient's dark stop;
+     0.9 clears 4.5:1 across the whole sweep and still reads as muted. */
+  color: rgba(39, 20, 82, 0.9);
+  /* Same reason the accents are re-pointed: against mid-blue, the panel-tuned
+     magenta drops to 2.6:1. These are the darkest members of the same family
+     that clear 4.5:1 on every stop of the gradient. */
+  --link-hover: #50006b;
+  --link-active: #2e0a5e;
 }
 
 .site-footer a {
@@ -1064,7 +1118,8 @@ h2 {
   margin-top: 0.3rem;
   font-size: 0.72rem;
   line-height: 1.4;
-  color: rgba(39, 20, 82, 0.55);
+  /* 0.55 gave 3.7:1 on --panel; 0.7 clears 4.5:1 at this size. */
+  color: rgba(39, 20, 82, 0.7);
 }
 
 .gallery-alt,
@@ -1081,9 +1136,15 @@ h2 {
   margin-left: 0.3rem;
 }
 
-/* Placeholders keep the grid's rhythm while reading as not-yet-shipped. */
+/* Placeholders keep the grid's rhythm while reading as not-yet-shipped.
+   This used to be `opacity: 0.62` on the whole figure, which multiplied into
+   every colour inside it — the caption landed at 3.4:1 and the "coming soon"
+   label at 2.3:1, and any future change to those colours would have been
+   silently scaled too. The dashed empty box already carries the meaning, so
+   the recession is a background tint that leaves text contrast alone. */
 .gallery-item-coming {
-  opacity: 0.62;
+  background: rgba(255, 255, 255, 0.1);
+  border-style: dashed;
 }
 
 .gallery-coming {
@@ -1092,9 +1153,9 @@ h2 {
   justify-content: center;
   width: 100%;
   height: 7rem;
-  border: 1px dashed rgba(39, 20, 82, 0.35);
+  border: 1px dashed rgba(39, 20, 82, 0.5);
   font-size: 0.78rem;
-  color: rgba(39, 20, 82, 0.6);
+  color: rgba(39, 20, 82, 0.7);
 }
 
 .press-kit-note,
@@ -1176,7 +1237,7 @@ h2 {
 }
 
 .blog-search input[type="search"]:focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -1268,6 +1329,10 @@ h2 {
 
 .post-meta {
   margin: 0 0 1rem;
+  /* Shares the .entry-meta rule above, but not its background: .entry-meta
+     sits inside a .blog-entry panel, while this one sits directly on the
+     index-window's striped blue, where the muted ink drops to 3.3:1. */
+  color: var(--ink);
 }
 
 .post-body {
