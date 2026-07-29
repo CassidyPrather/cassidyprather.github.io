@@ -475,8 +475,23 @@ display:inline-block
 
 /* Cassidy's Custom Overrides */
 
+/* Bootstrap's stock link pair darkens on hover — a light-theme assumption.
+   This build ships a dark palette under :root, so hovering made links harder
+   to read, not easier: #095d6a fell to 1.63:1 against the #2d363f card, and
+   even the resting #0e9bb1 only reached 3.71:1. Lighten on hover instead and
+   raise the resting teal (6.2:1 resting, 8.6:1 hovered, both well clear on
+   the darker page background too). The -rgb pair is what the vendor `a`
+   rules above actually read; the hex pair is kept in step for anything else
+   that references it. */
+:root {
+  --bs-link-color: #3fc9de;
+  --bs-link-color-rgb: 63, 201, 222;
+  --bs-link-hover-color: #8fe6f2;
+  --bs-link-hover-color-rgb: 143, 230, 242;
+}
+
 .FauxSidebars {
-  background-color: var(--black); 
+  background-color: var(--black);
 }
 
 .content-outer {

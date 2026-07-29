@@ -4,7 +4,12 @@
   --v-background-contrast: light-dark(black, white);
   --v-primary-base: #991e2a;
   --v-primary-contrast: white;
-  --v-textblock-base: #888;
+  /* compcon's own textblock grey is #888, but this page puts links inside the
+     block, and #888 is dark enough that nothing clears 4.5:1 against it
+     without being effectively black — the stock link blue sat at 2.65:1.
+     Lightening the block is what buys the headroom: at #c8c8c8 the body text
+     reads at 12.6:1, unvisited links at 5.6:1 and visited at 6.6:1. */
+  --v-textblock-base: #c8c8c8;
   --v-textblock-contrast: black;
   
   font-family: 'Amazon Ember', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
@@ -56,4 +61,21 @@
 h1 {
   background-color: var(--v-primary-base);
   color: var(--v-primary-contrast);
+}
+
+/* The page is a pastiche of an unstyled e-mail, so links keep the classic
+   browser blue/purple rather than getting a house style. They are pinned
+   rather than left to the user agent only so the measured contrast above is
+   a guarantee instead of a good bet about UA defaults. */
+a {
+  color: #0000ee;
+}
+
+a:visited {
+  color: #551a8b;
+}
+
+a:hover,
+a:focus-visible {
+  color: #000f52;
 }
