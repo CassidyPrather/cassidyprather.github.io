@@ -15,10 +15,8 @@
 
 		<div class="blog-columns">
 			<div class="blog-feed">
-				{{/* Hidden until script.js wires it up, so a JS-less visitor never
-					sees a search box that does nothing. */}}
 				<form class="blog-search" role="search" data-blog-search data-index="{{ "blog/index.json" | relURL }}" hidden>
-					<input type="search" name="q" placeholder="Search posts…" aria-label="Search posts">
+					<input type="search" name="q" placeholder="Search blog..." aria-label="Search blog">
 				</form>
 				<p class="search-status" data-search-status aria-live="polite" hidden></p>
 
@@ -32,12 +30,12 @@
 							<div class="entry-body">
 								{{ with .Description }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
 							</div>
-							<p class="entry-more"><a href="{{ .RelPermalink }}">Read the rest →</a></p>
+							<p class="entry-more"><a href="{{ .RelPermalink }}">Read more</a></p>
 						{{ else }}
 							<div class="entry-body">{{ .Content }}</div>
 						{{ end }}
 						<p class="entry-meta">
-							<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink to “{{ $label }}”">#</a>
+							<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink: “{{ $label }}”">#</a>
 							<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
 						</p>
 					</article>
@@ -57,7 +55,7 @@
 						{{ end }}
 					</ul>
 				{{ else }}
-					<p class="highlight-empty">Nothing highlighted yet.</p>
+					<p class="highlight-empty">Uh oh! Something went wrong.</p>
 				{{ end }}
 			</aside>
 		</div>
