@@ -1,0 +1,73 @@
+name: Layout
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "assets/**"
+      - "content/**"
+      - "data/**"
+      - "layouts/**"
+      - "static/**"
+      - "hugo.toml"
+      - "tools/overflow.py"
+      - ".github/workflows/layout.yml"
+  pull_request:
+    paths:
+      - "assets/**"
+      - "content/**"
+      - "data/**"
+      - "layouts/**"
+      - "static/**"
+      - "hugo.toml"
+      - "tools/overflow.py"
+      - ".github/workflows/layout.yml"
+  workflow_dispatch:
+
+jobs:
+  overflow:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.140.0
+    steps:
+      - name: Install Hugo CLI
+        run: |
+          wget -O "${{ runner.temp }}/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${{ runner.temp }}/hugo.deb"
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      # The press-kit gallery on /style/ carries no width/height in the markup,
+      # so those images are laid out from their intrinsic size: measuring LFS
+      # pointer files would measure a page that never ships. Same targeted pull
+      # as deploy.yml, which owns the "did it actually resolve" gate.
+      - name: Fetch press-kit assets from Git LFS
+        run: |
+          mapfile -t paths < <(sed -n 's/^ *source = "\(design\/[^"]*\)"/\1/p' hugo.toml)
+          git lfs install --local
+          git lfs pull --include="$(IFS=,; echo "${paths[*]}")" --exclude=""
+
+      - name: Build with Hugo
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+        run: hugo --minify
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # One venv for both steps so the browser Playwright downloads is the
+      # revision the Playwright that drives it expects.
+      - name: Install Playwright and Chromium
+        run: |
+          uv venv
+          uv pip install playwright
+          .venv/bin/playwright install --with-deps chromium
+
+      - name: Check for layout overflow
+        run: .venv/bin/python tools/overflow.py check
