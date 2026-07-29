@@ -38,17 +38,17 @@ In particular, I  *really* want to drive home is "how do we think scientifically
 
 That's it. That's all you have to do, my guys. I am begging you.
 
-Your science teacher over-complicated it. You don't need those seven-step laminated posters on the wall in the classroom. And a bunch of stuff like peer-review, replication, control vs. treatment trials, statistics... You use all of those tools to **support** this very simple core method of inquisition.
+Your science teacher over-complicated it. You don't need those seven-step laminated posters on the wall in the classroom. And a bunch of stuff like peer-review, replication, control vs. treatment trials, statistics... You use all of those tools to **support** this very simple core method of inquiry.
 
-Now, that's not to say all those extra bits of process are *useless.*  But they're not the essential part, and you can still think scientifically without them. There are tons of strategies that serve to build confidence in findings, and that can be valuable, especially when your measurements are [imprecise](https://en.wikipedia.org/wiki/Accuracy_and_precision) and it's difficult to control confounding factors. Maybe you don't want to go through all those painful, tedious steps! And that's okay! Admitting what you don't know is *fine*, and will earn you respect from anybody who matters. It's much better than exaggerating (and yes, exaggerating is lying). Pursue knowledge! Talk about open questions! Conjecture about the world in terms of falsifiable claims!
+Now, that's not to say all those extra bits of process are *useless.* But they're not the essential part, and you can still think scientifically without them. There are tons of strategies that serve to build confidence in findings, and that can be valuable, especially when your measurements are [imprecise](https://en.wikipedia.org/wiki/Accuracy_and_precision) and it's difficult to control confounding factors. Maybe you don't want to go through all those painful, tedious steps! And that's okay! Admitting what you don't know is *fine*, and will earn you respect from anybody who matters. It's much better than exaggerating (and yes, exaggerating is lying). Pursue knowledge! Talk about open questions! Conjecture about the world in terms of falsifiable claims!
 
-So many parts of our lives can be improved by applying the scientific method to them! Even the soft and squishy things, and even if you *can't* pop out a magnum opus, it's worth doing. You don't need a scientific journal, or the highest degree of rigor. In fact, it's not entirely clear if scientific journals *can* persist in the format in which they have, or what's going to replace them. [They have issues.](https://en.wikipedia.org/wiki/Replication_crisis). *All* of science has issues right now, honestly. But that's no excuse to throw our hands up and stop trying.
+So many parts of our lives can be improved by applying the scientific method to them! Even the soft and squishy things, and even if you *can't* pop out a magnum opus, it's worth doing. You don't need a scientific journal, or the highest degree of rigor. In fact, it's not entirely clear if scientific journals *can* persist in the format in which they have, or what's going to replace them. [They have issues](https://en.wikipedia.org/wiki/Replication_crisis). *All* of science has issues right now, honestly. But that's no excuse to throw our hands up and stop trying.
 
 ## Yes This Is About The Jarred Blog Post
 
 https://bun.com/blog/bun-in-rust
 
-Don't get me wrong, it's sick as heck that we live in a timeline where we can re-write Bun in Rust <!-- unless your self-worth depends on being an insufferable contrarian -->. Despite the controversy, it's pretty obviously an extremely good thing! And it's *because* I want more software to be better, it's *extra* important that everyone pays attention to the epistemics of how we're discussing it.
+Don't get me wrong, it's sick as heck that we live in a timeline where we can re-write Bun in Rust <!-- unless your self-worth depends on being an insufferable contrarian -->. Despite the controversy, it's pretty obviously an extremely good thing! And it's *because* I want more software to be better that it's *extra* important everyone pays attention to the epistemics of how we're discussing it.
 
 [Jarred says](https://bun.com/blog/bun-in-rust#adversarial-review):
 
@@ -63,7 +63,7 @@ Don't get me wrong, it's sick as heck that we live in a timeline where we can re
 </div>
 </blockquote>
 
-Jarred. Jarred, my sweet boy. You knew there would be a huge hoard of people reading this blog post and debating it to hell and back on the most [vile, toxic places imaginable](https://news.ycombinator.com/item?id=48837877), and a bunch of people would be [chomping at the bit to find every tiny little hole in your strategy](https://web.archive.org/web/20260711080618/https://andrewkelley.me/post/my-thoughts-bun-rust-rewrite.html). Why did you do this?!
+Jarred. Jarred, my sweet boy. You knew there would be a huge horde of people reading this blog post and debating it to hell and back on the most [vile, toxic places imaginable](https://news.ycombinator.com/item?id=48837877), and a bunch of people would be [chomping at the bit to find every tiny little hole in your strategy](https://web.archive.org/web/20260711080618/https://andrewkelley.me/post/my-thoughts-bun-rust-rewrite.html). Why did you do this?!
 
 Is there a hypothesis? Sort of! But it's not well laid out or falsifiable! Let's do an exercise: How would you write a testable hypothesis for Jarred's claims about the merits of adversarial code review? Pause for a moment and think about it.
 
@@ -72,7 +72,7 @@ Is there a hypothesis? Sort of! But it's not well laid out or falsifiable! Let's
 <summary>My answers (click to reveal)</summary>
 
 1. Blinded adversarial code review by AI produces fewer regressions than non-blinded review.
-2. Blinded adversarial code review is more cost-effective than  spending the same budget on an anti-regression suite.
+2. Blinded adversarial code review is more cost-effective than spending the same budget on an anti-regression suite.
 3. Blinded, adversarially reviewed code written blind to future requirements makes it cheaper to implement those future requirements than non-blinded reviewed code.
 
 </details>
@@ -80,13 +80,13 @@ Is there a hypothesis? Sort of! But it's not well laid out or falsifiable! Let's
 
 Weird, isn't it? Thinking in terms of a hypothesis is useful work!
 
-Anyway, if you're onboard with Jarred's zeal here (as I am), you should value quality science communication. We certainly can do better, even in such a way as not making bold claims without evidence! If you're anything like me, you could even have a hunch that Jarred's prescription is a solid one! But the onus is on him to prove it, whether by citing another study or doing the work himself.
+Anyway, if you're on board with Jarred's zeal here (as I am), you should value quality science communication. We certainly can do better, even in such a way as not making bold claims without evidence! If you're anything like me, you could even have a hunch that Jarred's prescription is a solid one! But the onus is on him to prove it, whether by citing another study or doing the work himself.
 
 Obviously, it's not *free* to get evidence. You have to refine the experiment, control for confounding junk, spend the effort to conduct it, and all the other stuff. That's annoying, sure. But it's not worth writing about if it's just your hunch! And Jarred has no excuse, he has the budget of kings at his disposal. He doesn't even have to cheap-out and only answer the question for one model configuration, he could test the whole *sea* of them!
 
 It is important to care about science and the scientific process! It is important to interrogate how these people are getting their results! Otherwise we end up with [negligence](https://openai.com/index/separating-signal-from-noise-coding-evaluations/) and fraud.
 
-## Money Where my Mouth Is
+## Money Where My Mouth Is
 
 So I figured, "before I publish this blog post, I had better at least *try* to test one of my hypotheses before throwing this out there." Those who live in glass houses, and all that. Sure, I'm just a hobbyist. I don't have Anthropic budgets, and between a full-time job and my personal life, time is tight! So if even *I* can run these experiments, it's reasonable to expect a bare minimum from people in better positions.
 
@@ -96,13 +96,13 @@ I didn't expect that when I ran an experiment that I'd *not find a measurable im
 
 ![Did review reduce regressions?](../../images/wirenook/blog/prove-it/fig1-forest-ci.png)
 
-Yup. It appears that blinded adversarial review doesn't as a blanket rule, find issues in the code. In fact, sometimes it's worse! You're better off just letting the agent check its own work. If there *is* a positive effect, it's so noisy and small that it'll take a massive study with budget I could only dream of to tease out.
+Yup. It appears that blinded adversarial review doesn't, as a blanket rule, find issues in the code. In fact, sometimes it's worse! You're better off just letting the agent check its own work. If there *is* a positive effect, it's so noisy and small that it'll take a massive study with budget I could only dream of to tease out.
 
-I wonder why this is the case? I can only speculate, but my hypothesis is that it has something to do with reinforcement learning. After all, Jarred claim that "the person writing the code wants to merge the code" when talking about humans and just *assumes* that also applies to AI agents... But in any post-training worth its salt, such a self-sabotaging bias would surely be eradicated, right? I can also speculate as to why Jarred made this mistake in the first place, for which there's a couple of options:
+I wonder why this is the case? I can only speculate, but my hypothesis is that it has something to do with reinforcement learning. After all, Jarred claims that "the person writing the code wants to merge the code" when talking about humans and just *assumes* that also applies to AI agents... But in any post-training worth its salt, such a self-sabotaging bias would surely be eradicated, right? I can also speculate as to why Jarred made this mistake in the first place, for which there's a couple of options:
 
 1. Anthropomorphizing the AI makes us assume it'll behave like a human in a similar circumstance. Of course, better to look at what previous research they might have gotten wrong than to presume such a trivial error:
 1. Over-extrapolating from [Panickssery, Bowman & Feng](https://arxiv.org/abs/2404.13076): They identified a self-preference, but not an effect size on task efficacy... So naturally:
-1. Failing to account for the [kv cache](https://huggingface.co/blog/not-lain/kv-caching) and cost of discovery. In order for the prescriptive advice of "do blinded adversarial code review" to hold, it has to be **better** than having the author agent check its own work. After all, an adversary agent must re-discover all of the context about the problem on its own, which will mostly be repeating the very same  
+1. Failing to account for the [KV cache](https://huggingface.co/blog/not-lain/kv-caching) and cost of discovery. In order for the prescriptive advice of "do blinded adversarial code review" to hold, it has to be **better** than having the author agent check its own work. After all, an adversary agent must re-discover all of the context about the problem on its own, which will mostly be repeating the very same  
 
 You can review my findings and replicate the procedure yourself! [The code's on GitHub](https://github.com/CassidyPrather/ai-benchmark). I imagine, if you're especially curious, you'll want to run a follow-up experiment, so go crazy. The raw data's packaged as a release, but I didn't put a bunch of effort into formatting it, so peruse at your own peril. It'd be cool to upload something to [Zenodo](https://zenodo.org/) one day, though...
 
@@ -161,6 +161,6 @@ More:
 
 </details>
 
-Obviously, my strategy had a lot of limitations. I didn't take a representative sample of the agents people typically use (do I look like King Midas to you?), I didn't guarantee the trial scenarios were never-before seen, either. I also could have used different prompts, switched models half-way through the experiment, tried different call parameterization and cache settings... I'm certainly no oracle who knows all the confounds, and I'm *most definitely* not a lab director with the budget to try everything! And despite it all, this was still an incredibly fruitful endeavour.
+Obviously, my strategy had a lot of limitations. I didn't take a representative sample of the agents people typically use (do I look like King Midas to you?), I didn't guarantee the trial scenarios were never-before seen, either. I also could have used different prompts, switched models half-way through the experiment, tried different call parameterization and cache settings... I'm certainly no oracle who knows all the confounds, and I'm *most definitely* not a lab director with the budget to try everything! And despite it all, this was still an incredibly fruitful endeavor.
 
 This was supposed to be a post about technical and scientific communication (see [a video on pseudoscience](https://www.youtube.com/watch?v=DpGU8NARX-s) by [the science communication guy](https://www.hankgreen.com/))... I honestly figured that Jarred was probably right- after all, his claim was obvious and intuitive. And- like- you still *should* dot your `i`s and cross your `t`s! But I guess it's ended up as more of a post about not making up random stuff that sounds good and purveying it as fact. Please don't do that either. Check yourself before you wreck yourself.
