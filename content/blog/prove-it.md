@@ -67,7 +67,7 @@ Don't get me wrong, it's sick as heck that we live in a timeline where we can re
 
 Jarred. Jarred, my sweet boy. You knew there would be a huge horde of people reading this blog post and debating it to hell and back on the most [vile, toxic places imaginable](https://news.ycombinator.com/item?id=48837877), and a bunch of people would be [chomping at the bit to find every tiny little hole in your strategy](https://web.archive.org/web/20260711080618/https://andrewkelley.me/post/my-thoughts-bun-rust-rewrite.html). Why did you do this?!
 
-Is there a hypothesis? Sort of! But it's not well laid out or falsifiable! Let's do an exercise: How would you write a testable hypothesis for Jarred's claims about the merits of adversarial code review? Pause for a moment and think about it.
+Is there a hypothesis? Sort of! But it's not well laid out at all! Let's do an exercise: How would you write a testable hypothesis for Jarred's claims about the merits of adversarial code review? Pause for a moment and think about it.
 
 <details>
 
@@ -108,7 +108,7 @@ I wonder why this is the case? I can only speculate, but my hypothesis is that i
 
 You can review my findings and replicate the procedure yourself! [The code's on GitHub](https://github.com/CassidyPrather/ai-benchmark). I imagine, if you're especially curious, you'll want to run a follow-up experiment, so go crazy. The raw data's packaged as a release, but I didn't put a bunch of effort into formatting it, so peruse at your own peril. It'd be cool to upload something to [Zenodo](https://zenodo.org/) one day, though...
 
-As for me, well... Anthropic made a bold claim to the open internet about the best way to use their product which appears to be based on hot air. They did not do science to prescribe this advice, and right now, Jarred is no better than another Michael Feathers, misleading the next generation of software engineers. The burden of proof was on him to begin with, anyway, and I'd like to spend my remaining budget on more fruitful pastures (unless I get sponsored, in which case I'll go crazy scaling up this experiment haha).
+As for me, well... Anthropic made a bold claim to the open internet about the best way to use AI which appears to be based on hot air. They did not do science to prescribe this advice, and right now, Jarred is no better than another Michael Feathers, misleading the next generation of software engineers. The burden of proof was on him to begin with, anyway, and I'd like to spend my remaining budget on more fruitful pastures (unless I get sponsored, in which case I'll go crazy scaling up this experiment haha).
 
 [Lucky for Anthropic](https://en.wikipedia.org/wiki/Jevons_paradox), this suggests that the $165k price tag Jarred cited was probably wasted (at least a fair amount), and you could get away with an even *more* ambitious AI project for *less money*. Useful!
 
