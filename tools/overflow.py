@@ -157,6 +157,22 @@ PROBE_JS = """
     parent: parent ? label(parent) : null,
   });
 
+  // Content inside a horizontal scroll container sits past the viewport by
+  // design -- that is what makes it pannable -- so measuring its rect against
+  // the viewport says nothing about the layout. A code block wide enough to
+  // scroll would otherwise report its own <code> as viewport overflow forever.
+  // Only auto/scroll counts: a clip/hidden ancestor genuinely loses whatever
+  // sticks out, which is why .page-shell's clip stays reportable.
+  const inScroller = (el) => {
+    for (let node = el.parentElement;
+         node && node !== document.documentElement;
+         node = node.parentElement) {
+      const overflowX = getComputedStyle(node).overflowX;
+      if (overflowX === 'auto' || overflowX === 'scroll') return true;
+    }
+    return false;
+  };
+
   for (const el of document.body.querySelectorAll('*')) {
     const style = getComputedStyle(el);
     if (style.display === 'none' || style.visibility === 'hidden') continue;
@@ -192,8 +208,10 @@ PROBE_JS = """
       }
     }
 
-    // A box reaching past the viewport. Fixed decoration is meant to.
-    if (style.position !== 'fixed' && rect.right - docWidth > tolerance) {
+    // A box reaching past the viewport. Fixed decoration is meant to, and so
+    // is anything a scroll container is holding.
+    if (style.position !== 'fixed' && rect.right - docWidth > tolerance
+        && !inScroller(el)) {
       record('viewport', el, rect.right - docWidth, null);
     }
   }

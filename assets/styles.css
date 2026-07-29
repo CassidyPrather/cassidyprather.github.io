@@ -1094,6 +1094,37 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+/* Fenced code blocks carry pre-formatted lines that must not be re-wrapped --
+   the chat export in the "Prove It" post is a box-drawing table, and wrapping
+   it would shred the alignment that makes it a table at all. So the long line
+   has to go somewhere, and `white-space: pre` with the UA's default
+   `overflow: visible` sends it straight out of the panel: at every width it
+   spilled ~2500px past the column, then got swallowed by .page-shell's
+   `overflow-x: clip`, which made the far side of the table unreachable rather
+   than merely ugly. `overflow-x: auto` turns that spill into a scroll region
+   the reader can actually pan. Hugo already emits `tabindex="0"` on <pre> for
+   exactly this, so the region is keyboard-scrollable once it exists. */
+.post-body pre,
+.entry-body pre {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.4rem 0;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  padding: 0.8rem 0.9rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+/* The block already draws the panel; a nested <code> must not draw a second
+   one on top of it, and it inherits the smaller font from the <pre>. */
+.post-body pre code,
+.entry-body pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
 .license-files {
   display: flex;
   flex-wrap: wrap;
