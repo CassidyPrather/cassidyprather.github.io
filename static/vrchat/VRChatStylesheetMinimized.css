@@ -507,6 +507,10 @@ display:inline-block
   border-radius: 2em;
   padding: 1em;
   text-align:center;
+  /* The credits list is mostly bare booth.pm / jinxxy URLs, which have no
+     break points; anywhere (not break-word) so they also stop setting the
+     bubble's min-content width. */
+  overflow-wrap: anywhere;
   margin-top:2em;
   margin-bottom:2em;
   margin-left:4em;

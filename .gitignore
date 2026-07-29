@@ -7,3 +7,6 @@
 .DS_Store
 *.log
 .idea/
+
+# Python bytecode from tools/
+__pycache__/

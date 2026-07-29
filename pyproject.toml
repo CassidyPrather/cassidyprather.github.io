@@ -76,6 +76,7 @@ ignore = [
     "D203", # Ruff throws a warning if you include both this and D211
     "D213", # Ruff throws a warning if you include both this and D212
     "DOC201", # Rule is broken and doesn't detect :return: clauses
+    "DOC402", # Same breakage as DOC201, for :yield: clauses
     "DOC501", # Doesn't detect :raises: clauses and fails to ignore abstract
     "EM101", # Doesn't account for custom constructors
     "PLR09", # Complexity begets defects, and these rules promote Complexity

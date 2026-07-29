@@ -336,6 +336,11 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
 }
 
 .link-rail {
+  /* How far each charm hangs past its button's outer edge. Shared with the
+     rail's padding below the stacking breakpoint, where the rail spans the
+     page and the overhang would otherwise land in the shell's gutter (or off
+     the screen entirely, getting clipped by .page-shell). */
+  --charm-overhang: 1.45rem;
   position: sticky;
   top: clamp(0.75rem, 2vw, 1.5rem);
   align-self: start;
@@ -375,7 +380,7 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
 
 .link-charm {
   position: absolute;
-  left: -1.45rem;
+  left: calc(var(--charm-overhang) * -1);
   width: 3rem;
   height: 3.6rem;
   object-fit: contain;
@@ -383,7 +388,7 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
 }
 
 .rail-link:nth-child(even) .link-charm {
-  right: -1.45rem;
+  right: calc(var(--charm-overhang) * -1);
   left: auto;
   transform: scaleX(-1);
 }
@@ -502,7 +507,11 @@ h2 {
   padding: 0.25rem 0.55rem;
   border-radius: 4px;
   font-size: 0.8rem;
-  white-space: nowrap;
+  /* max-content keeps a short handle on one line the way nowrap did, while
+     the cap stops "@cassidyco.bsky.social" from growing wider than a phone
+     screen and being clipped away at the shell's edge. */
+  width: max-content;
+  max-width: min(16rem, 70vw);
   pointer-events: none;
   opacity: 0;
   transition: opacity 160ms ease;
@@ -566,15 +575,39 @@ h2 {
   gap: 0.5rem;
   padding: 0.6rem;
   min-height: 0;
+  /* The badges wrap on this card's width, not the window's. The card sits
+     four nested layout decisions below the viewport — wave gutter, the
+     layout-grid's middle track, the index window's padding, the content
+     grid's two columns — so no @media breakpoint can honestly name the
+     viewport width at which two 88px badges stop fitting here. The 86rem
+     breakpoint guessed, and guessed ~40px low, which is why the badges
+     spilled out of the card between 1378px and 1416px.
+
+     inline-size containment also stops the badge block from setting this
+     card's own width, so an oversized badge grid can no longer inflate the
+     card and push its siblings around. */
+  container-type: inline-size;
 }
 
 .badge-grid {
+  /* Badges are pixel art at their native 88x31 and look mushy at any other
+     size, so the grid drops to a single column rather than scaling them. */
+  --badge-width: 88px;
   display: grid;
-  grid-template-columns: repeat(2, 88px);
+  grid-template-columns: repeat(2, var(--badge-width));
   gap: 2px;
   justify-content: center;
   justify-items: center;
   align-items: center;
+}
+
+/* 178px is two badges plus the gap between them. It has to be spelled out —
+   container query conditions cannot read custom properties — but it is a
+   fact about this card's own contents rather than a guess about the window. */
+@container (width < 178px) {
+  .badge-grid {
+    grid-template-columns: var(--badge-width);
+  }
 }
 
 .badge-grid a {
@@ -584,6 +617,10 @@ h2 {
 
 .badge-grid img {
   display: block;
+  /* The AGPL badge is wider than one column; let it scale in the single
+     column layout instead of hanging off the card. */
+  max-width: 100%;
+  height: auto;
   image-rendering: pixelated;
 }
 
@@ -947,6 +984,11 @@ h2 {
 
 .license-list {
   display: grid;
+  /* minmax(0, 1fr) rather than the implicit `auto`: an auto track is floored
+     at its content's min-content width, so a single unbreakable path in a
+     .license-files <code> would push the whole column wider than the window
+     it sits in. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
 
@@ -971,6 +1013,20 @@ h2 {
   margin-bottom: 0;
 }
 
+/* Prose rendered from Markdown — license blurbs, blog posts, the press-kit
+   notes — routinely carries a bare URL, which is a single token as wide as
+   it is long. `anywhere` rather than `break-word` so it also stops setting
+   the block's min-content width, which is what pushes a grid track wider
+   than the container holding it. */
+.license-entry p,
+.license-callout p,
+.press-kit-note p,
+.archive-intro,
+.entry-body,
+.post-body {
+  overflow-wrap: anywhere;
+}
+
 .license-files {
   display: flex;
   flex-wrap: wrap;
@@ -983,6 +1039,9 @@ h2 {
   background: rgba(255, 255, 255, 0.4);
   padding: 0.1em 0.35em;
   border-radius: 3px;
+  /* Paths like fonts/AtkinsonHyperlegible-BoldItalic.ttf are one long token
+     with no natural break point. */
+  overflow-wrap: anywhere;
 }
 
 .gallery-section {
@@ -1051,6 +1110,19 @@ h2 {
   background: rgba(255, 255, 255, 0.4);
   padding: 0.1em 0.35em;
   border-radius: 3px;
+}
+
+/* A file name is one unbreakable token, and a centred flex item is sized to
+   fit-content — which bottoms out at min-content, not at the cell. Without a
+   break opportunity the name sets the card's floor and hangs out of the grid
+   cell at every width where the name is longer than the column. */
+.gallery-item > * {
+  max-width: 100%;
+}
+
+.gallery-item a,
+.gallery-item code {
+  overflow-wrap: anywhere;
 }
 
 /* Cards with no preview (an offsite source file) still have to hold a grid
@@ -1295,6 +1367,10 @@ h2 {
     position: static;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-content: stretch;
+    /* The rail spans the page from here down, so the charms need their room
+       inside the grid; the shell's gutter is narrower than the overhang once
+       the wave gutter collapses. */
+    padding-inline: var(--charm-overhang);
   }
 
   .rail-link {
