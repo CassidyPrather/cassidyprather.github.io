@@ -453,6 +453,19 @@ h2 {
   font-size: clamp(1.4rem, 3vw, 2.2rem);
 }
 
+/* Window headings sit directly on the index-window's stripes. At 4.9:1 the
+   ratio passes for text this size, but that number is measured against an
+   average the eye never sees: the stripes put ~1400 distinct colours behind
+   the glyphs, in a condensed display face. The same flat chip the topline
+   links and the post date use takes it to a single background colour at
+   15.1:1. Scoped to .window-topline so ## headings in prose stay plain. */
+.window-topline h2 {
+  margin-bottom: 0;
+  padding: 0.15em 0.45em;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+}
+
 .status-light {
   display: inline-flex;
   align-items: center;
@@ -1331,7 +1344,15 @@ h2 {
   margin: 0 0 1rem;
   /* Shares the .entry-meta rule above, but not its background: .entry-meta
      sits inside a .blog-entry panel, while this one sits directly on the
-     index-window's striped blue, where the muted ink drops to 3.3:1. */
+     index-window's stripes. Solid ink alone technically clears AA there
+     (4.9:1), but the ratio is measured against an average the eye never
+     sees — the stripes put 182 different colours behind these glyphs, and
+     this is the smallest text on the page set in the display face. So it
+     gets a flat panel to sit on, the same chip the topline links use. */
+  width: fit-content;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
   color: var(--ink);
 }
 
