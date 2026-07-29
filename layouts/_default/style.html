@@ -8,9 +8,6 @@
 
 		{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
 
-		{{/* A curated kit, not a listing of static/images/ — data/press_kit.toml
-           names every file on this page. See the header of that file for the
-           per-item fields. */}}
 		{{ $sections := slice }}
 		{{ range $id, $meta := site.Data.press_kit }}
 			{{ $sections = $sections | append (merge $meta (dict "id" $id)) }}
@@ -54,18 +51,16 @@
 
 		<aside class="press-kit-note">
 			<p>
-				<strong>Fonts:</strong> open an Inkscape source and it will flag any typeface
-				it cannot find — install those before editing, or the text reflows.
-				The ones this site uses ship with it:
+				Some fonts might not render in browser if not installed.
+				Examples:
 				<a href="{{ "fonts/Unique.ttf" | relURL }}">Unique</a> and
 				<a href="{{ "fonts/AtkinsonHyperlegible-Regular.ttf" | relURL }}">Atkinson Hyperlegible</a>
 				(<a href="{{ "fonts/OFL.txt" | relURL }}">OFL 1.1</a>).
 			</p>
 			<p>
-				<strong>More:</strong> this page is the curated set. The full art library —
-				working files, prototypes, and the renders these were cut from — lives in
+				Extra unused design assets:
 				<a href="https://github.com/CassidyPrather/cassidyprather.github.io/tree/main/design" rel="noopener">design/ on GitHub</a>.
-				Terms for everything here are on the <a href="{{ "licenses/" | relURL }}">licenses</a> page.
+				Terms: <a href="{{ "licenses/" | relURL }}">licenses</a>.
 			</p>
 		</aside>
 	</section>

@@ -1,26 +1,7 @@
-# The press kit rendered by /style/ (layouts/_default/style.html).
-#
-# This file is a hand-picked list, not a directory listing: /style/ used to
-# gallery every file under static/images/, which meant it doubled as a dump of
-# other people's art and of one-off page furniture. Only the assets someone is
-# meant to reuse belong here.
-#
-# Per item:
-#   name  - caption; the filename when the item is a real download
-#   src   - preview image, site-relative; also the download unless href is set
-#   href  - download target when it differs from src (or when there is no
-#           preview at all, e.g. a source file too large to inline)
-#   alt / alt_label - a second format of the same asset
-#   note  - one line on what the asset is for
-#   external - href leaves wirenook.net
-#   coming   - placeholder; renders greyed out with no link
-#
-# Paths under press-kit/ come from the design-library mounts in hugo.toml.
-
 [branding]
 weight = 1
 title = "Branding"
-blurb = "The marks that identify wirenook.net. Please don't restyle these — for anything that needs a different treatment, use a logo below."
+blurb = "Generic brand assets."
 
   [[branding.items]]
   name = "wirenook-banner-v2.png"
@@ -45,49 +26,49 @@ blurb = "The marks that identify wirenook.net. Please don't restyle these — fo
 [logos]
 weight = 2
 title = "Square logos"
-blurb = "Square aspect ratio, for avatars, app tiles, and anywhere a link needs an icon. **Reach for the favicon first** — the alternates exist for the cases it can't cover, like a single-colour or monochrome context."
+blurb = "More to come."
 
   [[logos.items]]
   name = "link-charm.png"
   src = "images/wirenook/link-charm.png"
-  note = "The favicon. Preferred square mark."
+  note = "Favicon."
 
   [[logos.items]]
   name = "wirenook-logo-1"
   src = "press-kit/logo/wirenook-logo-1.svg"
   alt = "press-kit/logo/wirenook-logo-1.png"
   alt_label = "PNG"
-  note = "Alternate mark."
+  note = "Alternate."
 
   [[logos.items]]
   name = "wirenook-logo-2"
   src = "press-kit/logo/wirenook-logo-2.svg"
   alt = "press-kit/logo/wirenook-logo-2.png"
   alt_label = "PNG"
-  note = "Alternate mark."
+  note = "Alternate."
 
   [[logos.items]]
   name = "wirenook-logo-co-4"
   src = "press-kit/logo/wirenook-logo-co-4.svg"
   alt = "press-kit/logo/wirenook-logo-co-4.png"
   alt_label = "PNG"
-  note = "Alternate mark."
+  note = "Alternate."
 
 [customization]
 weight = 3
 title = "Customization"
-blurb = "Art to decorate your own things with. The Inkscape sources need the fonts installed — see the note under this gallery."
+blurb = "Rep the site!"
 
   [[customization.items]]
   name = "wirenook-phone.png"
   src = "press-kit/customization/wirenook-phone.png"
-  note = "The wirenook phone. Raster export."
+  note = "Phone case design. Raster export. I got mine from [The Phone Case Place](https://thephonecaseplace.com/) and they printed it well."
 
   [[customization.items]]
   name = "wirenook-phone-resized.svg"
   href = "https://github.com/CassidyPrather/cassidyprather.github.io/raw/main/design/wirenook/phone/Wirenook_phone_resized.svg"
   external = true
-  note = "The phone's Inkscape source. 152 MB, so it downloads from GitHub rather than from here."
+  note = "Inkscape SVG source (link only)."
 
   [[customization.items]]
   name = "wirenook-d20-v2-notext.png"
@@ -106,3 +87,5 @@ blurb = "Art to decorate your own things with. The Inkscape sources need the fon
   [[customization.items]]
   name = "Phone wallpapers"
   coming = true
+
+# coming = true for "coming soon" stuff
