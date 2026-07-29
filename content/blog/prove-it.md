@@ -78,7 +78,6 @@ Is there a hypothesis? Sort of! But it's not well laid out at all! Let's do an e
 3. Blinded, adversarially reviewed code written blind to future requirements makes it cheaper to implement those future requirements than non-blinded reviewed code.
 
 </details>
-<br/>
 
 Weird, isn't it? Thinking in terms of a hypothesis is useful work!
 
@@ -162,7 +161,6 @@ More:
 - [Implementation agent](https://claude.ai/code/session_0157C5YH9KzWghjybjGbCmsq)
 
 </details>
-<br/>
 
 Obviously, my strategy had a lot of limitations. I didn't take a representative sample of the agents people typically use (do I look like King Midas to you?), I didn't guarantee the trial scenarios were never-before seen, either. I also could have used different prompts, switched models half-way through the experiment, tried different call parameterization and cache settings... I'm certainly no oracle who knows all the confounds, and I'm *most definitely* not a lab director with the budget to try everything! And despite it all, this was still an incredibly fruitful endeavor.
 

@@ -469,6 +469,11 @@ h2 {
   padding: 0.15em 0.45em;
   border: 1px solid var(--line);
   background: var(--panel-strong);
+  /* The title is the only item in the topline that gives, and a flex item can't
+     shrink below its min-content width — one long word in a post title would
+     push the chip beside it off the window's edge. This is what makes the row
+     shrinkable all the way down, so the row never needs to wrap. */
+  overflow-wrap: anywhere;
 }
 
 .status-light {
@@ -478,6 +483,11 @@ h2 {
   padding: 0.3rem 0.6rem;
   border: 1px solid var(--line);
   background: var(--panel-strong);
+  /* These chips are two or three words at most, and they are flex items in a
+     row that runs tight on a phone. Left shrinkable, "← Blog" in a post's
+     topline broke across two lines with the arrow stranded on its own. */
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .topline-links {
@@ -1108,6 +1118,11 @@ h2 {
 .entry-body pre {
   max-width: 100%;
   overflow-x: auto;
+  /* Panning that table on a touch screen must not chain into the page once it
+     hits the end of its scroll: Chrome on Android reads the handed-off gesture
+     as a back-navigation swipe, so a reader trying to reach the right-hand
+     columns leaves the post instead. */
+  overscroll-behavior-x: contain;
   margin: 1.4rem 0;
   border: 1px solid var(--line);
   background: var(--panel-strong);
@@ -1403,11 +1418,19 @@ h2 {
   border-top: 1px dashed rgba(39, 20, 82, 0.25);
 }
 
+/* A standalone control rather than a link inside a sentence, so it doesn't get
+   the inline exemption from a minimum target size — and at 0.82rem the "#"
+   glyph alone made a 20x17 chip. 1.6rem is 25.6px at the default root size. */
 .entry-permalink {
-  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  min-height: 1.6rem;
+  padding: 0 0.35em;
   border: 1px solid var(--line);
   background: var(--panel-strong);
-  padding: 0 0.45em;
+  text-decoration: none;
 }
 
 .blog-highlights {
@@ -1469,6 +1492,59 @@ h2 {
 
 .post-body > :last-child {
   margin-bottom: 0;
+}
+
+/* Markdown prose — post bodies, feed entries, section intros. The site-wide
+   `h2, h3, p { margin-top: 0 }` reset is right for the panel headings it was
+   written for, but in prose it leaves a section heading exactly as far from
+   the paragraph above it as that paragraph sits from its own predecessor, so
+   a section break reads as just another paragraph. The gaps are in `em` so
+   each level scales with its own type rather than the root. */
+.post-body :is(h2, h3, h4, h5),
+.entry-body :is(h2, h3, h4, h5),
+.archive-intro :is(h2, h3, h4, h5) {
+  margin-top: 1.6em;
+  margin-bottom: 0.45em;
+  line-height: 1.2;
+}
+
+/* Nothing to separate from above the panel's first line. */
+.post-body > :first-child,
+.entry-body > :first-child,
+.archive-intro > :first-child {
+  margin-top: 0;
+}
+
+/* The UA's 40px list indent is a tenth of a phone screen, spent on white space
+   left of the text. 1.6em still clears a two-digit ordinal marker, and it is
+   near enough to the 1.625em Tailwind Typography uses that the bun.com
+   pull-quote below — whose whole point is reading as that site's skin — is not
+   visibly moved by inheriting it. */
+.post-body :is(ul, ol),
+.entry-body :is(ul, ol) {
+  padding-inline-start: 1.6em;
+}
+
+.post-body li,
+.entry-body li {
+  margin-bottom: 0.35em;
+}
+
+/* A <details> in prose had no block spacing of its own, which "Prove It" was
+   working around with a trailing <br> after each one (both now removed). Give
+   it a paragraph's rhythm here instead, and a summary with enough height to be
+   a thumb target rather than a line of text. */
+.post-body details,
+.entry-body details {
+  margin: 1.4rem 0;
+}
+
+.post-body summary,
+.entry-body summary {
+  padding: 0.3rem 0;
+  font-family: Atkinson-Bold, arial, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* Markdown figures come out of the exporter at their native pixel size (the
@@ -1652,8 +1728,74 @@ h2 {
 }
 
 @media (max-width: 40rem) {
+  /* A blog post sits inside three nested padded boxes — the shell, the window's
+     double frame, the prose panel — and each one charged full price for its
+     gutter. At 412px (a Pixel's viewport) that spent 105px of the 412 on frame
+     and left the text measuring 307px: about 30 characters a line, which is
+     what makes the reading feel boxed in. The two outer layers are frame
+     rather than reading surface, so they give the width back; only the panel
+     the text actually sits on keeps a full gutter. Vertical padding stays
+     generous — height is free in a column you scroll. */
   .page-shell {
-    padding: 0.9rem;
+    padding: 0.9rem 0.55rem;
+  }
+
+  .index-window {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .post-body,
+  .blog-entry,
+  .archive-intro {
+    padding: 1.05rem 0.9rem;
+  }
+
+  /* Nested one level deeper again, inside .post-body. */
+  .bun-quote {
+    padding: 1.1rem 0.85rem;
+  }
+
+  /* Long-form prose at a ~33-character measure. A little more leading than the
+     desktop 1.55 stops the lines stacking into a slab, and hyphenation takes
+     the worst of the rag out of a column this narrow (`lang` is on <html>, so
+     the browser has a dictionary to work from). */
+  .post-body,
+  .entry-body,
+  .archive-intro {
+    line-height: 1.65;
+    hyphens: auto;
+  }
+
+  /* Never hyphenate an identifier, a path, or a URL — the inserted hyphen is a
+     character the reader cannot tell from one that's really there. */
+  .post-body :is(code, kbd, samp, pre),
+  .entry-body :is(code, kbd, samp, pre) {
+    hyphens: manual;
+  }
+
+  /* Paragraph spacing has to grow with the leading or the gap between
+     paragraphs stops reading as wider than the gap between lines. The `:not`
+     leaves the bun.com pull-quote on its own measurements, which are lifted
+     from that site and shouldn't drift with ours. */
+  .post-body p:not(.bun-quote p),
+  .entry-body p {
+    margin-bottom: 1.25em;
+  }
+
+  .post-body pre,
+  .entry-body pre {
+    padding: 0.7rem;
+  }
+
+  /* The entry title and its "Read more" both sit tighter to the summary than
+     two paragraphs of that summary sit to each other. At desktop leading that
+     reads as pairing; once the leading opens up it reads as a collision. */
+  .entry-title {
+    margin-bottom: 0.6rem;
+  }
+
+  .entry-more {
+    margin-top: 0.85rem;
   }
 
   .wave-field {
