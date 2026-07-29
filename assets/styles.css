@@ -1282,6 +1282,111 @@ h2 {
   margin-bottom: 0;
 }
 
+/* Markdown figures come out of the exporter at their native pixel size (the
+   forest plots are 1760px wide), which is far past the column — clamp them
+   here rather than sizing each one at the call site. */
+.post-body img,
+.entry-body img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* The "Jarred says" pull-quote is rendered in bun.com's own skin rather than
+   this site's: Tailwind Typography `prose` at base size, on their page
+   background, in their system-ui stack. Every value below is lifted from
+   bun.com/_assets/site-*.css so the block reads as a slab of the source page
+   dropped onto this one — that's the joke, so resist tidying it into the
+   surrounding Atkinson prose. It tracks the reader's color-scheme preference
+   because bun.com's own theme switch ships set to `system`. */
+.bun-quote {
+  --bun-bg: #f9fafb;        /* gray-50, their <body> */
+  --bun-body: #374151;      /* --tw-prose-body */
+  --bun-headings: #111827;  /* --tw-prose-headings */
+  --bun-line: #e5e7eb;      /* gray-200 */
+  margin: 1.8rem 0;
+  padding: clamp(1.1rem, 3vw, 2rem) clamp(1.1rem, 3.5vw, 2.5rem);
+  border: 1px solid var(--bun-line);
+  border-radius: 0.75rem;
+  background: var(--bun-bg);
+  color: var(--bun-body);
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+@media (prefers-color-scheme: dark) {
+  .bun-quote {
+    --bun-bg: #111827;        /* gray-900 */
+    --bun-body: #d1d5db;      /* --tw-prose-invert-body */
+    --bun-headings: #fff;
+    --bun-line: #374151;
+  }
+}
+
+/* Their `prose` container is max-w-65ch mx-auto and the children just fill
+   it. The measure has to live on the wrapper, not on each child: `ch` is
+   font-size-relative, so a per-child max-width gives the 1.25em h3 a wider
+   box than the paragraphs and every heading hangs left of the text. */
+.bun-prose {
+  max-width: 65ch;
+  margin-inline: auto;
+}
+
+.bun-prose > :first-child {
+  margin-top: 0;
+}
+
+.bun-prose > :last-child {
+  margin-bottom: 0;
+}
+
+/* margin-block, not the `margin` shorthand — the shorthand would reset the
+   auto inline margins above and knock the column out of center. */
+.bun-quote p {
+  margin-block: 1.25em;
+}
+
+.bun-quote h3,
+.bun-quote h4 {
+  color: var(--bun-headings);
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.bun-quote h3 {
+  font-size: 1.25em;
+  line-height: 1.6;
+  margin-block: 1.6em 0.6em;
+}
+
+.bun-quote h4 {
+  font-size: 1em;
+  line-height: 1.5;
+  margin-block: 1.5em 0.5em;
+}
+
+/* Their `h3+*`/`h4+*` rules. Without these the paragraph's 1.25em top margin
+   collapses against the heading's smaller bottom margin and wins, so every
+   heading sits ~0.5em further from its text than it does on bun.com. */
+.bun-quote h3 + *,
+.bun-quote h4 + * {
+  margin-top: 0;
+}
+
+/* Their heading anchors are undecorated and take the heading color, hover
+   included. Ours points back at the source section instead of a local id. */
+.bun-quote h3 a,
+.bun-quote h3 a:hover,
+.bun-quote h3 a:focus,
+.bun-quote h3 a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* ```goat fences become inline SVG during Hugo's own markdown pass, via the
    embedded render-codeblock-goat.html hook — no client-side renderer. GoAT
    strokes everything with currentColor, so the diagram picks up --ink from
