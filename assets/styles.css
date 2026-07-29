@@ -1593,6 +1593,199 @@ h2 {
   margin: 0 auto;
 }
 
+/* /amoeba/ — the Amoeba RL page. Prose panel first, then the console slab. */
+.amoeba-body {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.amoeba-body > :last-child {
+  margin-bottom: 0;
+}
+
+.amoeba-body code {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+/* The controls table is the game's own key list, so it is short rows of short
+   cells; `table-layout: auto` on a full-width table gives the Action column
+   the room and lets the Key column shrink to its glyphs. */
+.amoeba-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.amoeba-body th,
+.amoeba-body td {
+  border: 1px solid rgba(39, 20, 82, 0.25);
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.amoeba-body thead th {
+  background: var(--panel-strong);
+}
+
+/* The console is drawn in the *game's* palette rather than the site's — the
+   same move .bun-quote makes with bun.com's skin, for the same reason: the
+   slab should read as a piece of the thing it links to. Every colour here is
+   a constant from the game's `palette` module (src/sim/actors.rs in
+   CassidyPrather/amoeba_rl) or render.rs's VOID, so they travel together if
+   the game is ever recoloured.
+
+   The map itself is decorative and aria-hidden. Its floor and walls sit at
+   the game's own ~1.5:1 against the void, which is texture rather than text;
+   everything that carries meaning — legend labels, the button, the stamp —
+   is drawn from the bright end of the palette instead. The one exception is
+   the nucleus red at 4.35:1, which is why the legend glyphs are set at
+   1.25rem bold: large text, so the 3:1 threshold is the one that applies. */
+.amoeba-console {
+  --void: #050508;
+  --wall: #484d55;
+  --wall-bg: #1f262f;
+  --floor: #473e2d;
+  --slime: #6daa2c;
+  --bright-slime: #84be38;
+  --nucleus: #d04648;
+  --city: #8595a1;
+  --militia: #d27d2c;
+  --calcium: #6b71f7;
+  --paper: #deeed6;
+  margin-bottom: 1.4rem;
+  padding: clamp(0.9rem, 2.4vw, 1.4rem);
+  border: 1px solid var(--wall);
+  background: var(--void);
+  color: var(--paper);
+  font-family: "DejaVu Sans Mono", "Liberation Mono", Consolas, monospace;
+}
+
+/* A near-black slab is exactly where the site's near-black focus ring stops
+   being visible, so the console re-points it at the brightest palette entry
+   for anything focusable inside. */
+.amoeba-console a:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
+}
+
+/* width: max-content with max-width: 100% centres the map while it fits and
+   hands it a scroll region when it doesn't, without ever letting a 30-column
+   grid set the panel's min-content width. */
+.amoeba-map {
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto 1rem;
+  overflow-x: auto;
+  font-size: clamp(0.52rem, 2.5vw, 1.05rem);
+  line-height: 1.15;
+}
+
+.amoeba-map .w {
+  color: var(--wall);
+  background: var(--wall-bg);
+}
+
+.amoeba-map .f {
+  color: var(--floor);
+}
+
+/* Cytoplasm has no glyph in the game either — it is a slime-coloured cell,
+   which is why these spans hold nothing but spaces. */
+.amoeba-map .o,
+.amoeba-legend .o {
+  background: var(--slime);
+}
+
+.amoeba-map .n,
+.amoeba-legend .n {
+  color: var(--nucleus);
+  background: var(--slime);
+}
+
+.amoeba-map .i,
+.amoeba-legend .i {
+  color: var(--bright-slime);
+}
+
+.amoeba-map .r,
+.amoeba-legend .r {
+  color: var(--calcium);
+}
+
+.amoeba-map .h,
+.amoeba-legend .h {
+  color: var(--militia);
+}
+
+.amoeba-map .c,
+.amoeba-legend .c {
+  color: var(--city);
+}
+
+.amoeba-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  justify-content: center;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.86rem;
+}
+
+.amoeba-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.amoeba-legend .glyph {
+  display: inline-block;
+  min-width: 1.1em;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.amoeba-launch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.1rem;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.amoeba-play {
+  padding: 0.55rem 1.4rem;
+  border: 1px solid var(--bright-slime);
+  background: var(--bright-slime);
+  color: var(--void);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.amoeba-play:hover,
+.amoeba-play:active {
+  background: var(--slime);
+  color: var(--void);
+}
+
+.amoeba-stamp {
+  color: var(--city);
+  font-size: 0.82rem;
+}
+
 /* The three-column layout needs the wave gutter (16vw) plus all three
    columns near their preferred widths; below ~86rem the middle column gets
    squeezed toward its minimum and its contents clip, so stack well before

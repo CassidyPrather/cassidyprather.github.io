@@ -9,7 +9,7 @@
 		{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
 
 		<div class="license-list">
-			{{ $pages := where site.RegularPages "Type" "in" (slice "lancer" "vrchat") }}
+			{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "vrchat") }}
 			{{ range $pages.ByTitle }}
 				<article class="license-entry">
 					<h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
