@@ -50,5 +50,7 @@ jobs:
 
       # --with playwright so tools/overflow.py's import resolves; it is only
       # imported inside cmd_check, but ty still needs the stubs to see it.
+      # --with pyoxipng likewise for tools/images.py's, which cmd_optimize
+      # imports lazily so that `check` and `fix` keep working without it.
       - name: Type check
-        run: uvx --with playwright ty check tools
+        run: uvx --with playwright --with pyoxipng ty check tools

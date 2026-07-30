@@ -29,7 +29,7 @@ import json
 import logging
 import re
 import shutil
-import subprocess  # noqa: S404
+import subprocess  # ruff:ignore[suspicious-subprocess-import]
 import sys
 from pathlib import Path
 
@@ -120,7 +120,7 @@ def _read_tags(
         *(f"-{tag}" for tag in tags),
         *(str(f) for f in files),
     ]
-    result = subprocess.run(  # noqa: S603
+    result = subprocess.run(  # ruff:ignore[subprocess-without-shell-equals-true]
         cmd, capture_output=True, encoding="utf-8", check=True
     )
     found: dict[str, dict[str, str]] = {}
@@ -148,7 +148,7 @@ def _stamp(exiftool: str, files: list[Path], tags: dict[str, str]) -> None:
         *(f"-{tag}={value}" for tag, value in tags.items()),
         *(str(f) for f in files),
     ]
-    subprocess.run(cmd, check=True)  # noqa: S603
+    subprocess.run(cmd, check=True)  # ruff:ignore[subprocess-without-shell-equals-true]
 
 
 def _managed_pngs() -> list[Path]:
@@ -256,7 +256,8 @@ def _shrink(files: list[Path]) -> tuple[int, int]:
     :param files: PNGs to rewrite in place.
     :return: Total bytes before and after.
     """
-    import oxipng  # noqa: PLC0415
+    # ruff: ignore[import-outside-top-level]
+    import oxipng
 
     before = after = 0
     for path in files:
