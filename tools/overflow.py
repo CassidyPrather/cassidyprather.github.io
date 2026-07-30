@@ -26,6 +26,21 @@ correct at 1366px and at 1440px and broken at every width in between -- the
 sweep is dense by default. Spot-checking a handful of device widths is
 exactly how these bugs survive.
 
+The viewport width is not the only knob real readers turn, and the first
+overflow that shipped past this tool's green run taught it three lessons:
+
+* Every ``<details>`` is opened before measuring. A closed spoiler renders
+  nothing, so whatever it holds was invisible to the sweep until a reader
+  clicked it.
+* The sweep starts at 240px, not a "sensible" phone width -- cover displays
+  (a folding phone's front screen) and split-screen windows go narrower
+  than any device-preset list.
+* Every page is measured twice: once at the browser-default 16px font and
+  once at 24px, Chrome's "very large" preset (from phone widths up -- see
+  ``FONT_PASS_MIN_WIDTH``). This site sets no root font-size on purpose, so
+  a reader's font preference scales every rem -- and a layout that only
+  works at one rem size is a layout that overflows on someone's phone.
+
 Deliberate bleeds (the feature bunny, the rail charms) are not bugs, so they
 are listed in ``ALLOWED`` with a reason instead of being silently ignored.
 
@@ -68,7 +83,21 @@ TOLERANCE_PX = 1.0
 # default sweep is fine-grained where the layout is tightest and coarsens once
 # the columns have room to breathe. Resizing an already-loaded page is cheap;
 # the cost here is layout passes, not page loads.
-DEFAULT_BANDS = ((320, 800, 4), (800, 1600, 8), (1600, 2560, 32))
+DEFAULT_BANDS = ((240, 800, 4), (800, 1600, 8), (1600, 2560, 32))
+
+# The second measuring pass raises the browser's default font to Chrome's
+# "very large" preset. rem-sized boxes grow 1.5x while the viewport doesn't,
+# which is how a layout that swept clean at every width still shoved the
+# "<- Blog" chip off a phone screen for readers with a large-text setting.
+#
+# The two axes are swept to their extremes independently, not multiplied:
+# the font pass starts at phone width rather than the sweep's 240px floor.
+# At a 24px base font a 240px viewport is a 10rem-wide layout -- narrower
+# than single heading words at the design's minimum sizes -- and holding
+# that line would mean word-breaking headings and shrinking fixed widgets
+# for a screen-and-preference combination no device produces.
+FONT_PASS_PX = 24
+FONT_PASS_MIN_WIDTH = 320
 
 # Findings whose key matches one of these patterns are expected. Keep the
 # reason honest: an entry here is a promise that the bleed is designed, not a
@@ -343,9 +372,10 @@ def _prepare(page: Page, url: str) -> None:
     """Load a page and settle everything that would perturb measurement.
 
     Lazy images are forced eager (an image that has not loaded has no
-    intrinsic ratio, and boxes sized from that ratio would measure wrong), and
-    animations are frozen so a mid-flight transform is not mistaken for a
-    layout escape.
+    intrinsic ratio, and boxes sized from that ratio would measure wrong),
+    every ``<details>`` is opened (a closed one renders nothing, so its
+    contents would go unmeasured until a reader clicks), and animations are
+    frozen so a mid-flight transform is not mistaken for a layout escape.
 
     :param page: The Playwright page to load into.
     :param url: Absolute URL to load.
@@ -354,6 +384,10 @@ def _prepare(page: Page, url: str) -> None:
     page.eval_on_selector_all(
         "img[loading=lazy]",
         "images => images.forEach(image => { image.loading = 'eager'; })",
+    )
+    page.eval_on_selector_all(
+        "details",
+        "all => all.forEach(details => { details.open = true; })",
     )
     with contextlib.suppress(Exception):
         page.wait_for_function(
@@ -373,6 +407,7 @@ def _measure(
     url_path: str,
     widths: list[int],
     findings: dict[str, Finding],
+    key_prefix: str = "",
 ) -> None:
     """Sweep one already-loaded page across widths, folding results in.
 
@@ -380,6 +415,8 @@ def _measure(
     :param url_path: Site-relative path, used to key findings.
     :param widths: Viewport widths to measure at.
     :param findings: Accumulator, mutated in place.
+    :param key_prefix: Scenario tag prepended to finding keys, so the same
+        overflow at two font sizes reports as two findings.
     """
 
     def fold(key: str, width: int, by: float) -> None:
@@ -394,9 +431,17 @@ def _measure(
             target = item["element"]
             if item["parent"]:
                 target = f"{target} in {item['parent']}"
-            fold(f"{url_path} {item['kind']} {target}", width, item["by"])
+            fold(
+                f"{key_prefix}{url_path} {item['kind']} {target}",
+                width,
+                item["by"],
+            )
         if result["documentBy"]:
-            fold(f"{url_path} document <html>", width, result["documentBy"])
+            fold(
+                f"{key_prefix}{url_path} document <html>",
+                width,
+                result["documentBy"],
+            )
 
 
 def _report(findings: dict[str, Finding], *, full_sweep: bool) -> int:
@@ -467,11 +512,13 @@ def cmd_check(
         _logger.error("no index.html under %s; run `hugo --minify` first", root)
         return 1
     _logger.info(
-        "measuring %d page(s) at %d width(s) from %dpx to %dpx",
+        "measuring %d page(s) at %d width(s) from %dpx to %dpx,"
+        " at default and %dpx base fonts",
         len(pages),
         len(widths),
         widths[0],
         widths[-1],
+        FONT_PASS_PX,
     )
 
     findings: dict[str, Finding] = {}
@@ -480,17 +527,45 @@ def cmd_check(
             executable_path=chromium,
             args=["--no-sandbox"],
         )
-        context = browser.new_context(viewport={"width": 1280, "height": 1400})
-        # Third-party embeds carry their own width/height, so blocking them
-        # keeps the measurement hermetic without changing the layout.
-        context.route("**://**", lambda route: route.abort())
-        context.route("http://127.0.0.1/**", lambda route: route.continue_())
-        context.route(f"{base}/**", lambda route: route.continue_())
-        page = context.new_page()
-        for url_path in pages:
-            _logger.debug("measuring %s", url_path)
-            _prepare(page, base + url_path)
-            _measure(page, url_path, widths, findings)
+        for key_prefix, font_px in (("", None), ("font24 ", FONT_PASS_PX)):
+            pass_widths = widths
+            if font_px is not None:
+                pass_widths = [
+                    width for width in widths if width >= FONT_PASS_MIN_WIDTH
+                ]
+                if not pass_widths:
+                    continue
+            context = browser.new_context(
+                viewport={"width": 1280, "height": 1400},
+            )
+            # Third-party embeds carry their own width/height, so blocking
+            # them keeps the measurement hermetic without changing the layout.
+            context.route("**://**", lambda route: route.abort())
+            context.route(
+                "http://127.0.0.1/**",
+                lambda route: route.continue_(),
+            )
+            context.route(f"{base}/**", lambda route: route.continue_())
+            page = context.new_page()
+            if font_px is not None:
+                # The CDP knob is the browser's font-settings preference --
+                # the same one Chrome's appearance settings drive -- so this
+                # measures what a large-text reader's layout engine computes,
+                # not a CSS override painted on top of it.
+                context.new_cdp_session(page).send(
+                    "Page.setFontSizes",
+                    {
+                        "fontSizes": {
+                            "standard": font_px,
+                            "fixed": round(font_px * 13 / 16),
+                        },
+                    },
+                )
+            for url_path in pages:
+                _logger.debug("measuring %s%s", key_prefix, url_path)
+                _prepare(page, base + url_path)
+                _measure(page, url_path, pass_widths, findings, key_prefix)
+            context.close()
         browser.close()
 
     return _report(findings, full_sweep=full_sweep)

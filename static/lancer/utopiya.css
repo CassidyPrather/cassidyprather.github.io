@@ -39,8 +39,10 @@
   background-color: var(--v-background);
   box-sizing: border-box;
   /* Half-width on desktop (as designed), but never narrower than ~17rem so
-     it doesn't collapse to a sliver on phones, and capped on huge screens. */
-  width: clamp(17rem, 50%, 50rem);
+     it doesn't collapse to a sliver on phones, and capped on huge screens.
+     The floor is itself floored at the viewport: a rem-based 17rem outgrows
+     a small screen (or a large reader font) and would spill past it. */
+  width: clamp(min(17rem, 100%), 50%, 50rem);
   margin-left:auto;
   margin-right:auto;
   color: var(--v-background-contrast);

@@ -26,6 +26,9 @@
     }
     .ring {
       display: flex;
+      /* The nav is one nowrap run; on a sliver-width embed it drops to a
+         second line instead of poking out of the pill. */
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.5em;
       width: 100%;

@@ -440,8 +440,14 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
   padding: clamp(1rem, 2vw, 1.5rem);
 }
 
+/* Wrap, because a flex line cannot shrink below its items' min-content: on a
+   long post title the heading's longest word plus the "← Blog" chip stop
+   fitting once the viewport is narrow or the reader's default font is large,
+   and without wrap the chip is pushed out of the panel and clipped at the
+   screen edge (.page-shell clips all horizontal spill). */
 .window-topline {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
@@ -482,6 +488,7 @@ h2 {
 
 .topline-links {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
   margin: 0;
@@ -717,6 +724,9 @@ h2 {
   display: grid;
   gap: 0.65rem;
   align-content: start;
+  /* Contained for the same reason as .webring: the five readout cells must
+     not set the stacked column's minimum width. */
+  container-type: inline-size;
 }
 
 .death-clock-topline {
@@ -772,6 +782,10 @@ h2 {
 
 .death-cell {
   flex: 1 1 0;
+  /* A flex item's default minimum is its content's width; zero it so the
+     five cells split whatever the panel has evenly instead of refusing to
+     shrink and shoving the readout out of the panel. */
+  min-width: 0;
   display: grid;
   place-items: center;
   padding: 0.5rem 0.15rem;
@@ -783,7 +797,9 @@ h2 {
 .death-num {
   font-family: Atkinson-Bold, arial, sans-serif;
   font-weight: 700;
-  font-size: 1.1rem;
+  /* Tracks the panel on screens too narrow for the full-size digits; the
+     cqi term only wins below ~19rem of panel, so desktop is untouched. */
+  font-size: min(1.1rem, 6cqi);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
@@ -838,10 +854,22 @@ h2 {
   animation: hoverPortal 6s ease-in-out infinite;
 }
 
+/* The ring, its orbit radius and its buttons are all sized against this
+   panel rather than in bare rem: a fixed 12rem ring is wider than a small
+   phone once the reader raises their default font, and as the widest thing
+   in the stacked column it dragged every panel past the screen edge.
+   inline-size containment keeps the panel from flooring the grid track it
+   sits in (same move as the badge card); the cqi caps let the whole
+   assembly shrink with the panel while leaving it pixel-identical wherever
+   the rem sizes fit. */
+.webring {
+  container-type: inline-size;
+}
+
 .spinner {
   position: relative;
-  width: 12rem;
-  height: 12rem;
+  width: min(12rem, 96cqi);
+  aspect-ratio: 1;
   margin: 1rem auto;
   border: 1px dashed rgba(39, 20, 82, 0.4);
   border-radius: 50%;
@@ -851,7 +879,7 @@ h2 {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 5.2rem;
+  width: min(5.2rem, 36cqi);
   min-height: 2.05rem;
   padding: 0.35rem 0.45rem;
   border: 1px solid var(--line);
@@ -864,7 +892,7 @@ h2 {
   align-items: center;
   justify-content: center;
   transition: transform 700ms cubic-bezier(0.2, 0.9, 0.25, 1.2);
-  transform: translate(-50%, -50%) rotate(calc(var(--i) * (360deg / var(--count, 4)) + var(--spin, 0deg))) translateY(-4.35rem) rotate(calc((var(--i) * (-360deg / var(--count, 4))) - var(--spin, 0deg)));
+  transform: translate(-50%, -50%) rotate(calc(var(--i) * (360deg / var(--count, 4)) + var(--spin, 0deg))) translateY(calc(-1 * min(4.35rem, 30cqi))) rotate(calc((var(--i) * (-360deg / var(--count, 4))) - var(--spin, 0deg)));
 }
 
 .spinner a img {
@@ -876,6 +904,9 @@ h2 {
 
 .spin-controls {
   display: flex;
+  /* Three rigid pills; on a sliver of a screen SPIN drops to its own line
+     instead of flooring the column width. */
+  flex-wrap: wrap;
   justify-content: center;
   align-items: stretch;
   gap: 0.6rem;
@@ -1171,12 +1202,19 @@ h2 {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  /* The 9.5rem floor outgrows a small screen (or a large reader font);
+     min() keeps the single remaining column inside the panel there. */
+  grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr));
   gap: 0.75rem;
   margin-top: 0.9rem;
 }
 
 .gallery-item {
+  /* <figure> ships with a 1em 40px UA margin, which was quietly insetting
+     every card 40px inside its grid cell — and on a sliver-width screen
+     squeezed the card narrower than its own label. The cell's gap and the
+     card's padding already provide the spacing. */
+  margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
