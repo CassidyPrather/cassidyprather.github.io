@@ -62,9 +62,10 @@
 		{{- with .class }} class="{{ . }}"{{ end }}
 		src="{{ $default.RelPermalink }}"
 		{{- if gt (len $variants) 1 }}
-		srcset="{{ delimit $srcset ", " }}"
-		{{- with .sizes }}
-		sizes="{{ . }}"{{ end }}
+			srcset="{{ delimit $srcset ", " }}"
+			{{- with .sizes }}
+				sizes="{{ . }}"
+			{{ end }}
 		{{- end }}
 		width="{{ $default.Width }}" height="{{ $default.Height }}"
 		{{- with .loading }} loading="{{ . }}"{{ end }}

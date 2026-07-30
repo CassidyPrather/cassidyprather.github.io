@@ -172,7 +172,9 @@
 				"format" "png"
 				"sizes" "min(10rem, 100vw)"
 				"class" "portal-image"
-				"alt" "") }}
+				"alt" ""
+				)
+			}}
 			<div class="spinner" data-spinner style="--count:{{ $count }}">
 				{{ range $i, $member := $members }}
 					<a href="{{ $member.url }}" style="--i:{{ $i }}" rel="noopener" target="_blank" title="{{ $member.name }}">

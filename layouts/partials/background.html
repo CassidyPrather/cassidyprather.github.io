@@ -21,16 +21,24 @@
 <img class="cloud-field cloud-field-one" src="{{ "images/wirenook/wirenook-grill.png" | relURL }}" alt="">
 {{ partial "responsive-image.html" (merge $clouds (dict
 	"class" "cloud-field volume-cloud cloud-field-two"
-	"sizes" "min(46rem, 58vw)")) }}
+	"sizes" "min(46rem, 58vw)"
+	)
+	)
+}}
 {{ partial "responsive-image.html" (dict
 	"src" "images/wirenook/grid-square.png"
 	"widths" (slice 480 960)
 	"sizes" "min(30rem, 42vw)"
 	"class" "cloud-field cloud-field-three"
-	"alt" "") }}
+	"alt" ""
+	)
+}}
 {{ partial "responsive-image.html" (merge $clouds (dict
 	"class" "cloud-field volume-cloud cloud-field-four"
-	"sizes" "min(42rem, 50vw)")) }}
+	"sizes" "min(42rem, 50vw)"
+	)
+	)
+}}
 <img class="cloud-field cloud-field-five" src="{{ "images/wirenook/clouds.svg" | relURL }}" alt="">
 <div class="sigil-lines" aria-hidden="true"></div>
 <canvas class="tick-rulers" data-tick-rulers aria-hidden="true"></canvas>
