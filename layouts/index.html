@@ -161,7 +161,18 @@
 		{{ $members := $webring.members }}
 		{{ $count := len $members }}
 		<section class="webring" aria-label="{{ $webring.name }} Webring">
-			<img class="portal-image" src="{{ "images/OPL/wirenook-pylon-web.png" | relURL }}" alt="">
+			{{- /* .portal-image is a 20rem box at `aspect-ratio: 900 / 620` with
+			    `object-fit: contain`, so this portrait master letterboxes into
+			    roughly 158x220 CSS px, not the full 320. Hence 160 and its 2x,
+			    which is where a 2370x3300 master was going before. PNG for the
+			    same reason as the banner — see responsive-image.html. */ -}}
+			{{ partial "responsive-image.html" (dict
+				"src" "images/OPL/wirenook-pylon-web.png"
+				"widths" (slice 160 320)
+				"format" "png"
+				"sizes" "min(10rem, 100vw)"
+				"class" "portal-image"
+				"alt" "") }}
 			<div class="spinner" data-spinner style="--count:{{ $count }}">
 				{{ range $i, $member := $members }}
 					<a href="{{ $member.url }}" style="--i:{{ $i }}" rel="noopener" target="_blank" title="{{ $member.name }}">

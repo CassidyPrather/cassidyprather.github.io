@@ -1,3 +1,7 @@
+/* This file is executed as a Go template by layouts/_default/baseof.html so the
+   cloud backdrop below can reference a build-time WebP variant, which means a
+   literal double curly brace anywhere in here would be parsed as a template
+   action and break the build. Only .cloudBackdrop is interpolated. */
 :root {
   color-scheme: light;
   --wave-gutter: clamp(8.75rem, 16vw, 13.5rem);
@@ -141,8 +145,8 @@ a:focus-visible {
   transform: translateZ(0);
   will-change: transform;
   background-image:
-    url("images/wirenook/volumetric-clouds.png"),
-    url("images/wirenook/volumetric-clouds.png");
+    url("{{ .cloudBackdrop }}"),
+    url("{{ .cloudBackdrop }}");
   background-position:
     center 8vh,
     58% 78vh;
@@ -327,6 +331,12 @@ a:focus-visible {
   width: clamp(24rem, 45vw, 60rem);
   max-width: 100%;
   height: auto;
+  /* Pinned to the master's ratio rather than left to whichever srcset
+     candidate loaded. Rounding a 3821x1280 master to 960x322 shifts the
+     derived height by 0.38px, and the 1920px candidate rounds differently
+     again — enough to re-rasterize every glyph on the page below and to move
+     the header when the browser swaps candidates. */
+  aspect-ratio: 3821 / 1280;
   margin: 0 auto;
   object-fit: contain;
 }

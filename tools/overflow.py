@@ -340,7 +340,7 @@ def _serving(root: Path) -> Iterator[str]:
 
         def log_message(
             self,
-            format: str,  # ruff: ignore[builtin-argument-shadowing]
+            format: str,  # noqa: A002
             *args: object,
         ) -> None:
             """Swallow the access log.
@@ -509,8 +509,7 @@ def cmd_check(
     :param full_sweep: Whether ``widths`` is the default full sweep.
     :return: Process exit code.
     """
-    # ruff: ignore[import-outside-top-level]
-    from playwright.sync_api import sync_playwright
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     pages = _pages(root)
     if not pages:
