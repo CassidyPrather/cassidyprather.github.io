@@ -42,6 +42,25 @@ buildFuture = true
     source = "static"
     target = "static"
 
+  # The same images again, this time where Hugo's image pipeline can reach them.
+  # Only assets/ is processable, and the committed files under static/images are
+  # full-resolution masters, so without this mount every <img> would have to
+  # ship a master (2370x3300 for a 158 CSS px slot, in the worst case). Mounting
+  # rather than moving keeps static/ publishing them verbatim, so the site still
+  # serves its own sources and the press-kit mounts below are unaffected.
+  # layouts/partials/responsive-image.html is the consumer.
+  #
+  # The same replace-the-default rule that applies to "static" above applies
+  # here: naming an "assets" target drops Hugo's built-in assets mount, which
+  # would take styles.css and script.js down with it, so restate it first.
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+
+  [[module.mounts]]
+    source = "static/images"
+    target = "assets/images"
+
   [[module.mounts]]
     source = "design/wirenook/logo/Wirenook_design_1.svg"
     target = "static/press-kit/logo/wirenook-logo-1.svg"

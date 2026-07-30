@@ -8,57 +8,57 @@
 					<a class="status-light" href="{{ .RelPermalink }}">RSS</a>
 				{{ end }}
 				<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
-			</p>
-		</div>
+					</p>
+				</div>
 
-		{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
+				{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
 
-		<div class="blog-columns">
-			<div class="blog-feed">
-				<form class="blog-search" role="search" data-blog-search data-index="{{ "blog/index.json" | relURL }}" hidden>
-					<input type="search" name="q" placeholder="Search blog..." aria-label="Search blog">
-				</form>
-				<p class="search-status" data-search-status aria-live="polite" hidden></p>
+				<div class="blog-columns">
+					<div class="blog-feed">
+						<form class="blog-search" role="search" data-blog-search data-index="{{ "blog/index.json" | relURL }}" hidden>
+							<input type="search" name="q" placeholder="Search blog..." aria-label="Search blog">
+						</form>
+						<p class="search-status" data-search-status aria-live="polite" hidden></p>
 
-				{{ range .Pages.ByDate.Reverse }}
-					{{ $label := .Title | default (.Date.Format "2 January 2006") }}
-					<article class="blog-entry" data-entry data-url="{{ .RelPermalink }}">
-						{{ if .Title }}
-							<h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+						{{ range .Pages.ByDate.Reverse }}
+							{{ $label := .Title | default (.Date.Format "2 January 2006") }}
+							<article class="blog-entry" data-entry data-url="{{ .RelPermalink }}">
+								{{ if .Title }}
+									<h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+								{{ end }}
+								{{ if .Truncated }}
+									<div class="entry-body">
+										{{ with .Description }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
+									</div>
+									<p class="entry-more"><a href="{{ .RelPermalink }}">Read more</a></p>
+								{{ else }}
+									<div class="entry-body">{{ .Content }}</div>
+								{{ end }}
+								<p class="entry-meta">
+									<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink: “{{ $label }}”">#</a>
+									<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
+								</p>
+							</article>
 						{{ end }}
-						{{ if .Truncated }}
-							<div class="entry-body">
-								{{ with .Description }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
-							</div>
-							<p class="entry-more"><a href="{{ .RelPermalink }}">Read more</a></p>
+					</div>
+
+					<aside class="blog-highlights" aria-label="Highlights">
+						<h3>Highlights</h3>
+						{{ $highlights := (where .Pages ".Params.highlight" true).ByDate.Reverse }}
+						{{ if $highlights }}
+							<ul>
+								{{ range $highlights }}
+									<li>
+										<a href="{{ .RelPermalink }}">{{ .Title | default (.Date.Format "2 January 2006") }}</a>
+										<span class="highlight-date">{{ .Date.Format "January 2006" }}</span>
+									</li>
+								{{ end }}
+							</ul>
 						{{ else }}
-							<div class="entry-body">{{ .Content }}</div>
+							<p class="highlight-empty">Uh oh! Something went wrong.</p>
 						{{ end }}
-						<p class="entry-meta">
-							<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink: “{{ $label }}”">#</a>
-							<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
-						</p>
-					</article>
-				{{ end }}
-			</div>
-
-			<aside class="blog-highlights" aria-label="Highlights">
-				<h3>Highlights</h3>
-				{{ $highlights := (where .Pages ".Params.highlight" true).ByDate.Reverse }}
-				{{ if $highlights }}
-					<ul>
-						{{ range $highlights }}
-							<li>
-								<a href="{{ .RelPermalink }}">{{ .Title | default (.Date.Format "2 January 2006") }}</a>
-								<span class="highlight-date">{{ .Date.Format "January 2006" }}</span>
-							</li>
-						{{ end }}
-					</ul>
-				{{ else }}
-					<p class="highlight-empty">Uh oh! Something went wrong.</p>
-				{{ end }}
-			</aside>
-		</div>
-	</section>
-</main>
+					</aside>
+				</div>
+			</section>
+		</main>
 {{ end }}

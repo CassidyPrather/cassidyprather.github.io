@@ -1,0 +1,80 @@
+{{- /*
+	Emit an <img> carrying pixels sized for the slot it actually lands in.
+
+	static/ is published verbatim and doubles as the art library's source of
+	record, so the committed PNGs are deliberately full-resolution masters —
+	wirenook-pylon-web.png is 2370x3300 for a slot that renders 158 CSS px
+	wide. Pointing <img src> straight at a master ships that whole master.
+	hugo.toml mounts static/images at assets/images as well, so this partial
+	can hand Hugo the same file and publish right-sized variants next to the
+	untouched original.
+
+	Params:
+	  src      Path under images/, as mounted into assets (required).
+	  widths   Target widths in CSS px; the smallest becomes the default src
+	           and each one becomes a srcset candidate. Widths at or above the
+	           master's own width collapse onto it, so a 2x candidate can be
+	           requested freely without ever upscaling.
+	  format   Hugo image spec after the resize — "webp q82" (the default) or
+	           "png". See the note below before picking.
+	  sizes    The slot's rendered width, mirroring the CSS that governs it,
+	           so the browser can pick a candidate before layout exists.
+	  class    Class attribute, verbatim.
+	  alt      Alt text; pass "" for decorative images, as <img> requires.
+	  loading  "lazy"/"eager"; omitted when empty.
+
+	Choosing format: lossy WebP always encodes as YUV 4:2:0, so it subsamples
+	chroma no matter the quality, and saturated hard-edged art bleeds along
+	every edge. Measured against a same-size PNG of wirenook-banner-v2.png,
+	q82 leaves 15.6% of pixels off by more than 8/255 — and q100 with the
+	`drawing` hint only gets that to 13.9% for 108 KB, where the PNG is 141 KB
+	and exact. So: continuous-tone art (the clouds, the grid) takes "webp q82"
+	and loses nothing visible; flat or saturated line art (the banner, the
+	portal pylon) takes "png" and stays exact. Resampling stays on Hugo's
+	default box filter, which area-averages: on line art that both avoids
+	lanczos ringing and encodes ~30% smaller.
+
+	Flat-colour art small enough to palette is better off not coming here at
+	all — wirenook-grill.png is 4-colour art that palettes to 15 KB, and no
+	resampled variant of that slot gets close, so background.html serves it
+	straight from static/.
+*/ -}}
+{{- $src := .src -}}
+{{- $format := default "webp q82" .format -}}
+{{- $img := resources.Get $src -}}
+{{- if $img -}}
+	{{- /* Clamp to the master's width so a 2x candidate never upscales, then
+	    dedupe: (736, 1472) against a 1209px master becomes (736, 1209). */ -}}
+	{{- $targets := slice -}}
+	{{- range .widths -}}
+		{{- $targets = $targets | append (cond (ge . $img.Width) $img.Width .) -}}
+	{{- end -}}
+	{{- $variants := slice -}}
+	{{- range (uniq (sort $targets)) -}}
+		{{- $variants = $variants | append ($img.Process (printf "resize %dx %s" . $format)) -}}
+	{{- end -}}
+	{{- $default := index $variants 0 -}}
+	{{- $srcset := slice -}}
+	{{- range $variants -}}
+		{{- $srcset = $srcset | append (printf "%s %dw" .RelPermalink .Width) -}}
+	{{- end -}}
+	<img
+		{{- with .class }} class="{{ . }}"{{ end }}
+		src="{{ $default.RelPermalink }}"
+		{{- if gt (len $variants) 1 }}
+			srcset="{{ delimit $srcset ", " }}"
+			{{- with .sizes }}
+				sizes="{{ . }}"
+			{{ end }}
+		{{- end }}
+		width="{{ $default.Width }}" height="{{ $default.Height }}"
+		{{- with .loading }} loading="{{ . }}"{{ end }}
+		decoding="async"
+		alt="{{ .alt }}">
+{{- else -}}
+	{{- /* Not mountable as a resource (or renamed): serve it from static/ so a
+	    bad path degrades to the old behaviour instead of dropping the art. */ -}}
+	{{- warnf "responsive-image: %q not found under assets; serving it unprocessed" $src -}}
+	<img{{ with .class }} class="{{ . }}"{{ end }} src="{{ $src | relURL }}"
+		{{- with .loading }} loading="{{ . }}"{{ end }} decoding="async" alt="{{ .alt }}">
+{{- end -}}

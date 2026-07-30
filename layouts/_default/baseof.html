@@ -8,9 +8,27 @@
 		{{ with site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
 		<link rel="icon" href="{{ "images/wirenook/link-charm.png" | relURL }}">
 		{{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" title="{{ $.Title }} — {{ site.Title }}" href="{{ .RelPermalink }}">{{ end }}
-		{{/* Fingerprinted so the URL changes with the content — browsers can
+		{{/* styles.css is run through ExecuteAsTemplate so .page-shell::before can
+		     tile a generated WebP instead of the full-resolution PNG master that
+		     static/ keeps: same backdrop, a fraction of the bytes. The stylesheet
+		     is a Go template from here on, so a literal double curly brace in it
+		     would be read as an action — see the note atop assets/styles.css.
+
+		     1888px is the widest that rule ever paints (`background-size:
+		     min(118rem, 115vw)`), and the master is only 1920px, so there is no
+		     denser variant to offer a hi-DPI screen anyway.
+
+		     Fingerprinted so the URL changes with the content — browsers can
 		     never pair a cached stylesheet with newer HTML. */}}
-		{{ with resources.Get "styles.css" | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}">{{ end }}
+		{{ $cloudBackdrop := "images/wirenook/volumetric-clouds.png" | relURL }}
+		{{ with resources.Get "images/wirenook/volumetric-clouds.png" }}
+			{{ $cloudBackdrop = (.Process "resize 1888x webp q82").RelPermalink }}
+		{{ end }}
+		{{ with resources.Get "styles.css" }}
+			{{ with . | resources.ExecuteAsTemplate "styles.css" (dict "cloudBackdrop" $cloudBackdrop) | fingerprint }}
+				<link rel="stylesheet" href="{{ .RelPermalink }}">
+			{{ end }}
+		{{ end }}
 	</head>
 
 	<body>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep the metadata on the site's images consistent.
+"""Keep the site's images consistently stamped and free of dead weight.
 
 Every directory under static/images/ is a license tier (see
 static/images/README.md and data/image_licenses.toml). This tool strips
@@ -7,10 +7,19 @@ incidental metadata (GIMP junk, screenshot world/instance details, ...)
 from the raster files in the managed tiers and stamps the tier's XMP
 license tags instead, using exiftool.
 
+It also keeps those files from carrying bytes no viewer will ever read.
+``static/`` is published verbatim and doubles as the art library's source of
+record, so the committed file is what the site serves: bloat here is bloat on
+the wire. The art tools export 16-bit-per-channel PNGs whose own sBIT chunk
+declares only 8 significant bits, which doubles every sample for nothing, so
+``check`` fails on any managed PNG deeper than 8 bits and ``optimize``
+recompresses the tiers losslessly.
+
 Usage::
 
-    python tools/images.py check   # report drift; exit 1 if any
-    python tools/images.py fix     # restamp non-compliant files
+    python tools/images.py check      # report drift; exit 1 if any
+    python tools/images.py fix        # restamp non-compliant files
+    python tools/images.py optimize   # losslessly shrink, then restamp
 """
 
 from __future__ import annotations
@@ -35,6 +44,21 @@ NAME_RE = re.compile(r"^[a-z0-9]+(?:[.-][a-z0-9]+)*$")
 # exiftool can write XMP into these. SVG and XCF sources are read-only to
 # exiftool and carry their license by directory instead.
 STAMPABLE = frozenset({".png", ".gif"})
+
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+
+# Nothing in the delivery path reads more than 8 bits per channel: browsers
+# composite these at 8 bits, and every 16-bit file here ships an sBIT chunk
+# saying 8 bits are significant, so the high byte of each sample is a copy of
+# the low one. Narrowing to 8 bits is therefore pixel-exact, not a quality
+# trade, and it halves the data before compression even starts.
+MAX_BIT_DEPTH = 8
+
+# oxipng level 6 is the slowest preset that still finishes these files in
+# seconds. Every reduction it applies is lossless by construction: it narrows
+# bit depth only when both bytes of a sample agree and collapses colour types
+# only when no pixel changes, so `optimize` cannot silently degrade the art.
+OXIPNG_LEVEL = 6
 
 # Directory -> XMP tags every stampable file in it must carry. "no-relicensing"
 # is deliberately absent: those files stay byte-identical to upstream.
@@ -127,6 +151,48 @@ def _stamp(exiftool: str, files: list[Path], tags: dict[str, str]) -> None:
     subprocess.run(cmd, check=True)  # ruff:ignore[subprocess-without-shell-equals-true]
 
 
+def _managed_pngs() -> list[Path]:
+    """Collect the PNGs in the tiers this tool is allowed to rewrite.
+
+    ``no-relicensing`` is excluded: those files stay byte-identical to
+    upstream, so neither stamping nor recompression may touch them.
+
+    :return: Every PNG under a managed tier, sorted by path.
+    """
+    return sorted(
+        path
+        for tier in POLICIES
+        for path in (IMAGES_DIR / tier).rglob("*.png")
+        if path.is_file()
+    )
+
+
+def _png_bit_depth(path: Path) -> int | None:
+    """Read a PNG's bit depth straight out of its IHDR header.
+
+    :param path: File to inspect.
+    :return: Bits per channel, or ``None`` if this is not a PNG.
+    """
+    with path.open("rb") as handle:
+        header = handle.read(26)
+    if not header.startswith(PNG_SIGNATURE) or header[12:16] != b"IHDR":
+        return None
+    return header[24]
+
+
+def _check_bit_depth() -> list[str]:
+    """Find managed PNGs that store more bits per channel than anything reads.
+
+    :return: Human-readable problem descriptions.
+    """
+    return [
+        f"{path} is {depth}-bit: re-export at {MAX_BIT_DEPTH}-bit or run"
+        " `python tools/images.py optimize`"
+        for path in _managed_pngs()
+        if (depth := _png_bit_depth(path)) is not None and depth > MAX_BIT_DEPTH
+    ]
+
+
 def _check_layout() -> list[str]:
     """Validate the directory structure and naming convention.
 
@@ -184,13 +250,69 @@ def _find_drift(exiftool: str) -> dict[str, list[Path]]:
     return drift
 
 
-def cmd_check(exiftool: str) -> int:
-    """Report layout and metadata drift without changing anything.
+def _shrink(files: list[Path]) -> tuple[int, int]:
+    """Recompress PNGs in place, losslessly, keeping whichever bytes are fewer.
+
+    :param files: PNGs to rewrite in place.
+    :return: Total bytes before and after.
+    """
+    # ruff: ignore[import-outside-top-level]
+    import oxipng
+
+    before = after = 0
+    for path in files:
+        was = path.stat().st_size
+        # oxipng writes only when it wins, so a second run is a no-op.
+        oxipng.optimize(
+            path,
+            level=OXIPNG_LEVEL,
+            strip=oxipng.StripChunks.safe(),
+            interlace=oxipng.Interlacing.Off,
+        )
+        now = path.stat().st_size
+        before += was
+        after += now
+        if now < was:
+            _logger.info(
+                "%s: %d -> %d bytes (-%.1f%%)", path, was, now, 100 * (1 - now / was)
+            )
+    return before, after
+
+
+def cmd_optimize(exiftool: str) -> int:
+    """Losslessly shrink the managed tiers, then restamp what that stripped.
+
+    Recompression drops the XMP tags along with the rest of the metadata, so
+    stamping has to run afterwards or every file would read as drifted.
 
     :param exiftool: Path to the exiftool executable.
     :return: Process exit code.
     """
-    problems = _check_layout()
+    files = _managed_pngs()
+    if not files:
+        _logger.info("no managed PNGs to optimize")
+        return 0
+    before, after = _shrink(files)
+    if after < before:
+        _logger.info(
+            "%d file(s): %d -> %d bytes (-%.1f%%)",
+            len(files),
+            before,
+            after,
+            100 * (1 - after / before),
+        )
+    else:
+        _logger.info("%d file(s) already optimal", len(files))
+    return cmd_fix(exiftool)
+
+
+def cmd_check(exiftool: str) -> int:
+    """Report layout, bit-depth, and metadata drift without changing anything.
+
+    :param exiftool: Path to the exiftool executable.
+    :return: Process exit code.
+    """
+    problems = _check_layout() + _check_bit_depth()
     drift = _find_drift(exiftool)
     for problem in problems:
         _logger.warning("%s", problem)
@@ -200,10 +322,12 @@ def cmd_check(exiftool: str) -> int:
     total = len(problems) + sum(len(files) for files in drift.values())
     if total:
         _logger.error(
-            "%d problem(s); run `python tools/images.py fix` to restamp", total
+            "%d problem(s); run `python tools/images.py optimize` to shrink and"
+            " restamp, or `fix` to restamp alone",
+            total,
         )
         return 1
-    _logger.info("all image metadata is consistent")
+    _logger.info("all images are consistent")
     return 0
 
 
@@ -243,8 +367,11 @@ def main() -> int:
         help="Increase verbosity (can be repeated)",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
-    subparsers.add_parser("check", help="Report metadata drift; exit 1 if any")
+    subparsers.add_parser("check", help="Report drift and bloat; exit 1 if any")
     subparsers.add_parser("fix", help="Strip and restamp non-compliant files")
+    subparsers.add_parser(
+        "optimize", help="Losslessly recompress the managed tiers, then restamp"
+    )
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -260,12 +387,16 @@ def main() -> int:
         )
         return 2
 
+    commands = {"check": cmd_check, "fix": cmd_fix, "optimize": cmd_optimize}
     try:
-        result = cmd_check(exiftool) if args.command == "check" else cmd_fix(exiftool)
+        result = commands[args.command](exiftool)
     except subprocess.CalledProcessError as err:
         _logger.error(
             "exiftool failed with exit code %d: %s", err.returncode, err.stderr or ""
         )
+        return 2
+    except ModuleNotFoundError as err:
+        _logger.error("%s not installed (pip install pyoxipng)", err.name)
         return 2
     return result
 

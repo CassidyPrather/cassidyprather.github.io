@@ -1,8 +1,44 @@
+{{- /* Each sizes value mirrors the width its .cloud-field-* rule sets, and the
+    widths pairs cover those slots at 1x and 2x.
+
+    Both cloud layers ask for the same candidate widths even though
+    cloud-field-four's slot is a little narrower, so the two <img> elements
+    resolve to one URL and one download instead of two near-identical files.
+
+    These are the images WebP is actually good at: continuous-tone cloud and
+    grid art, drawn at 13-22% opacity. q82 leaves them off by at most 5/255
+    before that opacity is even applied.
+
+    wirenook-grill.png stays a plain static PNG: it is 4-colour art that
+    palettes down to 15 KB, and resampling it into WebP gradients costs six
+    times that for the same slot. Not everything wants to be a WebP. */ -}}
+{{- $clouds := dict
+	"src" "images/wirenook/volumetric-clouds.png"
+	"widths" (slice 736 1472)
+	"alt" ""
+-}}
 <div class="wave-field" aria-hidden="true"></div>
 <img class="cloud-field cloud-field-one" src="{{ "images/wirenook/wirenook-grill.png" | relURL }}" alt="">
-<img class="cloud-field volume-cloud cloud-field-two" src="{{ "images/wirenook/volumetric-clouds.png" | relURL }}" alt="">
-<img class="cloud-field cloud-field-three" src="{{ "images/wirenook/grid-square.png" | relURL }}" alt="">
-<img class="cloud-field volume-cloud cloud-field-four" src="{{ "images/wirenook/volumetric-clouds.png" | relURL }}" alt="">
+{{ partial "responsive-image.html" (merge $clouds (dict
+	"class" "cloud-field volume-cloud cloud-field-two"
+	"sizes" "min(46rem, 58vw)"
+	)
+	)
+}}
+{{ partial "responsive-image.html" (dict
+	"src" "images/wirenook/grid-square.png"
+	"widths" (slice 480 960)
+	"sizes" "min(30rem, 42vw)"
+	"class" "cloud-field cloud-field-three"
+	"alt" ""
+	)
+}}
+{{ partial "responsive-image.html" (merge $clouds (dict
+	"class" "cloud-field volume-cloud cloud-field-four"
+	"sizes" "min(42rem, 50vw)"
+	)
+	)
+}}
 <img class="cloud-field cloud-field-five" src="{{ "images/wirenook/clouds.svg" | relURL }}" alt="">
 <div class="sigil-lines" aria-hidden="true"></div>
 <canvas class="tick-rulers" data-tick-rulers aria-hidden="true"></canvas>
