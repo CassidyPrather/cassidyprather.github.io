@@ -8,7 +8,7 @@
   --violet: #6d2c95;
   --lavender: #b9a8ff;
   --pink: #ffd6f5;
-  --magenta: #ff00e6; 
+  --magenta: #ff00e6;
   --ink: #271452;
   --banana: #fff9b1;
   /* Text-bearing panels are fully opaque on purpose: the striped
@@ -32,7 +32,7 @@
      light or mid-tone everywhere, including behind the dark link-rail.
      Measured 5.2:1 (rail) to 16.8:1 (panels). */
   --focus-ring: #1a0d33;
-  font-family:  Unique, "Trebuchet MS", "Century Gothic", Arial, sans-serif;
+  font-family: Unique, "Trebuchet MS", "Century Gothic", Arial, sans-serif;
 }
 
 @font-face {
@@ -95,7 +95,7 @@ body {
   overscroll-behavior-y: none;
 }
 
-/*This does the hyperlink styling*/ 
+/*This does the hyperlink styling*/
 a {
   color: inherit;
   text-decoration: underline;
@@ -116,6 +116,7 @@ a:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
+
 /*end*/
 
 .page-shell {
@@ -179,15 +180,13 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
   background-position: 0 0, 7px 7px;
   background-repeat: repeat;
   z-index: -1;
-  filter: drop-shadow(0 0 1px var(--cyan)); 
+  filter: drop-shadow(0 0 1px var(--cyan));
   opacity: 0.98;
   pointer-events: none;
-  mask-image: linear-gradient(
-    to right,
-    black 40%,
-    black 2%,
-    transparent 100%
-  );
+  mask-image: linear-gradient(to right,
+      black 40%,
+      black 2%,
+      transparent 100%);
 }
 
 /* Each cloud stacks three independent motions without fighting over one
@@ -441,7 +440,7 @@ The drop-shadow filter adds depth to the waves, and pointer-events are disabled 
 }
 
 /* Wrap, because a flex line cannot shrink below its items' min-content: on a
-   long post title the heading's longest word plus the "← Blog" chip stop
+   long post title the heading's longest word plus the "<-- Blog" chip stop
    fitting once the viewport is narrow or the reader's default font is large,
    and without wrap the chip is pushed out of the panel and clipped at the
    screen edge (.page-shell clips all horizontal spill). */
@@ -490,7 +489,7 @@ h2 {
   border: 1px solid var(--line);
   background: var(--panel-strong);
   /* These chips are two or three words at most, and they are flex items in a
-     row that runs tight on a phone. Left shrinkable, "← Blog" in a post's
+     row that runs tight on a phone. Left shrinkable, "<-- Blog" in a post's
      topline broke across two lines with the arrow stranded on its own. */
   flex-shrink: 0;
   white-space: nowrap;
@@ -1086,7 +1085,7 @@ h2 {
   font-family: Atkinson-Regular, arial, sans-serif;
 }
 
-.archive-intro > :last-child {
+.archive-intro> :last-child {
   margin-bottom: 0;
 }
 
@@ -1200,7 +1199,7 @@ h2 {
   font-size: 1.15rem;
 }
 
-.gallery-section > p {
+.gallery-section>p {
   margin-bottom: 0.5rem;
   line-height: 1.55;
 }
@@ -1247,8 +1246,7 @@ h2 {
   object-fit: contain;
   /* Checkerboard so transparent art reads against the panel. */
   background:
-    repeating-conic-gradient(rgba(255, 255, 255, 0.55) 0% 25%, rgba(215, 251, 255, 0.35) 0% 50%)
-    0 0 / 1rem 1rem;
+    repeating-conic-gradient(rgba(255, 255, 255, 0.55) 0% 25%, rgba(215, 251, 255, 0.35) 0% 50%) 0 0 / 1rem 1rem;
 }
 
 .gallery-item figcaption {
@@ -1267,7 +1265,7 @@ h2 {
    fit-content — which bottoms out at min-content, not at the cell. Without a
    break opportunity the name sets the card's floor and hangs out of the grid
    cell at every width where the name is longer than the column. */
-.gallery-item > * {
+.gallery-item>* {
   max-width: 100%;
 }
 
@@ -1342,8 +1340,8 @@ h2 {
   margin-bottom: 0.5rem;
 }
 
-.press-kit-note > p:last-child,
-.license-callout > p:last-child {
+.press-kit-note>p:last-child,
+.license-callout>p:last-child {
   margin-bottom: 0;
 }
 
@@ -1432,7 +1430,7 @@ h2 {
   font-family: Atkinson-Regular, arial, sans-serif;
 }
 
-.entry-body > :last-child {
+.entry-body> :last-child {
   margin-bottom: 0;
 }
 
@@ -1528,7 +1526,7 @@ h2 {
   font-family: Atkinson-Regular, arial, sans-serif;
 }
 
-.post-body > :last-child {
+.post-body> :last-child {
   margin-bottom: 0;
 }
 
@@ -1547,9 +1545,9 @@ h2 {
 }
 
 /* Nothing to separate from above the panel's first line. */
-.post-body > :first-child,
-.entry-body > :first-child,
-.archive-intro > :first-child {
+.post-body> :first-child,
+.entry-body> :first-child,
+.archive-intro> :first-child {
   margin-top: 0;
 }
 
@@ -1605,10 +1603,14 @@ h2 {
    surrounding Atkinson prose. It tracks the reader's color-scheme preference
    because bun.com's own theme switch ships set to `system`. */
 .bun-quote {
-  --bun-bg: #f9fafb;        /* gray-50, their <body> */
-  --bun-body: #374151;      /* --tw-prose-body */
-  --bun-headings: #111827;  /* --tw-prose-headings */
-  --bun-line: #e5e7eb;      /* gray-200 */
+  --bun-bg: #f9fafb;
+  /* gray-50, their <body> */
+  --bun-body: #374151;
+  /* --tw-prose-body */
+  --bun-headings: #111827;
+  /* --tw-prose-headings */
+  --bun-line: #e5e7eb;
+  /* gray-200 */
   margin: 1.8rem 0;
   padding: clamp(1.1rem, 3vw, 2rem) clamp(1.1rem, 3.5vw, 2.5rem);
   border: 1px solid var(--bun-line);
@@ -1623,8 +1625,10 @@ h2 {
 
 @media (prefers-color-scheme: dark) {
   .bun-quote {
-    --bun-bg: #111827;        /* gray-900 */
-    --bun-body: #d1d5db;      /* --tw-prose-invert-body */
+    --bun-bg: #111827;
+    /* gray-900 */
+    --bun-body: #d1d5db;
+    /* --tw-prose-invert-body */
     --bun-headings: #fff;
     --bun-line: #374151;
   }
@@ -1639,11 +1643,11 @@ h2 {
   margin-inline: auto;
 }
 
-.bun-prose > :first-child {
+.bun-prose> :first-child {
   margin-top: 0;
 }
 
-.bun-prose > :last-child {
+.bun-prose> :last-child {
   margin-bottom: 0;
 }
 
@@ -1675,8 +1679,8 @@ h2 {
 /* Their `h3+*`/`h4+*` rules. Without these the paragraph's 1.25em top margin
    collapses against the heading's smaller bottom margin and wins, so every
    heading sits ~0.5em further from its text than it does on bun.com. */
-.bun-quote h3 + *,
-.bun-quote h4 + * {
+.bun-quote h3+*,
+.bun-quote h4+* {
   margin-top: 0;
 }
 
@@ -1707,7 +1711,6 @@ h2 {
   margin: 0 auto;
 }
 
-/* /amoeba/ — the Amoeba RL page. Prose panel first, then the console slab. */
 .amoeba-body {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
@@ -1716,7 +1719,7 @@ h2 {
   font-family: Atkinson-Regular, arial, sans-serif;
 }
 
-.amoeba-body > :last-child {
+.amoeba-body> :last-child {
   margin-bottom: 0;
 }
 
@@ -1726,9 +1729,6 @@ h2 {
   border-radius: 3px;
 }
 
-/* The controls table is the game's own key list, so it is short rows of short
-   cells; `table-layout: auto` on a full-width table gives the Action column
-   the room and lets the Key column shrink to its glyphs. */
 .amoeba-body table {
   width: 100%;
   border-collapse: collapse;
@@ -1747,19 +1747,6 @@ h2 {
   background: var(--panel-strong);
 }
 
-/* The console is drawn in the *game's* palette rather than the site's — the
-   same move .bun-quote makes with bun.com's skin, for the same reason: the
-   slab should read as a piece of the thing it links to. Every colour here is
-   a constant from the game's `palette` module (src/sim/actors.rs in
-   CassidyPrather/amoeba_rl) or render.rs's VOID, so they travel together if
-   the game is ever recoloured.
-
-   The map itself is decorative and aria-hidden. Its floor and walls sit at
-   the game's own ~1.5:1 against the void, which is texture rather than text;
-   everything that carries meaning — legend labels, the button, the stamp —
-   is drawn from the bright end of the palette instead. The one exception is
-   the nucleus red at 4.35:1, which is why the legend glyphs are set at
-   1.25rem bold: large text, so the 3:1 threshold is the one that applies. */
 .amoeba-console {
   --void: #050508;
   --wall: #484d55;
@@ -1780,17 +1767,11 @@ h2 {
   font-family: "DejaVu Sans Mono", "Liberation Mono", Consolas, monospace;
 }
 
-/* A near-black slab is exactly where the site's near-black focus ring stops
-   being visible, so the console re-points it at the brightest palette entry
-   for anything focusable inside. */
 .amoeba-console a:focus-visible {
   outline: 2px solid var(--paper);
   outline-offset: 2px;
 }
 
-/* width: max-content with max-width: 100% centres the map while it fits and
-   hands it a scroll region when it doesn't, without ever letting a 30-column
-   grid set the panel's min-content width. */
 .amoeba-map {
   width: max-content;
   max-width: 100%;
@@ -1809,8 +1790,6 @@ h2 {
   color: var(--floor);
 }
 
-/* Cytoplasm has no glyph in the game either — it is a slime-coloured cell,
-   which is why these spans hold nothing but spaces. */
 .amoeba-map .o,
 .amoeba-legend .o {
   background: var(--slime);
@@ -1959,6 +1938,7 @@ h2 {
 }
 
 @media (max-width: 40rem) {
+
   /* A blog post sits inside three nested padded boxes — the shell, the window's
      double frame, the prose panel — and each one charged full price for its
      gutter. At 412px (a Pixel's viewport) that spent 105px of the 412 on frame

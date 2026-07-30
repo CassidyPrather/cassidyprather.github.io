@@ -2,9 +2,7 @@
 title: "Amoeba RL"
 description: "7DRL 2021 — you are the blob"
 author: "Cassidy Prather"
-# /amoeba/, not /amoeba-rl/: the game bundle's intended home on this domain is
-# /amoeba-rl/ (see docs/DEPLOYING.md in the game's repo), and a page rendered
-# to the same path would collide with the static files once they land here.
+# /amoeba-rl/ is deploy target of the corresponding repo
 type: amoeba
 ---
 
@@ -19,10 +17,6 @@ type: amoeba
 <span class="w">#</span><span class="f">...........</span><span class="w">#</span><span class="f">........</span><span class="w">#</span><span class="f">.......</span><span class="w">#</span>
 <span class="w">##############################</span></pre>
 
-  <!-- The chips are hidden from assistive tech: read aloud they are a string
-       of punctuation names, and the label beside each one is the whole point.
-       &nbsp; in the first, not a plain space — cytoplasm has no glyph of its
-       own, and the minifier collapses a whitespace-only span away to nothing. -->
   <ul class="amoeba-legend">
     <li><span class="glyph o" aria-hidden="true">&nbsp;</span> cytoplasm</li>
     <li><span class="glyph n" aria-hidden="true">@</span> nucleus</li>
@@ -34,52 +28,40 @@ type: amoeba
 
   <p class="amoeba-launch">
     <a class="amoeba-play" href="https://wirenook.net/amoeba_rl/">Play in the browser</a>
-    <span class="amoeba-stamp">7DRL 2021 · Rust + WebAssembly · AGPL-3.0</span>
+    <span class="amoeba-stamp">7DRL 2021 · browser port · Rust + WebAssembly</span>
   </p>
 </div>
 
-Play as a giant, constantly evolving amoeba and fight off intensifying waves of
-humans trying to protect their cities. Engulf and digest them, craft new
-organelles and cores from their remains, and destroy the city gates to escape to
-the surface.
+Play as a giant, constantly evolving amoeba and fight off intensifying waves of humans trying to protect their cities. Craft new organelles and cores to respond to escalating threats. Can you destroy enough city gates to escape to the surface?
 
-Built in a week for the 2021 [Seven Day Roguelike](https://7drl.com/) challenge
-and submitted as Vectis, originally in C# on RogueSharp and RLNET. It has since
-been rewritten in Rust: the game proper is a deterministic, unit-tested library,
-and the frontend is a thin shell that draws it with the original's CP437
-tileset. The same build runs natively and in a browser tab.
+Post-post 7DRL patch (v4.0.0): It's on webasm now lol
+Original game: <a href="https://vectis.itch.io/amoeba-roguelike">https://vectis.itch.io/amoeba-roguelike</a> (submission was to the 2021 [Seven Day Roguelike](https://7drl.com/) challenge)
 
 ## How to play
 
-Destroy the required number of city gates (`C`) by walking into them with enough
-mass. You lose when your last nucleus dies.
+"GJ" is the hardest difficulty.
 
-Moving — as opposed to swapping — drags a path of organelles along behind you,
-and the highlighted slime shows which tiles are coming with you. Enemies sealed
-in with no walkable escape are engulfed and digested. Crafting materials upgrade
-whatever organelles sit next to them, or the nucleus you swap with.
+Arrow keys: Move
+Space: Wait
+A, D: Go to previous/next nucleus
+Z: Organelle mode toggle
+    Arrow keys (Organelle mode): Select organelle
+X: Examine mode toggle
+    Arrow keys (Examine mode): Move examine cursor
+Destroy all city gates to win
 
-| Key | Action |
-|---|---|
-| Arrows | Move / steer the cursor or sidebar |
-| Space or `.` | Wait |
-| `A` / `D` | Previous / next nucleus |
-| `Z` | Organelle browser |
-| `X` | Examine mode |
-| `Q` / `E` | Page the sidebar |
-| `F1` | Help |
-| `M` | Mute |
-| `R` | Restart, once the run has ended |
+### Tips
 
-Normal, Easy and GJ difficulty are picked on the title screen. On a phone you
-get an on-screen pad and buttons: a tap next to the active nucleus moves it, and
-a tap in examine mode sends the cursor there.
+Stuck? Try reviewing the following information:
+
+- When you move (not swap), you drag a path of organelles behind you. The highlighted slime shows which tiles will be dragged! This can be used to position organelles strategically and quickly.
+- To learn what something is, e\[x\]amine it.
+- Pressing space to pass a turn or luring enemies can break an otherwise impenetrable formation.
+- In the early game, it is easy to find new base organelles but hard to find crafting materials. This inverts as time goes on.
+- Find the right balance between combat, exploration, and organelle management for your play-style; all of these cost time and come with different risks and rewards.
 
 ## Credits
 
-Original game and design by me. Extensive playtesting, design and support on the
-original from JackNine; further playtesting from Qu and Decinym. The tileset is
-libtcod's `terminal12x12_gs_ro.png`.
+Original game and design by me. Extensive playtesting, design and support on the original from JackNine; further playtesting from Qu and Decinym. The tileset is libtcod's `terminal12x12_gs_ro.png`.
 
-Source is on [GitHub](https://github.com/CassidyPrather/amoeba_rl), under
-AGPL-3.0-or-later.
+Source on [GitHub](https://github.com/CassidyPrather/amoeba_rl).
