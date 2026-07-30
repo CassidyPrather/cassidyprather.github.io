@@ -4,65 +4,65 @@
 		<div class="window-topline">
 			<h2>{{ .Title }}</h2>
 			<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
-		</div>
-
-		{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
-
-		{{ $sections := slice }}
-		{{ range $id, $meta := site.Data.press_kit }}
-			{{ $sections = $sections | append (merge $meta (dict "id" $id)) }}
-		{{ end }}
-		{{ range sort $sections "weight" }}
-			<section class="gallery-section">
-				<h3>{{ .title }}</h3>
-				<p>{{ .blurb | markdownify }}</p>
-				<div class="gallery-grid">
-					{{ range .items }}
-						{{ $item := . }}
-						{{ if .coming }}
-							<figure class="gallery-item gallery-item-coming">
-								<div class="gallery-coming">coming soon</div>
-								<figcaption>{{ .name }}</figcaption>
-							</figure>
-						{{ else if .src }}
-							{{ $src := relURL .src }}
-							<figure class="gallery-item">
-								<a href="{{ or .href $src }}" download><img src="{{ $src }}" alt="{{ .name }}" loading="lazy"></a>
-								<figcaption>
-									<code>{{ .name }}</code>
-									{{ with .alt }}<a class="gallery-alt" href="{{ relURL . }}" download>{{ $item.alt_label | default "alt" }}</a>{{ end }}
-									{{ with .note }}<span class="gallery-note">{{ . }}</span>{{ end }}
-								</figcaption>
-							</figure>
-						{{ else }}
-							{{/* No local preview: a source file served from elsewhere. */}}
-							<figure class="gallery-item gallery-item-source">
-								<a href="{{ .href }}"{{ if .external }} rel="noopener"{{ end }}><code>{{ .name }}</code></a>
-								<figcaption>
-									{{ if .external }}<span class="gallery-offsite">offsite</span>{{ end }}
-									{{ with .note }}<span class="gallery-note">{{ . }}</span>{{ end }}
-								</figcaption>
-							</figure>
-						{{ end }}
-					{{ end }}
 				</div>
-			</section>
-		{{ end }}
 
-		<aside class="press-kit-note">
-			<p>
-				Some fonts might not render in browser if not installed.
-				Examples:
-				<a href="{{ "fonts/Unique.ttf" | relURL }}">Unique</a> and
-				<a href="{{ "fonts/AtkinsonHyperlegible-Regular.ttf" | relURL }}">Atkinson Hyperlegible</a>
-				(<a href="{{ "fonts/OFL.txt" | relURL }}">OFL 1.1</a>).
-			</p>
-			<p>
-				Extra unused design assets:
-				<a href="https://github.com/CassidyPrather/cassidyprather.github.io/tree/main/design" rel="noopener">design/ on GitHub</a>.
-				Terms: <a href="{{ "licenses/" | relURL }}">licenses</a>.
-			</p>
-		</aside>
-	</section>
-</main>
+				{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
+
+				{{ $sections := slice }}
+				{{ range $id, $meta := site.Data.press_kit }}
+					{{ $sections = $sections | append (merge $meta (dict "id" $id)) }}
+				{{ end }}
+				{{ range sort $sections "weight" }}
+					<section class="gallery-section">
+						<h3>{{ .title }}</h3>
+						<p>{{ .blurb | markdownify }}</p>
+						<div class="gallery-grid">
+							{{ range .items }}
+								{{ $item := . }}
+								{{ if .coming }}
+									<figure class="gallery-item gallery-item-coming">
+										<div class="gallery-coming">coming soon</div>
+										<figcaption>{{ .name }}</figcaption>
+									</figure>
+								{{ else if .src }}
+									{{ $src := relURL .src }}
+									<figure class="gallery-item">
+										<a href="{{ or .href $src }}" download><img src="{{ $src }}" alt="{{ .name }}" loading="lazy"></a>
+										<figcaption>
+											<code>{{ .name }}</code>
+											{{ with .alt }}<a class="gallery-alt" href="{{ relURL . }}" download>{{ $item.alt_label | default "alt" }}</a>{{ end }}
+											{{ with .note }}<span class="gallery-note">{{ . }}</span>{{ end }}
+										</figcaption>
+									</figure>
+								{{ else }}
+									{{/* No local preview: a source file served from elsewhere. */}}
+									<figure class="gallery-item gallery-item-source">
+										<a href="{{ .href }}"{{ if .external }} rel="noopener"{{ end }}><code>{{ .name }}</code></a>
+										<figcaption>
+											{{ if .external }}<span class="gallery-offsite">offsite</span>{{ end }}
+											{{ with .note }}<span class="gallery-note">{{ . }}</span>{{ end }}
+										</figcaption>
+									</figure>
+								{{ end }}
+							{{ end }}
+						</div>
+					</section>
+				{{ end }}
+
+				<aside class="press-kit-note">
+					<p>
+						Some fonts might not render in browser if not installed.
+						Examples:
+						<a href="{{ "fonts/Unique.ttf" | relURL }}">Unique</a> and
+						<a href="{{ "fonts/AtkinsonHyperlegible-Regular.ttf" | relURL }}">Atkinson Hyperlegible</a>
+						(<a href="{{ "fonts/OFL.txt" | relURL }}">OFL 1.1</a>).
+					</p>
+					<p>
+						Extra unused design assets:
+						<a href="https://github.com/CassidyPrather/cassidyprather.github.io/tree/main/design" rel="noopener">design/ on GitHub</a>.
+						Terms: <a href="{{ "licenses/" | relURL }}">licenses</a>.
+					</p>
+				</aside>
+			</section>
+		</main>
 {{ end }}
