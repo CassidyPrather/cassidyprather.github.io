@@ -338,7 +338,11 @@ def _serving(root: Path) -> Iterator[str]:
     class Quiet(http.server.SimpleHTTPRequestHandler):
         """A static handler that does not narrate every asset request."""
 
-        def log_message(self, format: str, *args: object) -> None:  # noqa: A002
+        def log_message(
+            self,
+            format: str,  # ruff: ignore[builtin-argument-shadowing]
+            *args: object,
+        ) -> None:
             """Swallow the access log.
 
             :param format: Unused printf-style template.
@@ -505,7 +509,8 @@ def cmd_check(
     :param full_sweep: Whether ``widths`` is the default full sweep.
     :return: Process exit code.
     """
-    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+    # ruff: ignore[import-outside-top-level]
+    from playwright.sync_api import sync_playwright
 
     pages = _pages(root)
     if not pages:
