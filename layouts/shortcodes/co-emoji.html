@@ -1,0 +1,16 @@
+{{- /*
+	One of cohost's built-in eggbug emoji, which its markdown accepted as
+	`:eggbug:` and friends.
+
+	These are 128px PNGs drawn at 1.25em — the --emoji-scale cohost set on
+	:root — so they go out unprocessed rather than through the image pipeline;
+	a resize would cost a build step and save nothing on a 6 KB sprite. They
+	are anti software software club's art, staged under
+	static/images/no-relicensing/cohost/.
+
+	Params:
+	  src   Filename within that directory (required).
+	  name  The `:shortcode:` it stood for, used as alt and title (required).
+*/ -}}
+{{- $name := .Get "name" -}}
+<img class="co-emoji" src="{{ printf "images/no-relicensing/cohost/%s" (.Get "src") | relURL }}" width="128" height="128" alt="{{ $name }}" title="{{ $name }}" loading="lazy" decoding="async">

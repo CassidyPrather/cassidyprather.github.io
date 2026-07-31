@@ -1,0 +1,21 @@
+# The @CassidyCo project as Cohost held it, read out of the profile-page
+# snapshot's __COHOST_LOADER_STATE__ blob. Kept verbatim, typo included — this
+# is what the page said, not what it should have said.
+#
+# layouts/cohost/ renders from this; the matching images are staged in
+# static/images/no-relicensing/cohost/.
+
+handle = "CassidyCo"
+name = "Cassidy"
+pronouns = "she/her"
+bio = "25 - West Coat USA\nI like VRChat!"
+avatar = "images/no-relicensing/cohost/cass-avatar.png"
+header = "images/no-relicensing/cohost/cass-header.webp"
+avatarShape = "circle"
+
+# Where the profile used to live, and where a copy of it still does.
+url = "https://cohost.org/CassidyCo"
+archive = "https://web.archive.org/web/2024/https://cohost.org/CassidyCo"
+
+# cohost went read-only on 1 October 2024 and offline at the end of that year.
+readOnly = "2024-10-01"

@@ -1,0 +1,24 @@
+{{- /* Cohost's left rail was the project switcher over a nav list. The
+	switcher becomes a link to the archived profile page, and the nav points at
+	the parts of wirenook that took over each job: the blog for the feed, the
+	guestbook for comments, /pages/ for everything else. */ -}}
+{{- $profile := site.Data.cohost -}}
+<aside class="co-sidebar">
+	<a class="co-sidebar-card" href="{{ "cohost/" | relURL }}">
+		{{ partial "cohost/avatar.html" (dict "src" $profile.avatar "shape" $profile.avatarShape "alt" $profile.handle) }}
+		<span>
+			<span class="co-display-name">{{ $profile.name }}</span><br>
+			<span class="co-handle">@{{ $profile.handle }}</span>
+		</span>
+	</a>
+
+	<nav aria-label="Elsewhere on wirenook">
+		<ul class="co-sidebar-nav">
+			<li><a href="{{ site.Home.RelPermalink }}">home</a></li>
+			<li><a href="{{ "blog/" | relURL }}">blog</a></li>
+			<li><a href="{{ "pages/" | relURL }}">works</a></li>
+			<li><a href="{{ "guestbook/" | relURL }}">guestbook</a></li>
+			<li><a href="{{ "blog/index.xml" | relURL }}">rss</a></li>
+		</ul>
+	</nav>
+</aside>

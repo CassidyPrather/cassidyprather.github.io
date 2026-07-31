@@ -1,0 +1,31 @@
+{{- /*
+	An attachment from a cohost post, sized for the post column.
+
+	Cohost hung attachments off the post body full-bleed, with the alt text the
+	author typed. The staged files under static/images/no-relicensing/cohost/
+	are already downscaled from the export's originals (see that directory's
+	README), so the widths here only have to cover the ~42rem column at 1x and
+	2x; responsive-image.html clamps anything wider back to the file itself.
+
+	Format follows the same rule the partial's header lays out: the VRChat and
+	photographic captures ship as WebP, and the UI screenshots stay PNG, where
+	lossy chroma subsampling would smear text edges. Extension picks the
+	default, and `format` overrides it.
+
+	Params:
+	  src     Path under images/, as mounted into assets (required).
+	  alt     Alt text; pass "" for a decorative image.
+	  format  Hugo image spec, overriding the by-extension default.
+*/ -}}
+{{- $src := .Get "src" -}}
+{{- $default := cond (eq (path.Ext $src) ".png") "png" "webp q82" -}}
+{{- partial "responsive-image.html" (dict
+	"src" $src
+	"widths" (slice 672 1344)
+	"format" (default $default (.Get "format"))
+	"sizes" "(min-width: 64rem) 40rem, 92vw"
+	"class" "co-attachment"
+	"alt" (.Get "alt")
+	"loading" "lazy"
+	)
+-}}

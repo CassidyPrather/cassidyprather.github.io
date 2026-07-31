@@ -1,0 +1,14 @@
+{{- /* The fixed cherry bar. Cohost's logo went to the dashboard; there is no
+	dashboard any more, so it goes home. */ -}}
+<header class="co-topbar">
+	<div class="co-topbar-inner">
+		<a class="co-logo" href="{{ site.Home.RelPermalink }}" title="cohost is gone — this way to wirenook">
+			{{ partial "cohost/logo.html" . }}
+		</a>
+		<nav class="co-topbar-nav" aria-label="Site">
+			<a href="{{ "cohost/" | relURL }}">@{{ site.Data.cohost.handle }}</a>
+			<a href="{{ "blog/" | relURL }}">blog</a>
+			<a class="co-topbar-home" href="{{ site.Home.RelPermalink }}">wirenook</a>
+		</nav>
+	</div>
+</header>

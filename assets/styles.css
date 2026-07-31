@@ -1595,6 +1595,19 @@ h2 {
   margin-inline: auto;
 }
 
+/* The posts under content/blog/cohost/ render in cohost's skin on their own
+   pages (assets/cohost.css), but the blog feed above still draws their
+   summaries in this one. Their inline eggbug emoji are 128px sprites meant to
+   sit in a line of text at 1.25em, and the rule above would blow each one up
+   into a centred block. */
+.entry-body .co-emoji {
+  display: inline-block;
+  width: auto;
+  height: 1.25em;
+  margin: 0;
+  vertical-align: middle;
+}
+
 /* The "Jarred says" pull-quote is rendered in bun.com's own skin rather than
    this site's: Tailwind Typography `prose` at base size, on their page
    background, in their system-ui stack. Every value below is lifted from

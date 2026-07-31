@@ -33,6 +33,41 @@ pipeline. Read its header comment before adding a call: whether an image wants
 WebP or PNG there depends on its content, and getting it backwards costs bytes
 or edges.
 
+## The cohost archive
+
+`content/blog/cohost/` is the backfill of Cassidy's [cohost](https://cohost.org/)
+posts, 2022–2024, imported from her data export after the site shut down. They
+are ordinary blog entries — they appear in the feed, the RSS, and the search
+index with everything else — but each one carries `type: cohost`, which is how
+Hugo picks `layouts/cohost/` for it. That directory has a `baseof.html` of its
+own, so those pages replace the wirenook shell outright: cohost's top bar,
+cohost's post boxes, `assets/cohost.css` instead of `assets/styles.css`.
+`/cohost/` (`content/cohost.md`) is the profile page they hang off.
+
+Nothing in the chrome is decorative. cohost has been dark since the end of
+2024, so every control points at whatever does its job now — the logo and nav
+come home, comments and the like button go to the guestbook, "follow" is the
+blog's RSS feed, tags run the blog's own search, and the one link that really
+does want cohost goes by way of the Internet Archive.
+
+Two things about the imported markdown are worth knowing before editing it:
+
+- **Hard line breaks are deliberate.** cohost rendered a single newline as
+  `<br>`; Goldmark collapses it. Every line that continues a paragraph
+  therefore ends in a backslash, which is CommonMark's hard break. Dropping
+  one reflows a poem.
+- **Some raw HTML spans blocks.** cohost rendered each block separately and
+  concatenated the results, so a `<details>` can open in one paragraph and
+  close several paragraphs later. That is why `<!--more-->` sits where it does
+  in `reading-poetry.md` and `pathologic-is-the-best-video-game-ever.md`:
+  folding inside one of those regions would put unclosed markup in the feed
+  summary.
+
+The staged media is described in
+[`static/images/no-relicensing/cohost/`](static/images/no-relicensing/README.md)
+— unlike the rest of that tier it is downscaled rather than byte-identical, and
+that README says why.
+
 Overflow is a pain:
 
 ```sh

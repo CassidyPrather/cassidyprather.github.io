@@ -1,0 +1,67 @@
+{{ define "title" }}cohost! - @{{ site.Data.cohost.handle }}{{ end }}
+
+{{ define "main" }}
+{{ $profile := site.Data.cohost }}
+{{ $posts := (where (where site.RegularPages "Type" "cohost") "Section" "blog").ByDate.Reverse }}
+
+<section class="co-profile">
+	{{ partial "responsive-image.html" (dict
+		"src" $profile.header
+		"widths" (slice 720 1440)
+		"sizes" "(min-width: 64rem) 42rem, 92vw"
+		"class" "co-profile-header"
+		"alt" ""
+		"loading" "eager"
+		)
+	}}
+	<div class="co-profile-body">
+		{{ partial "cohost/avatar.html" (dict
+			"src" $profile.avatar
+			"shape" $profile.avatarShape
+			"alt" $profile.handle
+			"class" "co-profile-avatar"
+			"width" 80
+			)
+		}}
+		<div class="co-profile-names">
+			<h1 class="co-display-name">{{ $profile.name }}</h1>
+			<span class="co-handle">@{{ $profile.handle }}</span>
+			<span class="co-pronouns">{{ $profile.pronouns }}</span>
+		</div>
+		{{/* "follow" is the one control here that still has a live
+			     equivalent: the blog's feed is how you keep up with her now. */}}
+		<a class="co-button" href="{{ "blog/index.xml" | relURL }}">
+			{{ partial "cohost/icon.html" (dict "name" "rss") }}
+			follow
+		</a>
+	</div>
+	<div class="co-profile-bio">
+		<p>{{ $profile.bio }}</p>
+	</div>
+</section>
+
+<div class="co-info-box">
+	{{ partial "cohost/icon.html" (dict "name" "info") }}
+	<div>
+		<p>
+			This is a rebuild of @{{ $profile.handle }}'s cohost page, from her
+			data export. cohost closed at the end of 2024; the
+			<a href="{{ $profile.archive }}" rel="nofollow noopener">real one</a>
+			only exists in the Internet Archive now.
+		</p>
+		<p>
+			{{ len $posts }} posts, {{ (index (last 1 $posts) 0).Date.Format "January 2006" }}
+			to {{ (index (first 1 $posts) 0).Date.Format "January 2006" }}. They're part of
+			<a href="{{ "blog/" | relURL }}">the blog</a> too, where she's still writing.
+		</p>
+	</div>
+</div>
+
+{{ with .Content }}<div class="co-prose">{{ . }}</div>{{ end }}
+
+<div class="co-feed">
+	{{ range $posts }}
+		{{ partial "cohost/post.html" (dict "page" . "preview" true) }}
+	{{ end }}
+</div>
+{{ end }}

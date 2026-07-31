@@ -35,6 +35,29 @@
 						</p>
 					</article>
 
+					{{/* The cohost archive draws two things that are not files under
+           images/: the wordmark in its top bar and the glyphs on its post
+           controls are inlined into layouts/partials/cohost/. Neither is
+           covered by the per-directory tiers below, so they are named here. */}}
+					<article class="license-entry">
+						<h3>cohost interface — marks and icons</h3>
+						<p class="license-files">
+							<code>layouts/partials/cohost/logo.html</code>
+							<code>layouts/partials/cohost/icon.html</code>
+							<code>images/no-relicensing/cohost/</code>
+						</p>
+						<p>
+							The <a href="{{ "cohost/" | relURL }}">cohost archive</a> is rebuilt
+							in cohost's own skin. The wordmark and eggbug are
+							<a href="https://antisoftware.club/">anti software software club</a>'s,
+							used here to show where these posts were written; wirenook is
+							unaffiliated, and cohost closed at the end of 2024. The post-control
+							glyphs are <a href="https://heroicons.com/">Heroicons</a> by Tailwind
+							Labs, under the
+							<a href="https://github.com/tailwindlabs/heroicons/blob/master/LICENSE">MIT license</a>.
+						</p>
+					</article>
+
 					{{/* Image licensing is per-directory; data/image_licenses.toml is the
            single source of truth, shared with the style-page gallery. */}}
 					{{ $sections := slice }}

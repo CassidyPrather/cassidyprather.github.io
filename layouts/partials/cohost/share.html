@@ -1,0 +1,51 @@
+{{- /*
+	The post she was replying to, above her own.
+
+	Cohost carried the whole parent post in the thread. Her export kept only
+	its URL, and reprinting somebody else's writing in full on her site is not
+	the same act as sharing it on theirs — so this is the byline, the headline,
+	a line of it, and a link to wherever that post can be read today.
+
+	Params:
+	  share  The `cohost.share` map from the post's front matter (required).
+*/ -}}
+{{- $share := .share -}}
+<article class="co-post-box co-shared-post">
+	<header class="co-thread-header">
+		<div class="co-byline">
+			{{ partial "cohost/avatar.html" (dict "src" $share.avatar "shape" $share.shape "alt" $share.handle) }}
+			<a class="co-display-name" href="{{ $share.link }}" rel="nofollow noopener">{{ $share.name }}</a>
+			<span class="co-handle">@{{ $share.handle }}</span>
+			<span class="co-pronouns">{{ $share.pronouns }}</span>
+			<time class="co-timestamp" datetime="{{ $share.date }}">{{ dateFormat "Jan 2, 2006" $share.date }}</time>
+		</div>
+	</header>
+
+	<hr class="co-hairline">
+
+	{{ with $share.headline }}
+		<h3 class="co-headline"><a href="{{ $share.link }}" rel="nofollow noopener">{{ . }}</a></h3>
+	{{ end }}
+
+	<div class="co-prose">
+		<p>{{ $share.excerpt }}</p>
+	</div>
+
+	{{ with $share.tags }}
+		<div class="co-tags">
+			{{ range . }}<span>#{{ . }}</span>{{ end }}
+		</div>
+	{{ end }}
+
+	<hr class="co-hairline">
+
+	<footer class="co-thread-footer">
+		<span>shared by @{{ site.Data.cohost.handle }}</span>
+		<div class="co-actions">
+			<a class="co-action" href="{{ $share.link }}" rel="nofollow noopener">
+				{{ partial "cohost/icon.html" (dict "name" "external") }}
+				<span>read it at {{ $share.linkLabel }}</span>
+			</a>
+		</div>
+	</footer>
+</article>

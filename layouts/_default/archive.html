@@ -9,7 +9,11 @@
 				{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
 
 				<div class="license-list">
-					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "vrchat") }}
+					{{/* "cohost" is the archive's own front page (content/cohost.md), not
+           the posts behind it — those are blog entries, and they carry the same
+           type only because that is how Hugo picks their layout. */}}
+					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "vrchat" "cohost") }}
+					{{ $pages = where $pages "Section" "!=" "blog" }}
 					{{ range $pages.ByTitle }}
 						<article class="license-entry">
 							<h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>

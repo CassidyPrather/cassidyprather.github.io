@@ -1,0 +1,24 @@
+{{- /*
+	A project avatar at the size the chrome draws it (32px, or 80px on the
+	profile header), in the shape that project had set.
+
+	Params:
+	  src    Path under images/, as mounted into assets (required).
+	  shape  "circle" or "roundrect", as Cohost stored it.
+	  alt    Alt text.
+	  class  Extra classes appended after the shape class.
+	  width  Rendered width in CSS px; drives the srcset. Defaults to 32.
+*/ -}}
+{{- $width := int (default 32 .width) -}}
+{{- $shape := printf "co-avatar co-avatar-%s" (default "circle" .shape) -}}
+{{- $class := printf "%s %s" $shape (default "" .class) | strings.TrimSpace -}}
+{{- $img := resources.Get .src -}}
+{{- if and $img (ne (path.Ext .src) ".gif") -}}
+	{{- /* An animated GIF would be flattened to its first frame by the image
+	    pipeline, so those go through untouched. */ -}}
+	{{- $small := $img.Process (printf "resize %dx png" $width) -}}
+	{{- $large := $img.Process (printf "resize %dx png" (mul $width 2)) -}}
+	<img class="{{ $class }}" src="{{ $small.RelPermalink }}" srcset="{{ $small.RelPermalink }} 1x, {{ $large.RelPermalink }} 2x" width="{{ $width }}" height="{{ $width }}" loading="lazy" decoding="async" alt="{{ .alt }}">
+{{- else -}}
+	<img class="{{ $class }}" src="{{ .src | relURL }}" width="{{ $width }}" height="{{ $width }}" loading="lazy" decoding="async" alt="{{ .alt }}">
+{{- end -}}

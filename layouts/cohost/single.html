@@ -1,0 +1,45 @@
+{{ define "title" }}{{ with .Title }}{{ . }} - {{ end }}cohost! - @{{ site.Data.cohost.handle }}{{ end }}
+
+{{ define "main" }}
+{{/* The profile page is type cohost too, so the archive is the cohost-typed
+	     pages that are actually posts in the blog section. */}}
+{{ $posts := (where (where site.RegularPages "Type" "cohost") "Section" "blog").ByDate }}
+<div class="co-info-box">
+	{{ partial "cohost/icon.html" (dict "name" "info") }}
+	<p><a href="https://www.wikipedia.org/">Cohost</a> shut down in 2024</p>
+</div>
+
+<div class="co-thread">
+	{{ with .Params.cohost.share }}
+		{{ partial "cohost/share.html" (dict "share" .) }}
+	{{ end }}
+	{{ partial "cohost/post.html" (dict "page" . "preview" false) }}
+</div>
+
+{{/* Cohost had no post-to-post navigation, just an endless feed. This is
+	     its stand-in, and it stays inside the archive on purpose: Next/Prev
+	     across the whole blog section would drop the reader into a
+	     wirenook-themed post with no warning. */}}
+{{ $index := 0 }}
+{{ range $i, $p := $posts }}
+	{{ if eq $p.RelPermalink $.RelPermalink }}{{ $index = $i }}{{ end }}
+{{ end }}
+<nav class="co-pager" aria-label="Archive">
+	{{ if gt $index 0 }}
+		{{ with index $posts (sub $index 1) }}
+			<a class="co-pager-prev" href="{{ .RelPermalink }}">
+				<span class="co-pager-label">&larr; older</span>
+				<span class="co-pager-title">{{ .Title | default (.Date.Format "Jan 2, 2006") }}</span>
+			</a>
+		{{ end }}
+	{{ end }}
+	{{ if lt (add $index 1) (len $posts) }}
+		{{ with index $posts (add $index 1) }}
+			<a class="co-pager-next" href="{{ .RelPermalink }}">
+				<span class="co-pager-label">newer &rarr;</span>
+				<span class="co-pager-title">{{ .Title | default (.Date.Format "Jan 2, 2006") }}</span>
+			</a>
+		{{ end }}
+	{{ end }}
+</nav>
+{{ end }}

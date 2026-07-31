@@ -1,0 +1,95 @@
+{{- /*
+	One post box: header, body, tags, footer — the shape Cohost gave a post,
+	used both on its own page and as a preview in the profile feed.
+
+	The footer controls are the interesting part. Cohost put comment, share,
+	edit, and like there; none of those actions can happen any more, so each
+	one is re-aimed at whatever now does its job. Nothing here is a dead
+	control or a decoration that pretends to be a button.
+
+	Params:
+	  page     The post (required).
+	  preview  True in the profile feed: headline links to the post, body is
+	           the summary, and a "read more" line closes it out.
+*/ -}}
+{{- $page := .page -}}
+{{- $preview := .preview -}}
+{{- $meta := $page.Params.cohost -}}
+{{- $profile := site.Data.cohost -}}
+<article class="co-post-box">
+	<header class="co-thread-header">
+		<div class="co-byline">
+			{{ partial "cohost/avatar.html" (dict "src" $profile.avatar "shape" $profile.avatarShape "alt" $profile.handle) }}
+			<a class="co-display-name" rel="author" href="{{ "cohost/" | relURL }}">{{ $profile.name }}</a>
+			<a class="co-handle" href="{{ "cohost/" | relURL }}">@{{ $profile.handle }}</a>
+			<time class="co-timestamp" datetime="{{ $page.Date.Format "2006-01-02T15:04:05Z07:00" }}" title="{{ $page.Date.Format "Mon, Jan 2, 2006, 3:04 PM" }}">
+				<a href="{{ $page.RelPermalink }}">{{ $page.Date.Format "Jan 2, 2006" }}</a>
+			</time>
+		</div>
+	</header>
+
+	<hr class="co-hairline">
+
+	{{ if $meta.unpublished }}
+		<div class="co-prose">
+			<div class="co-info-box co-tombstone">
+				{{ partial "cohost/icon.html" (dict "name" "info") }}
+				<p>She never published this one. It sat in her cohost drafts until the site closed.</p>
+			</div>
+		</div>
+	{{ end }}
+
+	{{ with $page.Title }}
+		<h3 class="co-headline">
+			{{ if $preview }}<a href="{{ $page.RelPermalink }}">{{ . }}</a>{{ else }}{{ . }}{{ end }}
+		</h3>
+	{{ end }}
+
+	<div class="co-prose">
+		{{ if $preview }}
+			{{ with $page.Description }}<p>{{ . | markdownify }}</p>{{ else }}{{ $page.Summary }}{{ end }}
+		{{ else }}
+			{{ $page.Content }}
+		{{ end }}
+	</div>
+
+	{{ if and $preview $page.Truncated }}
+		<a class="co-read-more" href="{{ $page.RelPermalink }}">read the rest &rarr;</a>
+	{{ end }}
+
+	{{ with $meta.tags }}
+		<div class="co-tags">
+			{{ range . }}
+				{{/* Taxonomies are switched off site-wide (hugo.toml), and the
+				     tagged/ pages these pointed at went down with cohost. The
+				     blog's own search box is the live thing that does the same
+				     job, and it reads ?q= on load. */}}
+				<a href="{{ printf "blog/?q=%s" (urlquery .) | relURL }}">#{{ . }}</a>
+			{{ end }}
+		</div>
+	{{ end }}
+
+	<hr class="co-hairline">
+
+	<footer class="co-thread-footer">
+		<a class="co-action" href="{{ "guestbook/" | relURL }}">
+			{{ partial "cohost/icon.html" (dict "name" "comment") }}
+			<span>comments</span>
+		</a>
+		<div class="co-actions">
+			{{/* Icon-only links, so each keeps a plain screen-reader label. */}}
+			<a class="co-action" href="{{ $page.RelPermalink }}">
+				{{ partial "cohost/icon.html" (dict "name" "link") }}
+				<span class="co-visually-hidden">permalink</span>
+			</a>
+			<a class="co-action" href="{{ printf "https://web.archive.org/web/2024/%s" $meta.url }}" rel="nofollow noopener">
+				{{ partial "cohost/icon.html" (dict "name" "external") }}
+				<span class="co-visually-hidden">the original post on the Internet Archive</span>
+			</a>
+			<a class="co-action" href="{{ "guestbook/" | relURL }}">
+				{{ partial "cohost/icon.html" (dict "name" "heart") }}
+				<span class="co-visually-hidden">guestbook</span>
+			</a>
+		</div>
+	</footer>
+</article>

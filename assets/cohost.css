@@ -1,0 +1,883 @@
+/* Cohost, rebuilt.
+
+   The pages under /blog/cohost/ and /cohost/ don't load styles.css at all —
+   layouts/cohost/baseof.html replaces the whole wirenook shell, so this file
+   is the entire stylesheet for them. Reading one of those posts should feel
+   like reading it where it was written.
+
+   Colours, spacing, and the box structure come from the real thing: the
+   palette below is the `:root` block Cohost inlined into every page, and the
+   measurements come from its compiled stylesheet, both preserved in the page
+   snapshots under OneDrive/Documents/Archive/Cohost/. Cohost's Tailwind build
+   is not reproduced — only the handful of components these pages use.
+
+   Cohost served Atkinson Hyperlegible and switched on prefers-color-scheme;
+   both are kept. static/fonts/ already carries the typeface for the rest of
+   the site, and the URLs below resolve against the published stylesheet at
+   the site root, the same way assets/styles.css reaches them. */
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bare RGB components, as Cohost declared them, so a colour can still be
+   composited with an opacity where one is needed. */
+:root {
+  color-scheme: light dark;
+
+  --not-white: 255 249 242;
+  --not-black: 25 25 25;
+  --cherry: 131 37 79;
+  --strawberry: 229 107 111;
+  --mango: 255 171 92;
+  --longan: 255 216 168;
+
+  --foreground-100: 253 206 224;
+  --foreground-200: 238 173 199;
+  --foreground-300: 211 116 155;
+  --foreground-400: 174 68 115;
+  --foreground-500: 131 37 79;
+  --foreground-600: 103 26 61;
+  --foreground-700: 81 17 46;
+  --foreground: var(--cherry);
+  --secondary: var(--strawberry);
+  --accent: var(--mango);
+
+  --background: var(--not-white);
+  --text: var(--not-white);
+  --body: var(--not-black);
+  --box: 255 255 255;
+  --box-chrome: var(--not-white);
+  --hairline: 191 186 181;
+  --muted: 130 127 124;
+  --handle: 74 72 71;
+  --box-border: transparent;
+
+  --emoji-scale: 1.25em;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --secondary: var(--mango);
+    --background: var(--not-black);
+    --body: var(--not-white);
+    --box: 0 0 0;
+    --box-chrome: var(--not-black);
+    --muted: 160 156 152;
+    --handle: 191 186 181;
+    --box-border: rgb(74 72 71);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  /* Clears the fixed top bar, exactly as Cohost's own `body { margin-top:
+     4rem }` did. */
+  padding-top: 4rem;
+  background-color: rgb(var(--background));
+  color: rgb(var(--body));
+  font-family: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.co-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 3px solid rgb(var(--accent));
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- top bar */
+
+.co-topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  height: 4rem;
+  background-color: rgb(var(--foreground));
+  color: rgb(var(--text));
+}
+
+.co-topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  max-width: 72rem;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 0.75rem;
+}
+
+@media (min-width: 40rem) {
+  .co-topbar-inner {
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+}
+
+.co-logo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  color: rgb(var(--text));
+}
+
+.co-logo:hover {
+  color: rgb(var(--accent));
+}
+
+.co-logo svg {
+  display: block;
+  height: 1.5rem;
+  width: auto;
+}
+
+@media (min-width: 40rem) {
+  .co-logo svg {
+    height: 2rem;
+  }
+}
+
+/* Cohost swapped the wordmark for the bare "co" glyph below its lg
+   breakpoint; same trade here, so a phone gets a mark rather than a
+   hairline-thin wordmark. Both selectors have to outrank `.co-logo svg`
+   above, hence the doubled class. */
+.co-logo .co-logo-wide {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .co-logo .co-logo-wide {
+    display: block;
+  }
+
+  .co-logo .co-logo-narrow {
+    display: none;
+  }
+}
+
+.co-topbar-nav {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+@media (min-width: 40rem) {
+  .co-topbar-nav {
+    gap: 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* The logo already goes home, so on a phone the bar drops the link that says
+   so again rather than letting the row run off the edge. */
+@media (max-width: 30rem) {
+  .co-topbar-nav .co-topbar-home {
+    display: none;
+  }
+}
+
+.co-topbar-nav a {
+  text-decoration: none;
+  border-radius: 0.375rem;
+  padding: 0.35rem 0.3rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 40rem) {
+  .co-topbar-nav a {
+    padding: 0.35rem 0.6rem;
+  }
+}
+
+.co-topbar-nav a:hover {
+  background-color: rgb(var(--foreground-700));
+  color: rgb(var(--accent));
+}
+
+/* ----------------------------------------------------------------- layout */
+
+.co-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+@media (min-width: 64rem) {
+  .co-shell {
+    grid-template-columns: 16rem minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .co-sidebar {
+    position: sticky;
+    top: 5.5rem;
+  }
+}
+
+.co-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 65ch;
+}
+
+/* ---------------------------------------------------------------- sidebar */
+
+.co-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.9375rem;
+}
+
+.co-sidebar-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: rgb(var(--box-chrome));
+  border: 1px solid var(--box-border);
+  text-decoration: none;
+}
+
+.co-sidebar-card:hover .co-display-name {
+  text-decoration: underline;
+}
+
+.co-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.co-sidebar-nav a {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 700;
+  color: rgb(var(--foreground));
+}
+
+@media (prefers-color-scheme: dark) {
+  .co-sidebar-nav a {
+    color: rgb(var(--mango));
+  }
+}
+
+.co-sidebar-nav a:hover {
+  background-color: rgb(var(--foreground-100));
+  color: rgb(var(--foreground-700));
+}
+
+/* --------------------------------------------------------------- post box */
+
+/* `overflow-x: auto` is cohost's own rule, and it is load-bearing rather than
+   cosmetic: post bodies are user-written HTML — this archive has a
+   `display: inline-flex` spoiler box holding a bulleted list — and no
+   stylesheet can promise that fits 240px. cohost let the post pan instead of
+   letting it push the page sideways, and so does this. */
+.co-post-box {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background-color: rgb(var(--box));
+  border: 1px solid var(--box-border);
+  filter: drop-shadow(0 4px 5px rgb(0 0 0 / 0.14))
+    drop-shadow(0 1px 10px rgb(0 0 0 / 0.12))
+    drop-shadow(0 2px 4px rgb(0 0 0 / 0.2));
+}
+
+.co-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* The parent of a share sits above the reply and reads as the quieter half of
+   the pair, the way Cohost stacked a thread. */
+.co-shared-post {
+  font-size: 0.9375rem;
+}
+
+.co-thread-header,
+.co-thread-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: rgb(var(--box-chrome));
+}
+
+.co-thread-header {
+  border-radius: 0.5rem 0.5rem 0 0;
+  flex-wrap: wrap;
+}
+
+/* The comment link and the action row are a two-up until they can't be: on a
+   240px phone the row stacks rather than shoving the post box wider. */
+.co-thread-footer {
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  color: rgb(var(--muted));
+  font-size: 0.875rem;
+}
+
+.co-byline {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1;
+}
+
+.co-avatar {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
+}
+
+.co-avatar-circle {
+  border-radius: 9999px;
+}
+
+/* Cohost's "roundrect" avatar shape was a squircle mask, not a border-radius;
+   this is the closest single-declaration stand-in. */
+.co-avatar-roundrect {
+  border-radius: 30%;
+}
+
+.co-display-name {
+  font-weight: 700;
+  text-decoration: none;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.co-display-name:hover,
+.co-handle:hover {
+  text-decoration: underline;
+}
+
+.co-handle {
+  color: rgb(var(--handle));
+  text-decoration: none;
+}
+
+.co-pronouns,
+.co-timestamp {
+  flex: none;
+  font-size: 0.75rem;
+  color: rgb(var(--muted));
+  font-variant-numeric: tabular-nums;
+}
+
+.co-timestamp a {
+  text-decoration: none;
+}
+
+.co-timestamp a:hover {
+  text-decoration: underline;
+}
+
+.co-hairline {
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid rgb(var(--hairline));
+}
+
+.co-headline {
+  margin: 0;
+  padding: 0.75rem 0.75rem 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.co-headline a {
+  text-decoration: none;
+}
+
+.co-headline a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ prose */
+
+.co-prose {
+  margin: 1rem 0;
+  overflow-wrap: break-word;
+  line-height: 1.75;
+}
+
+/* The gutter sits on the blocks rather than on .co-prose itself. Attachments
+   ran edge to edge in a cohost post, and a full-bleed child of a padded parent
+   has to claw the padding back with negative margins — which is precisely the
+   "escape" tools/overflow.py exists to catch. Giving each block its own inline
+   margin lets the attachments simply not take one.
+
+   Every block-spacing rule below therefore sets margin-block only: a shorthand
+   `margin` would outrank this by specificity and zero the gutter out. */
+.co-prose > * {
+  margin-inline: 0.75rem;
+}
+
+.co-prose > :first-child {
+  margin-block-start: 0;
+}
+
+.co-prose > :last-child {
+  margin-block-end: 0;
+}
+
+.co-prose p,
+.co-prose ul,
+.co-prose ol,
+.co-prose blockquote,
+.co-prose pre {
+  margin-block: 1.25em;
+}
+
+.co-prose h1,
+.co-prose h2,
+.co-prose h3,
+.co-prose h4 {
+  margin-block: 1.5em 0.6em;
+  line-height: 1.3;
+}
+
+.co-prose a {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.co-prose a:hover {
+  color: rgb(var(--foreground));
+}
+
+@media (prefers-color-scheme: dark) {
+  .co-prose a:hover {
+    color: rgb(var(--mango));
+  }
+}
+
+.co-prose blockquote {
+  padding-left: 1em;
+  border-left: 4px solid rgb(var(--hairline));
+  font-style: italic;
+}
+
+.co-prose code {
+  font-family: ui-monospace, "Source Code Pro", "Cascadia Mono", Consolas,
+    monospace;
+  font-size: 0.9em;
+}
+
+.co-prose pre {
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  background-color: rgb(var(--not-black));
+  color: rgb(var(--not-white));
+}
+
+.co-prose ul,
+.co-prose ol {
+  padding-left: 1.5em;
+}
+
+.co-prose li {
+  margin: 0.5em 0;
+}
+
+.co-prose img {
+  border-radius: 0.25rem;
+}
+
+.co-prose summary {
+  cursor: pointer;
+}
+
+/* Her spoiler boxes are hand-written `<details style="display:inline-flex">`.
+   Closed they are little cherry pills; open, the flex row puts the label in a
+   cherry column beside the panel — which is her design, and it does not fit a
+   phone. At a 24px base font the panel's own min-content wanted 293px of a
+   270px box, so the row squeezed the label to zero width and broke its text
+   one letter per line.
+
+   `flex-wrap` lets the panel drop below the label rather than fight it for the
+   row, and only the panel is allowed under its min-content, with
+   `overflow-wrap` there to break the one long word that forces the issue. The
+   label keeps its automatic minimum, so it can never collapse again. */
+.co-prose details {
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* A direct child of .co-prose also carries the 0.75rem gutter as a margin, and
+   max-width resolves against the padding box, which does not know about it. */
+.co-prose > details {
+  max-width: calc(100% - 1.5rem);
+}
+
+.co-prose details > :not(summary) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.co-emoji {
+  display: inline-block;
+  height: var(--emoji-scale, 1em);
+  width: auto;
+  margin: 0;
+  vertical-align: middle;
+  object-fit: contain;
+}
+
+/* Attachments ran the full width of the post box, outside the prose gutter —
+   see the note on .co-prose > * for how they get there. */
+.co-prose > .co-attachment {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  margin-block: 0.5rem;
+  margin-inline: 0;
+}
+
+/* ------------------------------------------------------------------- tags */
+
+.co-tags {
+  padding: 0 0.75rem 0.75rem;
+  color: rgb(var(--muted));
+  font-size: 0.875rem;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+
+/* The shared-parent card lists tags as plain spans — its tags belonged to
+   someone else's post, and there is nothing here to filter by them. */
+.co-tags a,
+.co-tags span {
+  display: inline-block;
+  margin-right: 0.5rem;
+  text-decoration: none;
+}
+
+.co-tags a:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------- controls */
+
+.co-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.co-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgb(var(--body));
+  text-decoration: none;
+}
+
+.co-action:hover {
+  color: rgb(var(--foreground));
+}
+
+@media (prefers-color-scheme: dark) {
+  .co-action:hover {
+    color: rgb(var(--mango));
+  }
+}
+
+.co-action svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+}
+
+.co-footer-link {
+  text-decoration: none;
+}
+
+.co-footer-link:hover {
+  text-decoration: underline;
+}
+
+.co-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid rgb(var(--accent));
+  border-radius: 9999px;
+  background-color: rgb(var(--foreground));
+  color: rgb(var(--accent));
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.co-button:hover {
+  background-color: rgb(var(--accent));
+  color: rgb(var(--not-black));
+}
+
+.co-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ---------------------------------------------------------- notice boxes */
+
+/* Cohost's own `co-info-box`: the strip it used for "this post is a draft"
+   and similar. Reused here for the things this archive has to say. */
+.co-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: rgb(var(--foreground-200));
+  color: rgb(var(--not-black));
+  font-size: 0.9375rem;
+}
+
+.co-info-box svg {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: rgb(var(--foreground));
+}
+
+.co-info-box p {
+  margin: 0;
+}
+
+.co-info-box p + p {
+  margin-top: 0.5rem;
+}
+
+.co-info-box a {
+  font-weight: 700;
+}
+
+.co-info-box.co-tombstone {
+  background-color: rgb(222 217 211);
+}
+
+/* ---------------------------------------------------------------- profile */
+
+.co-profile {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: rgb(var(--box));
+  border: 1px solid var(--box-border);
+}
+
+.co-profile-header {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background-color: rgb(var(--foreground-100));
+}
+
+.co-profile-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 0.75rem;
+}
+
+.co-profile-avatar {
+  width: 5rem;
+  height: 5rem;
+  margin-top: -3rem;
+  object-fit: cover;
+  border: 3px solid rgb(var(--box));
+}
+
+.co-profile-names {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.co-profile-names h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.co-profile-bio {
+  padding: 0 0.75rem 0.75rem;
+  white-space: pre-line;
+}
+
+.co-profile-bio p {
+  margin: 0;
+}
+
+/* -------------------------------------------------------------- post feed */
+
+.co-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.co-feed-heading {
+  margin: 0;
+  font-size: 1.125rem;
+  color: rgb(var(--muted));
+}
+
+.co-read-more {
+  display: block;
+  padding: 0 0.75rem 0.75rem;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------- pagination */
+
+.co-pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 700;
+}
+
+/* Post headlines run long ("Pathologic is the Best Video Game Ever"), so the
+   two ends of the pager get half the row each and wrap inside it. */
+.co-pager a {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  max-width: 48%;
+  overflow-wrap: break-word;
+  text-decoration: none;
+}
+
+.co-pager a:hover .co-pager-title {
+  text-decoration: underline;
+}
+
+.co-pager .co-pager-next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.co-pager-label {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: rgb(var(--muted));
+}
+
+/* ----------------------------------------------------------------- footer */
+
+.co-footer {
+  padding: 2rem 1rem 3rem;
+  border-top: 1px solid rgb(var(--hairline));
+  color: rgb(var(--muted));
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.co-footer p {
+  margin: 0 0 0.5rem;
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+.co-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1rem;
+  margin-top: 0.75rem;
+}

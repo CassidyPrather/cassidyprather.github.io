@@ -1,0 +1,48 @@
+{{- /*
+	The Cohost shell, standing in for the wirenook one.
+
+	Hugo picks a base template by type before it falls back to _default, so
+	every page carrying `type: cohost` renders inside this file instead of
+	layouts/_default/baseof.html — no site header, no cloud backdrop, no
+	styles.css. That is the point: these posts were written somewhere else,
+	and reading them should feel like being there.
+
+	Everything the chrome links to has been repointed at wherever that thing
+	lives now. cohost.org has been dark since the end of 2024, so the logo and
+	the nav come home to wirenook, and the one link that genuinely still wants
+	to go to cohost goes by way of the Internet Archive.
+*/ -}}
+<!doctype html>
+<html lang="{{ site.Language.Lang }}">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{{ block "title" . }}cohost! - @{{ site.Data.cohost.handle }}{{ end }}</title>
+		{{ with .Description | default .Summary }}<meta name="description" content="{{ . | plainify | truncate 200 }}">{{ end }}
+		<link rel="icon" href="{{ "images/no-relicensing/cohost/eggbug.png" | relURL }}">
+		{{/* Cohost set its own theme-color; keeping it means the browser chrome
+		     goes cherry on mobile too, which is most of the illusion on a
+		     phone. */}}
+		<meta name="theme-color" content="#83254f">
+		<link rel="alternate" type="application/rss+xml" title="Blog — {{ site.Title }}" href="{{ "blog/index.xml" | relURL }}">
+		{{ with resources.Get "cohost.css" | fingerprint }}
+			<link rel="stylesheet" href="{{ .RelPermalink }}">
+		{{ end }}
+	</head>
+
+	<body>
+		{{ partial "cohost/topbar.html" . }}
+
+		<div class="co-shell">
+			{{ partial "cohost/sidebar.html" . }}
+
+			<main class="co-column">
+				{{ block "main" . }}{{ end }}
+			</main>
+		</div>
+
+		{{ partial "cohost/footer.html" . }}
+	</body>
+
+</html>
