@@ -50,6 +50,28 @@ come home, comments and the like button go to the guestbook, "follow" is the
 blog's RSS feed, tags run the blog's own search, and the one link that really
 does want cohost goes by way of the Internet Archive.
 
+The feed on `/blog/` gets there gradually rather than all at once. Each entry
+carries a `--drift` between 0 and 1 — 0 for a post written here, climbing to 1
+across the first `blog.archiveFade` posts of the archive (8, in `hugo.toml`) —
+and `assets/blog-drift.css` interpolates the card against it: cyan panel to
+white post box, square to rounded, flat to shadowed, Unique to Atkinson.
+`layouts/partials/blog/drift.html` works the numbers out. Scrolling into 2024
+should feel like the page changing its mind about what it is, so that opening
+one of these and landing in cohost's skin is the end of a slide rather than a
+surprise.
+
+That stylesheet is the entire cost of the effect, and `layouts/blog/list.html`
+only links it when the page it is building actually renders an archive-era
+entry. This matters once the feed paginates: page one will be recent posts
+only, and it will ship none of it — no stylesheet, no inline custom properties.
+The partial is where that decision is made, and its header comment says what to
+change to turn pagination on (one line: point `$shown` at `.Paginator.Pages`).
+Two things to leave alone if you touch it — call the partial with `partial` and
+not `partialCached`, since every pager page renders from the same `Page` and a
+cache keyed on it would hand page two page one's numbers; and keep every rule
+in `blog-drift.css` a re-pointing of something `styles.css` has already set, so
+a browser without `color-mix()` drops them and gets the ordinary feed.
+
 Two things about the imported markdown are worth knowing before editing it:
 
 - **Hard line breaks are deliberate.** cohost rendered a single newline as

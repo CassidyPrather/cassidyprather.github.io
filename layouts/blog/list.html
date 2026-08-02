@@ -1,4 +1,31 @@
+{{/* The stylesheet that walks the feed back into cohost, asked for only when
+     this page has something to walk. partials/blog/drift.html hands back the
+     entries this page renders along with the highest drift among them; a max of
+     zero means every post here was written on wirenook and the whole effect is
+     inapplicable, so the link is never emitted and the client never fetches it.
+
+     Once the feed paginates, that condition stops being decorative: page one
+     will be all recent posts and will ship none of this, and only the pages
+     that reach the archive will pay for it. The partial is the place that
+     decides — see the pagination note there.
+
+     Called plainly rather than through partialCached, and "main" below calls it
+     a second time: every pager page of a paginated list renders from the same
+     Page, so a cache keyed on that Page would hand page two the numbers it
+     worked out for page one. The partial walks the section list once and does
+     nothing else, so paying for it twice costs less than getting it wrong. */}}
+{{ define "head" }}
+{{ $drift := partial "blog/drift.html" . }}
+{{ if gt $drift.max 0.0 }}
+	{{ with resources.Get "blog-drift.css" | fingerprint }}
+		<link rel="stylesheet" href="{{ .RelPermalink }}">
+	{{ end }}
+{{ end }}
+{{ end }}
+
 {{ define "main" }}
+{{ $drift := partial "blog/drift.html" . }}
+{{ $entries := $drift.entries }}
 <main class="blog-main">
 	<section class="index-window">
 		<div class="window-topline">
@@ -14,31 +41,48 @@
 				{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
 
 				<div class="blog-columns">
-					<div class="blog-feed">
+					{{/* The two endpoints of the paper wash behind the feed, taken from
+						     the first and last entry actually rendered so the gradient stays
+						     continuous across a page break instead of restarting. Skipped
+						     entirely on a page with no archive on it, which is also the page
+						     that never linked the stylesheet reading these. */}}
+					{{ $wash := "" }}
+					{{ if gt $drift.max 0.0 }}
+						{{ $wash = printf "--drift-from: %.3f; --drift-to: %.3f" (index $entries 0).drift (index $entries (sub (len $entries) 1)).drift }}
+					{{ end }}
+					<div class="blog-feed" {{ with $wash }}style="{{ . | safeCSS }}"{{ end }}>
 						<form class="blog-search" role="search" data-blog-search data-index="{{ "blog/index.json" | relURL }}" hidden>
 							<input type="search" name="q" placeholder="Search blog..." aria-label="Search blog">
 						</form>
 						<p class="search-status" data-search-status aria-live="polite" hidden></p>
 
-						{{ range .Pages.ByDate.Reverse }}
-							{{ $label := .Title | default (.Date.Format "2 January 2006") }}
-							<article class="blog-entry" data-entry data-url="{{ .RelPermalink }}">
-								{{ if .Title }}
-									<h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-								{{ end }}
-								{{ if .Truncated }}
-									<div class="entry-body">
-										{{ with .Description }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
-									</div>
-									<p class="entry-more"><a href="{{ .RelPermalink }}">Read more</a></p>
-								{{ else }}
-									<div class="entry-body">{{ .Content }}</div>
-								{{ end }}
-								<p class="entry-meta">
-									<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink: “{{ $label }}”">#</a>
-									<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
-								</p>
-							</article>
+						{{ range $entries }}
+							{{ $d := .drift }}
+							{{ with .page }}
+								{{ $label := .Title | default (.Date.Format "2 January 2006") }}
+								{{/* Past the halfway point of the ramp the typeface changes
+									     hands; see the note in assets/blog-drift.css for why that
+									     one step can't be interpolated like everything else. */}}
+								<article class="blog-entry{{ if ge $d 0.5 }} is-archive{{ end }}" data-entry data-url="{{ .RelPermalink }}" {{ with $d }}style="--drift: {{ printf "%.3f" . }}"{{ end }}>
+									{{ if .Title }}
+										<h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+									{{ end }}
+									{{ if .Truncated }}
+										<div class="entry-body">
+											{{ with .Description }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
+										</div>
+										<p class="entry-more"><a href="{{ .RelPermalink }}">Read more</a></p>
+									{{ else }}
+										<div class="entry-body">{{ .Content }}</div>
+									{{ end }}
+									<p class="entry-meta">
+										<a class="entry-permalink" href="{{ .RelPermalink }}" aria-label="Permalink: “{{ $label }}”">#</a>
+										<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
+										{{/* Says out loud what the changed skin is already implying. */}}
+										{{ if eq .Type "cohost" }}<span class="entry-origin">cohost</span>{{ end }}
+									</p>
+								</article>
+							{{ end }}
 						{{ end }}
 					</div>
 

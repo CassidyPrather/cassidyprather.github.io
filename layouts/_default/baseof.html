@@ -29,6 +29,10 @@
 				<link rel="stylesheet" href="{{ .RelPermalink }}">
 			{{ end }}
 		{{ end }}
+		{{/* For stylesheets only some pages need. Anything added here loads after
+		     styles.css and can therefore re-point it at equal specificity —
+		     layouts/blog/list.html is the one caller so far. */}}
+		{{ block "head" . }}{{ end }}
 	</head>
 
 	<body>

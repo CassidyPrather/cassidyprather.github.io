@@ -22,6 +22,13 @@ buildFuture = true
 [params]
   description = "Cassidy Prather's Website"
 
+  [params.blog]
+    # How many posts the blog feed takes to slide from the wirenook skin into
+    # the cohost one, counted from the first cohost-era post downwards. Lower
+    # is a sharper handover, higher is a longer fade; the floor is 2, since one
+    # post is just a cut. layouts/partials/blog/drift.html reads this.
+    archiveFade = 8
+
 [markup.goldmark.renderer]
   unsafe = true
 

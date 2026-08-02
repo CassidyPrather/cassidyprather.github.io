@@ -1,0 +1,52 @@
+{{- /*
+	How far each entry on the blog feed has fallen back into the cohost era.
+
+	Returns the entries this page renders, in feed order, each paired with a
+	`drift` between 0 and 1: 0 is wirenook as it looks now, 1 is cohost as it
+	looked then. assets/blog-drift.css interpolates the whole card — surface,
+	corners, shadow, type — against that one number, so the feed changes its
+	mind about what it is somewhere in the middle of the archive rather than
+	at a hard line.
+
+	The ramp starts at the first cohost-era post and takes `blog.archiveFade`
+	posts to arrive, so everything written since stays untouched and the
+	archive is what fades in. Keying on the count of archive posts rather than
+	on dates is deliberate: the gap between the last cohost post and the first
+	wirenook one is nearly two years wide, and a date-driven ramp would spend
+	the whole transition inside that gap and land as a hard switch anyway.
+
+	`max` is the highest drift on this page, and it is the whole reason this
+	partial hands back a summary instead of the caller working it out inline:
+	layouts/blog/list.html only pulls in the stylesheet when `max` is above
+	zero, so a page holding nothing but recent posts pays nothing for any of
+	this. See the note there.
+
+	Pagination: `.Pages` stays the full section list even once a paginated
+	list page exists, so the ramp below is always measured against the whole
+	archive — post 3 of the archive is 3/8 of the way across whether it opens
+	page two or closes page one. Only `$shown` needs to change when that day
+	comes: point it at `.Paginator.Pages` and everything else already holds.
+*/ -}}
+
+{{- $all := .Pages.ByDate.Reverse -}}
+{{- $shown := $all -}}
+
+{{- /* One post would be a hard cut, so the floor is two. */ -}}
+{{- $fade := math.Max 2 (int (site.Params.blog.archiveFade | default 8)) -}}
+
+{{- $entries := slice -}}
+{{- $max := 0.0 -}}
+{{- $depth := 0 -}}
+{{- range $all -}}
+	{{- $drift := 0.0 -}}
+	{{- if eq .Type "cohost" -}}
+		{{- $depth = add $depth 1 -}}
+		{{- $drift = math.Min 1.0 (div (float $depth) (float $fade)) -}}
+	{{- end -}}
+	{{- if in $shown . -}}
+		{{- $entries = $entries | append (dict "page" . "drift" $drift) -}}
+		{{- $max = math.Max $max $drift -}}
+	{{- end -}}
+{{- end -}}
+
+{{- return (dict "entries" $entries "max" $max) -}}

@@ -1,0 +1,159 @@
+/* The blog feed falling back into cohost.
+
+   Every entry on /blog/ carries a `--drift` between 0 and 1 written by
+   layouts/blog/list.html: 0 for a post written here, climbing to 1 across the
+   first several posts of the cohost archive. Everything below interpolates
+   against that one number, so scrolling down the feed walks the cards from the
+   wirenook panel they are now to the cohost post box they used to be, and the
+   change lands over a run of posts instead of at a line.
+
+   This file is the whole cost of the effect, and layouts/blog/list.html only
+   links it when the page it is building actually renders an archive-era entry.
+   A feed page holding nothing but recent posts never asks for it. Nothing in
+   here is required for the feed to work — styles.css already lays out a
+   complete blog entry, and every rule below only re-points properties that
+   file has already set to a working value. A browser too old for color-mix()
+   drops these declarations and gets the wirenook feed, which is the correct
+   answer rather than a broken one.
+
+   The endpoint values are cohost's own, lifted from the :root block in
+   cohost.css so the two ends of the ramp can't drift apart. Only its light
+   values appear here: styles.css declares `color-scheme: light`, so this feed
+   has no dark mode to land in. The archive posts themselves still switch with
+   the system — that is cohost.css's business, and it takes over the moment you
+   open one. */
+
+.blog-entry {
+	--co-paper: #ffffff;
+	--co-chrome: #fff9f2;
+	--co-ink: #191919;
+	--co-hairline: #bfbab5;
+	/* cohost's own --muted (#827f7c) is what this would land on to be strictly
+	   faithful, and it measures 3.4:1 on cohost paper. The meta row here starts
+	   at 5.9:1, so the ramp lands on --handle instead: still cohost's, still
+	   warm grey, and 8.9:1. A transition is not a reason to hand somebody worse
+	   text than they had before it. */
+	--co-handle: #4a4847;
+
+	/* layouts/blog/list.html writes --drift inline. The fallback keeps every
+	   calc() below resolvable on an entry that never got one. */
+	--drift: 0;
+	/* Smoothstep. A linear ramp reads as a constant slow slide across every
+	   post in the run; easing both ends means a card only a little way in still
+	   looks like itself, and the actual change happens in the middle where
+	   there is enough of it to notice. */
+	--drift-ease: calc(var(--drift) * var(--drift) * (3 - 2 * var(--drift)));
+	--drift-mix: calc(var(--drift-ease) * 100%);
+
+	background: color-mix(in oklab, var(--co-paper) var(--drift-mix), var(--panel));
+	/* styles.css draws a 1px white hairline here; cohost drew no border at all
+	   in light mode, so the border thins to nothing rather than changing hue. */
+	border-color: color-mix(in oklab, transparent var(--drift-mix), rgba(255, 255, 255, 0.72));
+	border-radius: calc(var(--drift-ease) * 0.5rem);
+	color: color-mix(in oklab, var(--co-ink) var(--drift-mix), var(--ink));
+	/* cohost stacked three drop-shadows on its post boxes. The card is opaque,
+	   so box-shadow does the same job as its filter did without putting the
+	   whole subtree on its own layer — only the alphas have to ramp. */
+	box-shadow:
+		0 4px 5px rgb(0 0 0 / calc(var(--drift-ease) * 0.14)),
+		0 1px 10px rgb(0 0 0 / calc(var(--drift-ease) * 0.12)),
+		0 2px 4px rgb(0 0 0 / calc(var(--drift-ease) * 0.2));
+}
+
+/* cohost set its prose at 1.75 against this feed's 1.55, which is most of why
+   an archive post reads slower than a recent one. */
+.blog-entry .entry-body {
+	line-height: calc(1.55 + 0.2 * var(--drift-ease));
+}
+
+/* 1.3rem here, 1.25rem on a .co-headline. */
+.blog-entry .entry-title {
+	font-size: calc(1.3rem - 0.05rem * var(--drift-ease));
+	line-height: calc(1.4 - 0.1 * var(--drift-ease));
+}
+
+.blog-entry .entry-meta {
+	color: color-mix(in oklab, var(--co-handle) var(--drift-mix), rgba(39, 20, 82, 0.72));
+	border-top-color: color-mix(in oklab, var(--co-hairline) var(--drift-mix), rgba(39, 20, 82, 0.25));
+	/* cohost ran its timestamps on tabular figures. Switching at any drift
+	   above zero is safe — it changes figure widths, not the typeface. */
+	font-variant-numeric: tabular-nums;
+	/* styles.css leaves this row a two-item flex line that never has to wrap.
+	   The origin tag below makes it three, and at 320px with a 24px base font
+	   that third item stops fitting — a non-wrapping flex line answers that by
+	   pushing its container wider, which widens the feed's grid track and
+	   bleeds the whole card past the panel. Exactly the failure the
+	   .co-thread-footer note in cohost.css describes, and the same answer:
+	   stack the row rather than shove the box. */
+	flex-wrap: wrap;
+	row-gap: 0.35rem;
+}
+
+.blog-entry .entry-permalink {
+	border-color: color-mix(in oklab, var(--co-hairline) var(--drift-mix), var(--line));
+	background: color-mix(in oklab, var(--co-chrome) var(--drift-mix), var(--panel-strong));
+	border-radius: calc(var(--drift-ease) * 0.375rem);
+}
+
+/* Where the typeface itself changes hands.
+
+   A font-family cannot be interpolated, so the swap is a step, and
+   layouts/blog/list.html marks the entries past the halfway point of the ramp.
+   By then the card has already gone most of the way to cohost paper on its
+   own, so the step lands as the last part of a change that is visibly already
+   under way rather than as a jolt.
+
+   Both families are declared in styles.css and Unique is already the site
+   face, so the only new bytes this asks for are AtkinsonHyperlegible-Bold.ttf
+   (~54 KB) — and only on a feed page that reaches this far into the archive. */
+.blog-entry.is-archive .entry-title {
+	font-family: Atkinson-Bold, arial, sans-serif;
+}
+
+.blog-entry.is-archive .entry-title a {
+	text-decoration: none;
+}
+
+.blog-entry.is-archive .entry-title a:hover {
+	text-decoration: underline;
+}
+
+/* Bold underlined links were cohost's most recognisable prose habit. */
+.blog-entry.is-archive .entry-body a {
+	font-family: Atkinson-Bold, arial, sans-serif;
+}
+
+.blog-entry.is-archive .entry-meta {
+	border-top-style: solid;
+}
+
+/* A quiet note on where the post came from, so the changed skin reads as an
+   answer rather than a glitch. Only emitted on archive-era entries, which are
+   exactly the entries that cause this file to be linked at all. */
+.entry-origin {
+	border: 1px solid currentColor;
+	border-radius: 0.375rem;
+	padding: 0 0.4em;
+	font-size: 0.92em;
+	opacity: 0.85;
+}
+
+/* The page itself, not just the cards on it. styles.css leaves .blog-feed
+   transparent onto the striped index-window behind it, so this shows only in
+   the 1rem gutters between cards — a column of paper warming up under the feed
+   as the archive takes over. list.html writes the two endpoints from the drift
+   of the first and last entry it renders, which keeps the wash continuous
+   across a page break rather than restarting at every page.
+
+   Kept faint on purpose: the cards are opaque and carry the actual transition.
+   This is the room they sit in agreeing with them. */
+.blog-feed {
+	--drift-from: 0;
+	--drift-to: 0;
+
+	background: linear-gradient(
+		to bottom,
+		rgb(255 249 242 / calc(var(--drift-from) * 0.5)),
+		rgb(255 249 242 / calc(var(--drift-to) * 0.5))
+	);
+}
