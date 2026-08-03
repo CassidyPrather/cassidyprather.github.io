@@ -44,11 +44,26 @@ overflow that shipped past this tool's green run taught it three lessons:
 Deliberate bleeds (the feature bunny, the rail charms) are not bugs, so they
 are listed in ``ALLOWED`` with a reason instead of being silently ignored.
 
+The sweep is embarrassingly parallel -- every page is measured independently
+-- so the pages are dealt round-robin across worker processes, each serving
+the built site on its own loopback port and driving its own browser. One
+browser already keeps about two and a half cores busy, though, so the win
+from more workers on one machine runs out quickly; ``--shard`` exists for
+the same reason, to spread the pages across CI runners instead. A sharded
+run writes its findings with ``--json`` and a final ``report`` merges them,
+because the stale-allowlist check can only tell that nothing matched an
+entry once it has seen every page.
+
 Usage::
 
     hugo --minify                    # build ./public first
     python tools/overflow.py check   # report overflow; exit 1 if any
     python tools/overflow.py check --widths 1380-1420 --verbose
+    python tools/overflow.py check --jobs 1        # serial, for a clean profile
+
+    # ...or, spread over four machines:
+    python tools/overflow.py check --shard 1/4 --json shard1.json
+    python tools/overflow.py report shard*.json
 """
 
 from __future__ import annotations
@@ -57,12 +72,15 @@ import argparse
 import contextlib
 import functools
 import http.server
+import json
 import logging
-import socketserver
+import os
 import sys
 import threading
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 from fnmatch import fnmatch
+from itertools import repeat
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -337,6 +355,75 @@ def _pages(root: Path) -> list[str]:
     )
 
 
+def _default_jobs() -> int:
+    """Choose a worker count from the size of the machine.
+
+    Chromium spreads its own work over threads, and one browser measuring one
+    page already keeps roughly two and a half cores busy; workers past that
+    mostly contend with each other, so each is given two cores to play with.
+
+    :return: The default ``--jobs`` value.
+    """
+    return max(1, (os.cpu_count() or 2) // 2)
+
+
+def _shard_spec(text: str) -> tuple[int, int]:
+    """Parse a ``--shard i/n`` argument.
+
+    :param text: The raw argument: ``i/n``, with ``i`` counted from 1.
+    :return: The shard's own index and the number of shards.
+    :raises argparse.ArgumentTypeError: If the value is not ``i/n`` with
+        ``1 <= i <= n``.
+    """
+    index_text, separator, count_text = text.partition("/")
+    if not separator or not index_text.isdigit() or not count_text.isdigit():
+        message = f"expected 'i/n', got {text!r}"
+        raise argparse.ArgumentTypeError(message)
+    index, count = int(index_text), int(count_text)
+    if count < 1 or not 1 <= index <= count:
+        message = f"expected 1 <= i <= n, got {text!r}"
+        raise argparse.ArgumentTypeError(message)
+    return index, count
+
+
+def _dump(findings: dict[str, Finding], path: Path) -> None:
+    """Write one shard's findings where ``report`` can pick them up.
+
+    :param findings: Findings for the pages this shard measured.
+    :param path: File to write.
+    """
+    path.write_text(
+        json.dumps(
+            {
+                key: {"widths": found.widths, "worst": found.worst}
+                for key, found in sorted(findings.items())
+            },
+            indent=1,
+        ),
+        encoding="utf-8",
+    )
+
+
+def _load(paths: list[Path]) -> dict[str, Finding]:
+    """Merge shard files back into one findings table.
+
+    :param paths: Files written by ``check --json``.
+    :return: The union of every shard's findings, widths back in order.
+    """
+    findings: dict[str, Finding] = {}
+    for path in paths:
+        shard = json.loads(path.read_text(encoding="utf-8"))
+        for key, value in shard.items():
+            found = findings.setdefault(key, Finding(key))
+            found.widths.extend(value["widths"])
+            found.worst = max(found.worst, value["worst"])
+    # Shards are page-disjoint so this rarely does anything, but `bands()`
+    # reads the widths as a sorted run and a merge must not be what breaks it.
+    for found in findings.values():
+        found.widths.sort()
+    return findings
+
+
 @contextlib.contextmanager
 def _serving(root: Path) -> Iterator[str]:
     """Serve a directory over loopback HTTP for the duration of the block.
@@ -353,7 +440,7 @@ def _serving(root: Path) -> Iterator[str]:
 
         def log_message(
             self,
-            format: str,  # ruff: ignore[builtin-argument-shadowing]
+            format: str,  # noqa: A002
             *args: object,
         ) -> None:
             """Swallow the access log.
@@ -362,8 +449,10 @@ def _serving(root: Path) -> Iterator[str]:
             :param args: Unused template arguments.
             """
 
+    # Threading, because one page load fans out into a burst of concurrent
+    # asset requests and a single-threaded server answers them one at a time.
     handler = functools.partial(Quiet, directory=str(root))
-    with socketserver.TCPServer(("127.0.0.1", 0), handler) as server:
+    with http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler) as server:
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         try:
@@ -507,37 +596,27 @@ def _report(findings: dict[str, Finding], *, full_sweep: bool) -> int:
     return 0
 
 
-def cmd_check(
+def _measure_shard(
     root: Path,
+    url_paths: list[str],
     widths: list[int],
     chromium: str | None,
-    *,
-    full_sweep: bool,
-) -> int:
-    """Sweep the built site and report every unexpected overflow.
+) -> dict[str, Finding]:
+    """Measure one shard of the site's pages, start to finish, in-process.
+
+    A shard owns everything it needs -- its own static server on its own
+    loopback port, its own browser, its own contexts -- so a pool of these
+    shares no state and needs no locking. Findings are keyed by page, and a
+    page belongs to exactly one shard, so the parent merges the returned
+    dictionaries by plain update.
 
     :param root: The Hugo output directory to measure.
+    :param url_paths: Site-relative paths this shard is responsible for.
     :param widths: Viewport widths to measure at.
     :param chromium: Explicit Chromium path, or ``None`` to use Playwright's.
-    :param full_sweep: Whether ``widths`` is the default full sweep.
-    :return: Process exit code.
+    :return: Findings for this shard's pages, keyed as ``_measure`` keys them.
     """
-    # ruff: ignore[import-outside-top-level]
-    from playwright.sync_api import sync_playwright
-
-    pages = _pages(root)
-    if not pages:
-        _logger.error("no index.html under %s; run `hugo --minify` first", root)
-        return 1
-    _logger.info(
-        "measuring %d page(s) at %d width(s) from %dpx to %dpx,"
-        " at default and %dpx base fonts",
-        len(pages),
-        len(widths),
-        widths[0],
-        widths[-1],
-        FONT_PASS_PX,
-    )
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     findings: dict[str, Finding] = {}
     with _serving(root) as base, sync_playwright() as playwright:
@@ -579,14 +658,102 @@ def cmd_check(
                         },
                     },
                 )
-            for url_path in pages:
+            for url_path in url_paths:
                 _logger.debug("measuring %s%s", key_prefix, url_path)
                 _prepare(page, base + url_path)
                 _measure(page, url_path, pass_widths, findings, key_prefix)
             context.close()
         browser.close()
+    return findings
 
+
+def cmd_check(
+    root: Path,
+    widths: list[int],
+    chromium: str | None,
+    jobs: int,
+    shard: tuple[int, int] | None,
+    json_out: Path | None,
+    *,
+    full_sweep: bool,
+) -> int:
+    """Sweep the built site and report every unexpected overflow.
+
+    :param root: The Hugo output directory to measure.
+    :param widths: Viewport widths to measure at.
+    :param chromium: Explicit Chromium path, or ``None`` to use Playwright's.
+    :param jobs: Worker processes to spread the pages across.
+    :param shard: This runner's ``(index, count)`` slice of the pages, or
+        ``None`` to measure all of them.
+    :param json_out: Where to write the findings for a later ``report``
+        instead of reporting them here, or ``None`` to report directly.
+    :param full_sweep: Whether ``widths`` is the default full sweep.
+    :return: Process exit code.
+    """
+    pages = _pages(root)
+    if not pages:
+        _logger.error("no index.html under %s; run `hugo --minify` first", root)
+        return 1
+    if shard is not None:
+        index, count = shard
+        # Dealt round-robin, not in contiguous blocks: `_pages` returns them
+        # in path order, so a contiguous split would hand one shard the whole
+        # blog and another a handful of stubs.
+        pages = pages[index - 1 :: count]
+        # A shard has only seen its own pages, so it cannot tell a stale
+        # allowlist entry from one that matches on somebody else's page.
+        full_sweep = False
+        if not pages:
+            _logger.warning("shard %d/%d has no pages to measure", index, count)
+    jobs = max(1, min(jobs, len(pages) or 1))
+    _logger.info(
+        "measuring %d page(s) at %d width(s) from %dpx to %dpx,"
+        " at default and %dpx base fonts, across %d process(es)",
+        len(pages),
+        len(widths),
+        widths[0],
+        widths[-1],
+        FONT_PASS_PX,
+        jobs,
+    )
+
+    if jobs == 1:
+        findings = _measure_shard(root, pages, widths, chromium)
+    else:
+        # Dealt round-robin here for the same reason as across CI shards:
+        # cost tracks page complexity, so a contiguous split would leave one
+        # worker with the whole blog and another with a handful of stubs.
+        findings = {}
+        with ProcessPoolExecutor(max_workers=jobs) as pool:
+            for shard_findings in pool.map(
+                _measure_shard,
+                repeat(root),
+                [pages[start::jobs] for start in range(jobs)],
+                repeat(widths),
+                repeat(chromium),
+            ):
+                findings.update(shard_findings)
+
+    if json_out is not None:
+        _dump(findings, json_out)
+        _logger.info("wrote %d finding(s) to %s", len(findings), json_out)
+        return 0
     return _report(findings, full_sweep=full_sweep)
+
+
+def cmd_report(paths: list[Path]) -> int:
+    """Merge the shards of a split run and deliver the verdict.
+
+    :param paths: JSON files written by ``check --json``.
+    :return: Process exit code.
+    """
+    findings = _load(paths)
+    _logger.info(
+        "merged %d finding(s) from %d shard(s)",
+        len(findings),
+        len(paths),
+    )
+    return _report(findings, full_sweep=True)
 
 
 def main() -> int:
@@ -626,12 +793,44 @@ def main() -> int:
         default=None,
         help="Path to a Chromium binary (default: the one Playwright installed)",
     )
+    check.add_argument(
+        "--jobs",
+        type=int,
+        default=_default_jobs(),
+        help="Worker processes to measure with (default: one per two cores)",
+    )
+    check.add_argument(
+        "--shard",
+        type=_shard_spec,
+        default=None,
+        help="Measure only this 'i/n' slice of the pages, for a split CI run",
+    )
+    check.add_argument(
+        "--json",
+        dest="json_out",
+        type=Path,
+        default=None,
+        help="Write findings here for a later `report` instead of reporting",
+    )
+    report = subparsers.add_parser(
+        "report",
+        help="Merge `check --json` shard files and deliver the verdict",
+    )
+    report.add_argument(
+        "shards",
+        type=Path,
+        nargs="+",
+        help="JSON files written by `check --json`",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(levelname)s: %(message)s",
     )
+
+    if args.command == "report":
+        return cmd_report(args.shards)
 
     if not args.public.is_dir():
         _logger.error("%s does not exist; run `hugo --minify` first", args.public)
@@ -640,6 +839,9 @@ def main() -> int:
         args.public,
         _sweep(args.widths),
         args.chromium,
+        args.jobs,
+        args.shard,
+        args.json_out,
         full_sweep=args.widths is None,
     )
 
