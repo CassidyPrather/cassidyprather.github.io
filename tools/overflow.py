@@ -162,6 +162,19 @@ ALLOWED: tuple[tuple[str, str], ...] = (
         "socials panel wrapping a tooltip-bearing button",
     ),
     (
+        "*/blog self section.index-window",
+        (
+            "the blog feed's archive drift paints cohost paper over the window"
+            " with a ::before, and covers the border box rather than the padding"
+            " box so the stripes cannot show through the faded 5px double border"
+            " (assets/blog-drift.css). A child box reaching into its own border"
+            " area is padding-box overflow by this tool's definition; nothing"
+            " leaves the element, and there is no scroll container to pan"
+        ),
+    ),
+    # Keep this last: `*` spans the whole key, so it would otherwise swallow the
+    # entry above -- and any future index-window finding on any other page.
+    (
         "* self section.index-window",
         "socials panel wrapping a tooltip-bearing button",
     ),

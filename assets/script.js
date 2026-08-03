@@ -441,6 +441,91 @@ if (!prefersReducedMotion.matches && document.querySelector(".cloud-field")) {
   apply();
 }
 
+// The blog feed's per-entry --drift only reaches the cards (assets/blog-drift.css
+// interpolates each one against a number Hugo worked out at build time). The page
+// around them — the striped window, the highlights rail, the sky and its clouds —
+// is a single surface with a single state, so it needs one number for "how far
+// into the archive is the reader right now". That is --page-drift on <html>: the
+// overlap-weighted mean drift of every entry currently on screen, so the room
+// agrees with whatever the reader is actually looking at rather than with raw
+// scroll distance.
+//
+// The attribute only exists on a feed that renders archive-era posts, which is
+// the same condition that links the stylesheet reading any of this. Nothing here
+// is required for the effect to read: without it the cards still drift and the
+// page simply stays wirenook.
+//
+// Not gated on prefers-reduced-motion, unlike the parallax above. Nothing moves —
+// this crossfades colour against scroll position, and switching it off would
+// leave cohost's cream cards sitting on a striped blue window, which is a worse
+// answer than the transition it was trying to spare you.
+const driftFeed = document.querySelector("[data-drift-feed]");
+if (driftFeed) {
+  const cards = Array.from(driftFeed.querySelectorAll("[data-entry]"));
+  let boxes = [];
+
+  // Document-relative geometry, cached, so the scroll handler costs arithmetic
+  // rather than a layout flush per frame. Entries the search has hidden measure
+  // zero-height and drop out here instead of skewing the mean toward whatever
+  // drift they happened to carry.
+  const measure = () => {
+    boxes = cards
+      .map((el) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          drift: parseFloat(el.style.getPropertyValue("--drift")) || 0,
+          top: rect.top + scrollY,
+          bottom: rect.bottom + scrollY,
+        };
+      })
+      .filter((box) => box.bottom > box.top);
+  };
+
+  let pending = 0;
+  const apply = () => {
+    pending = 0;
+    if (!boxes.length) return;
+    const top = scrollY;
+    const bottom = top + innerHeight;
+    let weighted = 0;
+    let total = 0;
+    // Above the first card or below the last one there is nothing on screen to
+    // average, so the page holds whichever end of the feed is nearest instead of
+    // snapping back to wirenook.
+    let nearest = 0;
+    let nearestGap = Infinity;
+    for (const box of boxes) {
+      const overlap = Math.min(bottom, box.bottom) - Math.max(top, box.top);
+      if (overlap > 0) {
+        weighted += box.drift * overlap;
+        total += overlap;
+      } else {
+        const gap = box.top > bottom ? box.top - bottom : top - box.bottom;
+        if (gap < nearestGap) {
+          nearestGap = gap;
+          nearest = box.drift;
+        }
+      }
+    }
+    document.documentElement.style.setProperty("--page-drift", String(total > 0 ? weighted / total : nearest));
+  };
+
+  const schedule = () => {
+    if (!pending) pending = requestAnimationFrame(apply);
+  };
+  const remeasure = () => {
+    measure();
+    apply();
+  };
+
+  remeasure();
+  addEventListener("scroll", schedule, { passive: true });
+  addEventListener("resize", remeasure);
+  // Late images, late fonts, and the search filter all change the feed's height
+  // out from under the cached geometry.
+  new ResizeObserver(remeasure).observe(driftFeed);
+}
+
 document.querySelectorAll("[data-copy]").forEach((button) => {
   const value = button.getAttribute("data-copy");
   const label = button.querySelector("[data-copy-text]");

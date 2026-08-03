@@ -50,7 +50,7 @@
 					{{ if gt $drift.max 0.0 }}
 						{{ $wash = printf "--drift-from: %.3f; --drift-to: %.3f" (index $entries 0).drift (index $entries (sub (len $entries) 1)).drift }}
 					{{ end }}
-					<div class="blog-feed" {{ with $wash }}style="{{ . | safeCSS }}"{{ end }}>
+					<div class="blog-feed" {{ with $wash }}data-drift-feed style="{{ . | safeCSS }}"{{ end }}>
 						<form class="blog-search" role="search" data-blog-search data-index="{{ "blog/index.json" | relURL }}" hidden>
 							<input type="search" name="q" placeholder="Search blog..." aria-label="Search blog">
 						</form>

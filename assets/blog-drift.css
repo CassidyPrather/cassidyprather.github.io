@@ -157,3 +157,110 @@
 		rgb(255 249 242 / calc(var(--drift-to) * 0.5))
 	);
 }
+
+/* ------------------------------------------------------- the room they sit in
+
+   Everything above is per-card and static, worked out at build time. The page
+   holding the cards is one surface with one state, so it drifts against
+   --page-drift instead: script.js keeps that on <html> as the overlap-weighted
+   mean drift of whatever entries are on screen. No JS, no --page-drift, and
+   every rule below sits at its wirenook end — the cards still carry the effect.
+
+   The two ends are cohost's page and box colours: #fff9f2 is --not-white, the
+   paper the whole site was printed on, and #ffffff is --box, the post surface. */
+
+:root {
+	--page-drift: 0;
+	--page-ease: calc(var(--page-drift) * var(--page-drift) * (3 - 2 * var(--page-drift)));
+	--page-mix: calc(var(--page-ease) * 100%);
+}
+
+/* The sky, in one rule.
+
+   Every backdrop layer .page-shell owns — the fixed cloud wallpaper on its
+   ::before, the five drifting cloud images, the sparkle gutter, the sigil
+   triangle, the ruler canvas — sits at z-index -1 or below, and ::after
+   generates last among its siblings. So a single fixed sheet of cohost paper at
+   -1 covers the lot, plus the body gradient behind them, and none of those rules
+   has to be restated or reach for a drift-aware opacity of its own. It stops
+   below .page-shell's actual content, which is where it should stop. */
+.page-shell::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: rgb(255 249 242 / var(--page-ease));
+	/* Same reason .page-shell::before gives: its own layer, so Firefox doesn't
+	   drop it mid elastic-overscroll bounce. */
+	transform: translateZ(0);
+}
+
+/* The striped window, by the same trick rather than by restating the stripes.
+   isolation keeps the -1 inside this box, so the sheet lands over
+   .index-window's own background and under everything written on it. */
+.index-window {
+	position: relative;
+	isolation: isolate;
+	border-color: color-mix(in oklab, transparent var(--page-mix), var(--line));
+	/* Geometry restated because a shadow's colour cannot be re-pointed on its
+	   own; both colours still come from the tokens they came from. The inner ice
+	   glow belongs to the striped window and leaves with it. */
+	box-shadow:
+		inset 0 0 4rem rgb(215 251 255 / calc(0.18 * (1 - var(--page-ease)))),
+		0 1.2rem 3.4rem color-mix(in oklab, rgb(0 0 0 / 0.1) var(--page-mix), var(--shadow));
+}
+
+/* -5px, not 0: `inset` resolves against the padding box, and a background paints
+   under its own border by default. Fading the border above only makes it
+   transparent, so a sheet stopping at the padding edge leaves the stripes
+   showing through the 5px double border as two ruled lines down each side of
+   the window. The offset matches that border width and covers the border box. */
+.index-window::before {
+	content: "";
+	position: absolute;
+	inset: -5px;
+	z-index: -1;
+	pointer-events: none;
+	background: rgb(255 249 242 / var(--page-ease));
+}
+
+/* The highlights rail and the intro panel land on cohost's post surface rather
+   than its sidebar one: a cohost sidebar card was --box-chrome on a --not-white
+   page, which at this size would read as nothing at all. */
+.blog-highlights,
+.archive-intro {
+	background: color-mix(in oklab, #ffffff var(--page-mix), var(--panel));
+	border-radius: calc(var(--page-ease) * 0.5rem);
+	box-shadow:
+		0 4px 5px rgb(0 0 0 / calc(var(--page-ease) * 0.14)),
+		0 1px 10px rgb(0 0 0 / calc(var(--page-ease) * 0.12)),
+		0 2px 4px rgb(0 0 0 / calc(var(--page-ease) * 0.2));
+}
+
+.blog-highlights {
+	border-color: color-mix(in oklab, transparent var(--page-mix), rgba(232, 246, 255, 0.75));
+}
+
+.archive-intro {
+	border-color: color-mix(in oklab, transparent var(--page-mix), rgba(255, 255, 255, 0.72));
+}
+
+.blog-highlights .highlight-date {
+	color: color-mix(in oklab, #4a4847 var(--page-mix), rgba(39, 20, 82, 0.65));
+}
+
+/* Small chrome: the topline chips and the search field. */
+.status-light,
+.blog-search input[type="search"] {
+	background: color-mix(in oklab, #fff9f2 var(--page-mix), var(--panel-strong));
+	border-color: color-mix(in oklab, #bfbab5 var(--page-mix), var(--line));
+	border-radius: calc(var(--page-ease) * 0.375rem);
+}
+
+/* The footer rule is a near-white hairline meant for the blue gradient, and it
+   disappears against cohost paper. Its text is dark violet on an ever-lighter
+   background, so that only ever gains contrast and is left alone. */
+.site-footer {
+	border-top-color: color-mix(in oklab, #bfbab5 var(--page-mix), rgba(231, 252, 255, 0.45));
+}
