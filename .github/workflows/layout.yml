@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2, 3, 4, 5, 6]
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.140.0
@@ -61,7 +61,7 @@ jobs:
       # are cached against the pointer files that name them: the key only
       # moves when one of the assets actually does.
       - name: Cache press-kit LFS objects
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .git/lfs/objects
           key: lfs-${{ runner.os }}-${{ hashFiles('design/wirenook/**') }}
@@ -82,7 +82,7 @@ jobs:
         run: hugo --minify
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v9
         with:
           enable-cache: true
 
@@ -92,7 +92,7 @@ jobs:
       # misses the cache and re-downloads, which is the correct response.
       - name: Cache Chromium
         id: chromium-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
@@ -118,7 +118,7 @@ jobs:
             --json "shard-${{ matrix.shard }}.json"
 
       - name: Upload shard findings
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: overflow-shard-${{ matrix.shard }}
           path: shard-${{ matrix.shard }}.json
@@ -135,7 +135,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Download shard findings
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: overflow-shard-*
           merge-multiple: true

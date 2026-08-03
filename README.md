@@ -118,7 +118,7 @@ python tools/overflow.py -v check --widths 1380-1420:2
 
 It measures every page at every width in the sweep, which takes minutes, so
 it spreads the pages over one worker per two cores — `--jobs 1` to get a
-serial run back. CI goes further and splits the pages across four runners
+serial run back. CI goes further and splits the pages across six runners
 with `--shard i/n`, each writing `--json` that a final `report` merges; the
 merge exists because the stale-allowlist check cannot tell "nothing matches
 this entry" from "not my pages" until it has seen all of them.

@@ -440,7 +440,7 @@ def _serving(root: Path) -> Iterator[str]:
 
         def log_message(
             self,
-            format: str,  # noqa: A002
+            format: str,  # ruff: ignore[builtin-argument-shadowing]
             *args: object,
         ) -> None:
             """Swallow the access log.
@@ -616,7 +616,11 @@ def _measure_shard(
     :param chromium: Explicit Chromium path, or ``None`` to use Playwright's.
     :return: Findings for this shard's pages, keyed as ``_measure`` keys them.
     """
-    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+    # Imported here, not at module scope, so `report` can merge shard files
+    # on a runner that never installed Playwright.
+    from playwright.sync_api import (  # ruff: ignore[import-outside-top-level]
+        sync_playwright,
+    )
 
     findings: dict[str, Finding] = {}
     with _serving(root) as base, sync_playwright() as playwright:
