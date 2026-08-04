@@ -2,6 +2,7 @@
 title: "How I Like to Buy Commissions"
 date: 2024-08-07T16:43:12-07:00
 type: cohost
+highlight: true
 cohost:
   id: 7207755
   url: "https://cohost.org/CassidyCo/post/7207755-how-i-like-to-buy-co"

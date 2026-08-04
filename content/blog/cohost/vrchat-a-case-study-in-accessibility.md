@@ -1,6 +1,7 @@
 ---
 title: "VRChat: A Case Study in Accessibility"
 date: 2024-03-29T11:58:51-07:00
+highlight: true
 type: cohost
 cohost:
   id: 5331247

@@ -25,8 +25,6 @@ cohost:
 
 Sacrificing livestock to Tupper for features: Group instance moderators restricting avatars based on performance characteristics per event attendee classification (staff vs. non-staff)!
 
-<!--more-->
-
 So many places have this awkward culture of *celebrating* non-performant avatars like these badges of honor (Looking at you, VRU). It's awful bweh.～(　TロT)σ
 
 Incremental cultural shifts, though! Encouragement of avatar optimization as a good thing!!!! I feel like it's close- I feel like we're soooo close... And having a green avatar as something to be proud of would be just... Hwah! Awesome!

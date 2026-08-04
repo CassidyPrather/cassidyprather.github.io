@@ -1,6 +1,7 @@
 ---
 title: "Sportsmanship"
 date: 2024-05-19T10:42:13-07:00
+highlight: true
 type: cohost
 cohost:
   id: 6035360

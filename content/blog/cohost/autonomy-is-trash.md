@@ -2,6 +2,7 @@
 title: "Autonomy is Trash"
 date: 2023-09-08T17:36:09-07:00
 type: cohost
+highlight: true
 cohost:
   id: 2779090
   url: "https://cohost.org/CassidyCo/post/2779090-autonomy-is-trash"

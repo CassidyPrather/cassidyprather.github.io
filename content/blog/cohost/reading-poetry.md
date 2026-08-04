@@ -2,6 +2,7 @@
 title: "Reading Poetry"
 description: "I had a really strange moment the other night hanging out with my pal Mari."
 date: 2023-08-04T15:14:00-07:00
+highlight: true
 type: cohost
 cohost:
   id: 2363487

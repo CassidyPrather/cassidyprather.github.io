@@ -1,7 +1,7 @@
 ---
 title: "Welcome to my blog!"
 date: 2026-07-21T00:00:00Z
-highlight: true
+highlight: false
 ---
 
 I'm going to write about science, technology, opinions, and personal experiences.
