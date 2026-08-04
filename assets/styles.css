@@ -1760,9 +1760,10 @@ h2 {
   color: var(--city);
 }
 
-/* The label stays muted and the destination doesn't -- the URLs are the only
-   thing this entry is really for. */
-.work-amoeba .work-link a {
+/* Prose stays muted and the links in it don't -- the destinations are the only
+   thing this entry is really for. The title keeps the slime it inherits from
+   its h3. */
+.work-amoeba p a {
   color: var(--paper);
 }
 

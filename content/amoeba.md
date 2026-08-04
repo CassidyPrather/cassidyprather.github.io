@@ -1,6 +1,6 @@
 ---
-title: "Amoeba Roguelike"
-description: "7DRL 2021 — you are the blob"
+title: "Amoeba Roguelike Remastered"
+description: "2021 [7-day roguelike](https://7drl.com/), ported, with bugfixes and new features"
 type: amoeba
 # The game deploys itself to /amoeba_rl/ from its own repo, so Works points
 # straight at it instead of at a landing page in between. This file renders
