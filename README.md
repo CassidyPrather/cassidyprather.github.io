@@ -50,9 +50,12 @@ move. Renaming a post's file is the one thing that still re-issues its id.
 
 Along the way Atom also gets RFC 3339 dates instead of RSS's RFC 822, a
 `<content type="html">` that says what it holds rather than leaving the reader
-to guess, and an `<updated>` distinct from `<published>` — that one reads
-`Lastmod`, so a corrected post surfaces again if it sets `lastmod` in front
-matter.
+to guess, and an `<updated>` distinct from `<published>`. That last one is why
+`enableGitInfo` is on: a post is dated from the commit that last touched its
+file, so a fix resurfaces it in a reader and nothing has to be kept up to date
+by hand. It costs both build workflows a full-history checkout, and it means a
+mechanical sweep across `content/` reads as an edit to everything it touches —
+`hugo.toml` has the escape hatch if that ever matters.
 
 One wart, documented at length in `hugo.toml`: the Hugo output format is keyed
 `rss`, because that name is what makes Hugo rewrite the root-relative image

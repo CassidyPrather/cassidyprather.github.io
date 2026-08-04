@@ -12,6 +12,22 @@ disableKinds = ["taxonomy", "term"]
 # should never silently drop a post from a deploy.
 buildFuture = true
 
+# Take each post's Lastmod from the commit that last touched its file, which is
+# what gives <updated> in the Atom feed something to say: a corrected post
+# resurfaces in a reader, an untouched one stays put, and nobody has to
+# maintain a field by hand to make that true.
+#
+# Two consequences worth knowing. Every workflow that builds the site checks
+# out full history for this (`fetch-depth: 0`) — from GitHub's default shallow
+# clone there is no log to read and every post falls back to its publication
+# date. And a mechanical sweep across content, a typo pass or a reformat, is a
+# commit against every file it touches and reads as an update to every one of
+# those posts; git outranks a `lastmod` in front matter by default, so if that
+# ever needs suppressing, the fix is a [frontmatter] table putting "lastmod"
+# ahead of ":git" and pinning the field on the posts that should stop tracking
+# their file.
+enableGitInfo = true
+
 [outputs]
   home = ["html"]
   section = ["html"]

@@ -13,8 +13,9 @@
 	822 pubDate did; <content type="html"> says outright what the escaped
 	payload is, where RSS's <description> left readers to guess; and <updated>
 	exists at all, so a corrected post can say so. That last one reads Lastmod,
-	which without `enableGitInfo` is the Date unless a post sets `lastmod` in
-	front matter — set it when an edit is worth resurfacing.
+	which `enableGitInfo` in hugo.toml fills from the commit that last touched
+	the post's file — nothing here needs maintaining by hand, and that config
+	comment says what a sweep across the archive would therefore do.
 
 	Relative URLs in the post body are rewritten to absolute ones by Hugo on the
 	way out, which is what makes the responsive-image srcsets usable in a
