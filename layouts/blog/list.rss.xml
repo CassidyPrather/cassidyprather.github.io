@@ -1,22 +1,70 @@
-{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-	<channel>
-		<title>{{ .Title }} — {{ site.Title }}</title>
-		<link>{{ .Permalink }}</link>
-		<description>Posts from {{ site.Title }}</description>
-		<generator>Hugo</generator>
-		<language>{{ site.Language.Lang }}</language>
-		{{ with .OutputFormats.Get "rss" }}
-			<atom:link href="{{ .Permalink }}" rel="self" type="application/rss+xml" />
-		{{ end }}
-		{{ range .Pages.ByDate.Reverse }}
-			<item>
-				<title>{{ .Title | default (.Date.Format "2 January 2006") }}</title>
-				<link>{{ .Permalink }}</link>
-				<pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
-				<guid>{{ .Permalink }}</guid>
-				<description>{{ .Content | transform.XMLEscape | safeHTML }}</description>
-			</item>
-		{{ end }}
-	</channel>
-</rss>
+{{- /*
+	The blog's feed.
+
+	Atom rather than RSS, for one reason that matters here: <id> is a separate
+	thing from <link>. A reader keys its copy of an entry on the id, so moving
+	a post — the cohost backfill landed 30 of them under a fresh URL scheme in
+	a single commit — stops meaning "30 new posts" to everyone subscribed. The
+	ids are RFC 4151 tag URIs assembled from the constants in hugo.toml, which
+	is where the reasoning for keeping them off baseURL lives.
+
+	The rest follows from the format. Dates are RFC 3339, so nothing depends on
+	Hugo and the reader agreeing about English month names the way RSS's RFC
+	822 pubDate did; <content type="html"> says outright what the escaped
+	payload is, where RSS's <description> left readers to guess; and <updated>
+	exists at all, so a corrected post can say so. That last one reads Lastmod,
+	which without `enableGitInfo` is the Date unless a post sets `lastmod` in
+	front matter — set it when an edit is worth resurfacing.
+
+	Relative URLs in the post body are rewritten to absolute ones by Hugo on the
+	way out, which is what makes the responsive-image srcsets usable in a
+	reader and is the whole reason this file is named for Hugo's "rss" output
+	format while serving Atom. hugo.toml has that story.
+*/ -}}
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\"?>" | safeHTML }}
+{{- $rfc3339 := "2006-01-02T15:04:05Z07:00" -}}
+{{- $tag := printf "tag:%s,%s:" site.Params.feed.tagAuthority site.Params.feed.tagDate -}}
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.Language.Lang }}">
+	<title>{{ .Title }} — {{ site.Title }}</title>
+	<subtitle>{{ site.Params.description }}</subtitle>
+	<id>{{ $tag }}blog</id>
+	{{- /* Atom wants one timestamp for the feed itself. The newest entry edit
+	    is it — sorting by date instead would leave a corrected old post
+	    invisible to a reader that only refetches on a newer <updated>. */}}
+	{{ with (.Pages.ByLastmod.Reverse) }}
+		<updated>{{ (index . 0).Lastmod.Format $rfc3339 }}</updated>
+	{{ end }}
+	{{- /* The media type is spelt out rather than printed from .MediaType.Type
+	    because Go's escaper renders a "+" from an action as "&#43;", here and
+	    in the autodiscovery <link>s. XML says the two are the same string, and
+	    a parser agrees, but the readers that sniff a page for a feed with a
+	    regex instead of a parser do not. */}}
+	{{ with .OutputFormats.Get "rss" }}
+		<link rel="self" type="application/atom+xml" href="{{ .Permalink }}" />
+	{{ end }}
+	<link rel="alternate" type="text/html" href="{{ .Permalink }}" />
+	<author>
+		<name>{{ site.Params.author }}</name>
+		<uri>{{ site.Home.Permalink }}</uri>
+	</author>
+	<icon>{{ "images/wirenook/link-charm.png" | absURL }}</icon>
+	<generator uri="https://gohugo.io/" version="{{ hugo.Version }}">Hugo</generator>
+	{{ range .Pages.ByDate.Reverse }}
+		<entry>
+			{{- /* Cohost let a post go untitled, and plenty did; the blog index
+			    dates those cards instead, so the feed says the same thing. */}}
+			<title>{{ .Title | default (.Date.Format "2 January 2006") }}</title>
+			{{- /* ContentBaseName is the post's own name — the filename, or the
+			    folder if one ever becomes a page bundle — and not its URL, so
+			    the id outlives both the permalink scheme and the section a
+			    post sits in. It does have to stay unique across the blog:
+			    two posts of the same name in different directories would be
+			    one entry to a reader. */}}
+			<id>{{ $tag }}blog/{{ .File.ContentBaseName }}</id>
+			<link rel="alternate" type="text/html" href="{{ .Permalink }}" />
+			<published>{{ .Date.Format $rfc3339 }}</published>
+			<updated>{{ .Lastmod.Format $rfc3339 }}</updated>
+			<content type="html">{{ .Content | transform.XMLEscape | safeHTML }}</content>
+		</entry>
+	{{ end }}
+</feed>

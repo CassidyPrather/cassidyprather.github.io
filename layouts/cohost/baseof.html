@@ -25,7 +25,7 @@
 		     goes cherry on mobile too, which is most of the illusion on a
 		     phone. */}}
 		<meta name="theme-color" content="#83254f">
-		<link rel="alternate" type="application/rss+xml" title="Blog — {{ site.Title }}" href="{{ "blog/index.xml" | relURL }}">
+		<link rel="alternate" type="application/atom+xml" title="Blog — {{ site.Title }}" href="{{ "blog/feed.xml" | relURL }}">
 		{{ with resources.Get "cohost.css" | fingerprint }}
 			<link rel="stylesheet" href="{{ .RelPermalink }}">
 		{{ end }}

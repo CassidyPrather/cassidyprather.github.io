@@ -7,7 +7,17 @@
 		<title>{{ block "title" . }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
 		{{ with site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
 		<link rel="icon" href="{{ "images/wirenook/link-charm.png" | relURL }}">
-		{{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" title="{{ $.Title }} — {{ site.Title }}" href="{{ .RelPermalink }}">{{ end }}
+		{{/* The blog is the only thing here that syndicates, and every page says
+		     so rather than just the blog itself — a reader landing on the home
+		     page or a works page should still find something to subscribe to,
+		     which is what the cohost shell already does from its own <head>.
+		     The type is a literal for the reason layouts/blog/list.rss.xml
+		     gives. */}}
+		{{ with site.GetPage "/blog" }}
+			{{ $title := printf "%s — %s" .Title site.Title }}
+			{{/* "rss" is Hugo's key for the Atom format; hugo.toml says why. */}}
+			{{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/atom+xml" title="{{ $title }}" href="{{ .RelPermalink }}">{{ end }}
+		{{ end }}
 		{{/* styles.css is run through ExecuteAsTemplate so .page-shell::before can
 		     tile a generated WebP instead of the full-resolution PNG master that
 		     static/ keeps: same backdrop, a fraction of the bytes. The stylesheet
