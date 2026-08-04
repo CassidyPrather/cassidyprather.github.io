@@ -24,8 +24,24 @@ on:
       - ".github/workflows/layout.yml"
   workflow_dispatch:
 
+env:
+  # Pinned so the cache key below is stable, and so a layout measurement is
+  # never quietly re-baselined by whatever Playwright shipped this week.
+  PLAYWRIGHT_VERSION: 1.62.0
+
 jobs:
+  # The sweep is a few hundred relayouts per page per font pass, and one
+  # runner gets through it at about fifteen seconds a page. A second browser
+  # on the same runner buys much less than it looks like it should -- one
+  # already keeps ~2.5 of the 4 cores busy -- so the pages are split across
+  # runners instead. The matrix below is the whole knob: the pages are dealt
+  # round-robin over `strategy.job-total` shards, so adding an entry widens
+  # the split, and `report` merges back whatever the shards produce.
   overflow:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6]
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.140.0
@@ -45,6 +61,15 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      # Every shard needs these, and LFS bandwidth is metered, so the objects
+      # are cached against the pointer files that name them: the key only
+      # moves when one of the assets actually does.
+      - name: Cache press-kit LFS objects
+        uses: actions/cache@v6
+        with:
+          path: .git/lfs/objects
+          key: lfs-${{ runner.os }}-${{ hashFiles('design/wirenook/**') }}
+
       # The press-kit gallery on /style/ carries no width/height in the markup,
       # so those images are laid out from their intrinsic size: measuring LFS
       # pointer files would measure a page that never ships. Same targeted pull
@@ -60,18 +85,67 @@ jobs:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
         run: hugo --minify
 
+      # Exact version, unlike the other actions here: setup-uv stopped
+      # publishing a floating major tag after v7, so `@v9` resolves to
+      # nothing at all.
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v9.0.0
         with:
           enable-cache: true
 
+      # Chromium is a ~170MB download that cannot change while the version
+      # above is pinned, so it is fetched once and restored from cache after
+      # that. The key carries the version for exactly that reason: bumping it
+      # misses the cache and re-downloads, which is the correct response.
+      - name: Cache Chromium
+        id: chromium-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+
       # One venv for both steps so the browser Playwright downloads is the
       # revision the Playwright that drives it expects.
-      - name: Install Playwright and Chromium
+      - name: Install Playwright
         run: |
           uv venv
-          uv pip install playwright
-          .venv/bin/playwright install --with-deps chromium
+          uv pip install "playwright==${PLAYWRIGHT_VERSION}"
+
+      # No --with-deps: the runner image ships Google Chrome, so Chromium's
+      # shared libraries are already installed and the flag would only re-run
+      # apt. The download itself is skipped when the cache supplied it.
+      - name: Install Chromium
+        if: steps.chromium-cache.outputs.cache-hit != 'true'
+        run: .venv/bin/playwright install chromium
 
       - name: Check for layout overflow
-        run: .venv/bin/python tools/overflow.py check
+        run: |
+          .venv/bin/python tools/overflow.py check \
+            --shard "${{ matrix.shard }}/${{ strategy.job-total }}" \
+            --json "shard-${{ matrix.shard }}.json"
+
+      - name: Upload shard findings
+        uses: actions/upload-artifact@v7
+        with:
+          name: overflow-shard-${{ matrix.shard }}
+          path: shard-${{ matrix.shard }}.json
+          retention-days: 1
+
+  # A shard has only seen its own pages, so it cannot tell an allowlist entry
+  # that has gone stale from one that still matches on a page another shard
+  # held. The verdict is delivered once, here, over the merged findings.
+  report:
+    needs: overflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download shard findings
+        uses: actions/download-artifact@v8
+        with:
+          pattern: overflow-shard-*
+          merge-multiple: true
+
+      - name: Report layout overflow
+        run: python3 tools/overflow.py report shard-*.json

@@ -37,20 +37,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      # Exact version, unlike the other actions here: setup-uv stopped
+      # publishing a floating major tag after v7, so `@v9` resolves to
+      # nothing at all.
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v9.0.0
         with:
           enable-cache: true
 
+      # `ruff@latest`, not bare `ruff`: uvx reuses a cached tool environment
+      # without re-resolving, so a bare invocation can keep running a build
+      # from months ago. That is how tools/ sat on a lint error nobody saw --
+      # the rules here run in preview on purpose, and preview rules move.
       - name: Lint with ruff
-        run: uvx ruff check tools
+        run: uvx ruff@latest check tools
 
       - name: Check formatting
-        run: uvx ruff format --check tools
+        run: uvx ruff@latest format --check tools
 
       # --with playwright so tools/overflow.py's import resolves; it is only
       # imported inside cmd_check, but ty still needs the stubs to see it.
       # --with pyoxipng likewise for tools/images.py's, which cmd_optimize
       # imports lazily so that `check` and `fix` keep working without it.
       - name: Type check
-        run: uvx --with playwright --with pyoxipng ty check tools
+        run: uvx --with playwright --with pyoxipng ty@latest check tools
