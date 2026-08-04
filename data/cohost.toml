@@ -17,5 +17,8 @@ avatarShape = "circle"
 url = "https://cohost.org/CassidyCo"
 archive = "https://web.archive.org/web/2024/https://cohost.org/CassidyCo"
 
+# cohost.org itself, for the places that name the site rather than the profile.
+siteArchive = "https://web.archive.org/web/2024/https://cohost.org/"
+
 # cohost went read-only on 1 October 2024 and offline at the end of that year.
 readOnly = "2024-10-01"

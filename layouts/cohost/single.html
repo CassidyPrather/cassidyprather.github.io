@@ -6,7 +6,7 @@
 {{ $posts := (where (where site.RegularPages "Type" "cohost") "Section" "blog").ByDate }}
 <div class="co-info-box">
 	{{ partial "cohost/icon.html" (dict "name" "info") }}
-	<p><a href="https://www.wikipedia.org/">Cohost</a> shut down in 2024</p>
+	<p><a href="{{ site.Data.cohost.siteArchive }}" rel="nofollow noopener">Cohost</a> shut down in 2024</p>
 </div>
 
 <div class="co-thread">

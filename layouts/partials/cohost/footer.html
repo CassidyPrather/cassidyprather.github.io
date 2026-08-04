@@ -1,19 +1,13 @@
 {{- /* Cohost's footer was a row of product links — about, plus!, terms, the
-	staff blog. None of those exist now, so the row says what happened and
-	points at the things that replaced them. */ -}}
+	staff blog. None of those exist now, so the row points at the things that
+	replaced them. */ -}}
 {{- $profile := site.Data.cohost -}}
 <footer class="co-footer">
-	<p>
-		cohost went read-only on
-		<time datetime="{{ $profile.readOnly }}">1 October 2024</time>
-		and offline at the end of that year. This is Cassidy's copy of what she
-		posted there, rebuilt from her data export.
-	</p>
 	<nav class="co-footer-nav" aria-label="Footer">
-		<a class="co-footer-link" href="{{ "cohost/" | relURL }}">the archive</a>
-		<a class="co-footer-link" href="{{ "blog/" | relURL }}">what she writes now</a>
+		<a class="co-footer-link" href="{{ "cohost/" | relURL }}">archive</a>
+		<a class="co-footer-link" href="{{ "blog/" | relURL }}">blog</a>
 		<a class="co-footer-link" href="{{ "guestbook/" | relURL }}">guestbook</a>
 		<a class="co-footer-link" href="{{ "licenses/" | relURL }}">licenses</a>
-		<a class="co-footer-link" href="{{ $profile.archive }}" rel="nofollow noopener">@{{ $profile.handle }} on the wayback machine</a>
+		<a class="co-footer-link" href="{{ $profile.archive }}" rel="nofollow noopener">wayback machine</a>
 	</nav>
 </footer>

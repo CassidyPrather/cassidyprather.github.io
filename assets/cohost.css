@@ -735,10 +735,6 @@ img {
   margin: 0;
 }
 
-.co-info-box p + p {
-  margin-top: 0.5rem;
-}
-
 .co-info-box a {
   font-weight: 700;
 }
@@ -868,16 +864,9 @@ img {
   text-align: center;
 }
 
-.co-footer p {
-  margin: 0 0 0.5rem;
-  max-width: 48rem;
-  margin-inline: auto;
-}
-
 .co-footer-nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.25rem 1rem;
-  margin-top: 0.75rem;
 }

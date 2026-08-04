@@ -42,19 +42,7 @@
 
 <div class="co-info-box">
 	{{ partial "cohost/icon.html" (dict "name" "info") }}
-	<div>
-		<p>
-			This is a rebuild of @{{ $profile.handle }}'s cohost page, from her
-			data export. cohost closed at the end of 2024; the
-			<a href="{{ $profile.archive }}" rel="nofollow noopener">real one</a>
-			only exists in the Internet Archive now.
-		</p>
-		<p>
-			{{ len $posts }} posts, {{ (index (last 1 $posts) 0).Date.Format "January 2006" }}
-			to {{ (index (first 1 $posts) 0).Date.Format "January 2006" }}. They're part of
-			<a href="{{ "blog/" | relURL }}">the blog</a> too, where she's still writing.
-		</p>
-	</div>
+	<p><a href="{{ $profile.siteArchive }}" rel="nofollow noopener">Cohost</a> shut down in 2024</p>
 </div>
 
 {{ with .Content }}<div class="co-prose">{{ . }}</div>{{ end }}
