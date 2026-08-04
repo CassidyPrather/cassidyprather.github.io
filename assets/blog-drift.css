@@ -187,7 +187,11 @@
 .page-shell::after {
 	content: "";
 	position: fixed;
-	inset: 0;
+	/* Both edges, unlike the wallpaper this sits over: a flat fill has no
+	   position to slide, so it can overscan in whichever direction a dynamic
+	   toolbar shifts it. See --sky-overscan in styles.css — the footer sitting
+	   on bare sky at the bottom of this feed is the case that rule exists for. */
+	inset: calc(var(--sky-overscan) * -1) 0;
 	z-index: -1;
 	pointer-events: none;
 	background: rgb(255 249 242 / var(--page-ease));
