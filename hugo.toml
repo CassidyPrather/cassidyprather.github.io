@@ -4,13 +4,29 @@ title = "wirenook"
 enableRobotsTXT = true
 
 # Skip the unused taxonomies (tags/categories) to keep the published site to
-# just the pages we author. RSS is off by default too ([outputs] below); the
-# blog section opts back in via its front matter.
+# just the pages we author. The feed is off by default too ([outputs] below);
+# the blog section opts back in via its front matter.
 disableKinds = ["taxonomy", "term"]
 
 # Publish future-dated posts immediately — a timestamp a few hours ahead
 # should never silently drop a post from a deploy.
 buildFuture = true
+
+# Take each post's Lastmod from the commit that last touched its file, which is
+# what gives <updated> in the Atom feed something to say: a corrected post
+# resurfaces in a reader, an untouched one stays put, and nobody has to
+# maintain a field by hand to make that true.
+#
+# Two consequences worth knowing. Every workflow that builds the site checks
+# out full history for this (`fetch-depth: 0`) — from GitHub's default shallow
+# clone there is no log to read and every post falls back to its publication
+# date. And a mechanical sweep across content, a typo pass or a reformat, is a
+# commit against every file it touches and reads as an update to every one of
+# those posts; git outranks a `lastmod` in front matter by default, so if that
+# ever needs suppressing, the fix is a [frontmatter] table putting "lastmod"
+# ahead of ":git" and pinning the field on the posts that should stop tracking
+# their file.
+enableGitInfo = true
 
 [outputs]
   home = ["html"]
@@ -19,8 +35,53 @@ buildFuture = true
 # CI passes --baseURL from the Pages configuration step, so the value above
 # is only a fallback for local builds.
 
+# The blog syndicates as Atom (layouts/blog/list.rss.xml), which Hugo has no
+# media type for, so declaring the format means declaring the type first. The
+# suffix names the published file and is half of the layout lookup: baseName
+# plus suffix is /blog/feed.xml, format key plus suffix is list.rss.xml.
+#
+# That key is the one piece of this that still says RSS, and it has to. Hugo
+# rewrites root-relative URLs in rendered content to absolute ones for exactly
+# one output format — the one named "rss", by literal string comparison in
+# hugolib/site.go, which is still how it works upstream today. Every image in
+# a post arrives as a root-relative path from responsive-image.html, and a
+# path is resolved by a feed reader against whatever host the *reader* lives
+# on, so without that pass every attachment in the cohost archive breaks for
+# every subscriber. Nothing else about the format is RSS: the media type, the
+# published file, the template and the autodiscovery links all say Atom.
+#
+# Both tables merge with Hugo's built-ins rather than replacing them, unlike
+# the module mounts at the bottom of this file — so overriding "rss" here
+# changes the media type and file name of Hugo's own format and leaves the
+# rest of its defaults alone.
+[mediaTypes]
+  [mediaTypes."application/atom+xml"]
+    suffixes = ["xml"]
+
+[outputFormats]
+  [outputFormats.rss]
+    mediaType = "application/atom+xml"
+    baseName = "feed"
+
 [params]
   description = "Cassidy Prather's Website"
+  author = "Cassidy Prather"
+
+  [params.feed]
+    # Authority and date for the RFC 4151 tag: URIs that identify feed entries.
+    #
+    # Both are constants, and deliberately not read off baseURL: an entry's
+    # <id> is what a reader keys its copy on, so the day it starts tracking
+    # where the site is served from is the day a move republishes the whole
+    # archive into everyone's reader. That is the one thing Atom is here to
+    # avoid. baseURL is not even stable today — CI overrides it from the Pages
+    # configuration step, and the site answers to wirenook.net.
+    #
+    # The date only has to be a year the authority was ours, and marks when
+    # these ids were minted; it is not a per-entry timestamp. Neither value
+    # can change now that the feed is published.
+    tagAuthority = "wirenook.net"
+    tagDate = "2026"
 
   [params.blog]
     # How many posts the blog feed takes to slide from the wirenook skin into

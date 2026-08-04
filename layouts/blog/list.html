@@ -31,8 +31,9 @@
 		<div class="window-topline">
 			<h2>{{ .Title }}</h2>
 			<p class="topline-links">
+				{{/* "rss" is Hugo's key for the Atom format; hugo.toml says why. */}}
 				{{ with .OutputFormats.Get "rss" }}
-					<a class="status-light" href="{{ .RelPermalink }}">RSS</a>
+					<a class="status-light" href="{{ .RelPermalink }}">Atom</a>
 				{{ end }}
 				<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
 					</p>

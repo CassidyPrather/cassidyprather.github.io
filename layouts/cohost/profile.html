@@ -30,8 +30,8 @@
 		</div>
 		{{/* "follow" is the one control here that still has a live
 			     equivalent: the blog's feed is how you keep up with her now. */}}
-		<a class="co-button" href="{{ "blog/index.xml" | relURL }}">
-			{{ partial "cohost/icon.html" (dict "name" "rss") }}
+		<a class="co-button" href="{{ "blog/feed.xml" | relURL }}">
+			{{ partial "cohost/icon.html" (dict "name" "feed") }}
 			follow
 		</a>
 	</div>

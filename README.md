@@ -33,12 +33,41 @@ pipeline. Read its header comment before adding a call: whether an image wants
 WebP or PNG there depends on its content, and getting it backwards costs bytes
 or edges.
 
+## Syndication
+
+The blog publishes one feed, `/blog/feed.xml`, and it is Atom
+(`layouts/blog/list.rss.xml`). Every page advertises it, in both skins.
+
+Atom is the choice for one reason worth stating: an entry's `<id>` is a
+separate thing from its `<link>`. A reader keys its copy of a post on the id,
+so under RSS — where `<guid>` was the permalink — moving a post republishes it
+to everyone subscribed. This site does that: the cohost backfill landed thirty
+posts under a new URL scheme in one commit. The ids here are RFC 4151 tag URIs
+built from `params.feed` in `hugo.toml` and each post's own file name, so they
+depend on neither the permalink scheme nor the host. Those two config values
+are frozen now that the feed is out; that comment explains what breaks if they
+move. Renaming a post's file is the one thing that still re-issues its id.
+
+Along the way Atom also gets RFC 3339 dates instead of RSS's RFC 822, a
+`<content type="html">` that says what it holds rather than leaving the reader
+to guess, and an `<updated>` distinct from `<published>`. That last one is why
+`enableGitInfo` is on: a post is dated from the commit that last touched its
+file, so a fix resurfaces it in a reader and nothing has to be kept up to date
+by hand. It costs both build workflows a full-history checkout, and it means a
+mechanical sweep across `content/` reads as an edit to everything it touches —
+`hugo.toml` has the escape hatch if that ever matters.
+
+One wart, documented at length in `hugo.toml`: the Hugo output format is keyed
+`rss`, because that name is what makes Hugo rewrite the root-relative image
+paths in a post body to absolute URLs, and a feed reader has no way to resolve
+a relative path against this site. The key is the only part that says RSS.
+
 ## The cohost archive
 
 `content/blog/cohost/` is the backfill of Cassidy's [cohost](https://cohost.org/)
 posts, 2022–2024, imported from her data export after the site shut down. They
-are ordinary blog entries — they appear in the feed, the RSS, and the search
-index with everything else — but each one carries `type: cohost`, which is how
+are ordinary blog entries — they appear in the feed, the syndication feed, and
+the search index with everything else — but each one carries `type: cohost`, which is how
 Hugo picks `layouts/cohost/` for it. That directory has a `baseof.html` of its
 own, so those pages replace the wirenook shell outright: cohost's top bar,
 cohost's post boxes, `assets/cohost.css` instead of `assets/styles.css`.
@@ -47,7 +76,7 @@ cohost's post boxes, `assets/cohost.css` instead of `assets/styles.css`.
 Nothing in the chrome is decorative. cohost has been dark since the end of
 2024, so every control points at whatever does its job now — the logo and nav
 come home, comments and the like button go to the guestbook, "follow" is the
-blog's RSS feed, tags run the blog's own search, and the one link that really
+blog's Atom feed, tags run the blog's own search, and the one link that really
 does want cohost goes by way of the Internet Archive.
 
 The feed on `/blog/` gets there gradually rather than all at once. Each entry
