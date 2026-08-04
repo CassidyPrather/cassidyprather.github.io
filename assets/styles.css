@@ -1129,7 +1129,6 @@ h2 {
 .press-kit-note p,
 .archive-intro,
 .entry-body,
-.amoeba-body,
 .post-body {
   overflow-wrap: anywhere;
 }
@@ -1724,172 +1723,47 @@ h2 {
   margin: 0 auto;
 }
 
-.amoeba-body {
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  background: var(--panel);
-  padding: clamp(1rem, 2vw, 1.4rem);
-  line-height: 1.55;
-  font-family: Atkinson-Regular, arial, sans-serif;
-}
-
-.amoeba-body> :last-child {
-  margin-bottom: 0;
-}
-
-.amoeba-body code {
-  background: rgba(255, 255, 255, 0.4);
-  padding: 0.1em 0.35em;
-  border-radius: 3px;
-}
-
-.amoeba-body table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1rem;
-}
-
-.amoeba-body th,
-.amoeba-body td {
-  border: 1px solid rgba(39, 20, 82, 0.25);
-  padding: 0.35rem 0.6rem;
-  text-align: left;
-  vertical-align: top;
-}
-
-.amoeba-body thead th {
-  background: var(--panel-strong);
-}
-
-.amoeba-console {
+/* The Amoeba entry keeps the dress of the landing page it replaced: libtcod's
+   palette and a terminal face, so the card in the Works list looks like the
+   thing it links to. */
+.work-amoeba {
   --void: #050508;
   --wall: #484d55;
-  --wall-bg: #1f262f;
-  --floor: #473e2d;
   --slime: #6daa2c;
   --bright-slime: #84be38;
-  --nucleus: #d04648;
   --city: #8595a1;
-  --militia: #d27d2c;
-  --calcium: #6b71f7;
   --paper: #deeed6;
-  margin-bottom: 1.4rem;
-  padding: clamp(0.9rem, 2.4vw, 1.4rem);
-  border: 1px solid var(--wall);
+  /* Same re-pointing the link-rail does, for the same reason: the page-tuned
+     magenta drops to 2.1:1 on the void. The slime greens clear 7:1. */
+  --link-hover: var(--bright-slime);
+  --link-active: var(--slime);
+  /* The ring is drawn 2px outside the link, which is still the card's own
+     void rather than the page behind it, so the near-black default vanishes
+     here. Paper reads 16.8:1. */
+  --focus-ring: var(--paper);
+  border-color: var(--wall);
   background: var(--void);
   color: var(--paper);
   font-family: "DejaVu Sans Mono", "Liberation Mono", Consolas, monospace;
 }
 
-.amoeba-console a:focus-visible {
-  outline: 2px solid var(--paper);
-  outline-offset: 2px;
-}
-
-.amoeba-map {
-  width: max-content;
-  max-width: 100%;
-  margin: 0 auto 1rem;
-  overflow-x: auto;
-  font-size: clamp(0.52rem, 2.5vw, 1.05rem);
-  line-height: 1.15;
-}
-
-.amoeba-map .w {
-  color: var(--wall);
-  background: var(--wall-bg);
-}
-
-.amoeba-map .f {
-  color: var(--floor);
-}
-
-.amoeba-map .o,
-.amoeba-legend .o {
-  background: var(--slime);
-}
-
-.amoeba-map .n,
-.amoeba-legend .n {
-  color: var(--nucleus);
-  background: var(--slime);
-}
-
-.amoeba-map .i,
-.amoeba-legend .i {
+.work-amoeba h3 {
   color: var(--bright-slime);
-}
-
-.amoeba-map .r,
-.amoeba-legend .r {
-  color: var(--calcium);
-}
-
-.amoeba-map .h,
-.amoeba-legend .h {
-  color: var(--militia);
-}
-
-.amoeba-map .c,
-.amoeba-legend .c {
-  color: var(--city);
-}
-
-.amoeba-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.1rem;
-  justify-content: center;
-  margin: 0 0 1.1rem;
-  padding: 0;
-  list-style: none;
-  font-size: 0.86rem;
-}
-
-.amoeba-legend li {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.amoeba-legend .glyph {
-  display: inline-block;
-  min-width: 1.1em;
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.amoeba-launch {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem 1.1rem;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-}
-
-.amoeba-play {
-  padding: 0.55rem 1.4rem;
-  border: 1px solid var(--bright-slime);
-  background: var(--bright-slime);
-  color: var(--void);
-  font-size: 1.05rem;
-  font-weight: 700;
-  text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
-.amoeba-play:hover,
-.amoeba-play:active {
-  background: var(--slime);
-  color: var(--void);
+/* .license-entry p hands prose to Atkinson; this card is terminal all the way
+   down. City grey is the muted tier, at 6.6:1. */
+.work-amoeba p {
+  font-family: inherit;
+  color: var(--city);
 }
 
-.amoeba-stamp {
-  color: var(--city);
-  font-size: 0.82rem;
+/* The label stays muted and the destination doesn't -- the URLs are the only
+   thing this entry is really for. */
+.work-amoeba .work-link a {
+  color: var(--paper);
 }
 
 /* The three-column layout needs the wave gutter (16vw) plus all three

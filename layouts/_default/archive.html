@@ -13,9 +13,15 @@
            blog and from cohost's own chrome, not listed here as a work. */}}
 					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "vrchat") }}
 					{{ range $pages.ByTitle }}
-						<article class="license-entry">
-							<h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+						{{/* A work that lives outside Hugo has no page here to hang its
+             title on, so it names its destinations in `links` instead. */}}
+						{{ $links := .Params.links }}
+						<article class="license-entry work-{{ .Type }}">
+							<h3>{{ if $links }}{{ .Title }}{{ else }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}</h3>
 							{{ with .Description }}<p>{{ . }}</p>{{ end }}
+							{{ range $links }}
+								<p class="work-link">{{ .label }}: <a href="{{ .url }}">{{ .url }}</a></p>
+							{{ end }}
 						</article>
 					{{ end }}
 				</div>
