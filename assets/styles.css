@@ -144,9 +144,8 @@ a:focus-visible {
      the elastic overscroll (trackpad rubber-band) bounce animation. */
   transform: translateZ(0);
   will-change: transform;
-  background-image:
-    url("{{ .cloudBackdrop }}"),
-    url("{{ .cloudBackdrop }}");
+  background-image: url("{{ .cloudBackdrop }}"),
+  url("{{ .cloudBackdrop }}");
   background-position:
     center 8vh,
     58% 78vh;
@@ -643,39 +642,28 @@ h2 {
   gap: 0.5rem;
   padding: 0.6rem;
   min-height: 0;
-  /* The badges wrap on this card's width, not the window's. The card sits
-     four nested layout decisions below the viewport — wave gutter, the
-     layout-grid's middle track, the index window's padding, the content
-     grid's two columns — so no @media breakpoint can honestly name the
-     viewport width at which two 88px badges stop fitting here. The 86rem
-     breakpoint guessed, and guessed ~40px low, which is why the badges
-     spilled out of the card between 1378px and 1416px.
-
-     inline-size containment also stops the badge block from setting this
-     card's own width, so an oversized badge grid can no longer inflate the
-     card and push its siblings around. */
+  /* inline-size containment stops the badge block from setting this card's
+     own width, so an oversized badge grid cannot inflate the card and push
+     its siblings around. */
   container-type: inline-size;
 }
 
 .badge-grid {
   /* Badges are pixel art at their native 88x31 and look mushy at any other
-     size, so the grid drops to a single column rather than scaling them. */
+     size, so the column count changes rather than the badges. auto-fit reads
+     the space the card actually has: the card sits four nested layout
+     decisions below the viewport — wave gutter, the layout-grid's middle
+     track, the index window's padding, the content grid's two columns — and
+     it is between 255px and 575px wide across the whole sweep, which is room
+     for three to six badges nearly everywhere. A hard-coded two columns left
+     that space empty and wrapped the badges into twice the rows they needed. */
   --badge-width: 88px;
   display: grid;
-  grid-template-columns: repeat(2, var(--badge-width));
+  grid-template-columns: repeat(auto-fit, var(--badge-width));
   gap: 2px;
   justify-content: center;
   justify-items: center;
   align-items: center;
-}
-
-/* 178px is two badges plus the gap between them. It has to be spelled out —
-   container query conditions cannot read custom properties — but it is a
-   fact about this card's own contents rather than a guess about the window. */
-@container (width < 178px) {
-  .badge-grid {
-    grid-template-columns: var(--badge-width);
-  }
 }
 
 .badge-grid a {
