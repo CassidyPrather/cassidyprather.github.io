@@ -36,6 +36,24 @@
      light or mid-tone everywhere, including behind the dark link-rail.
      Measured 5.2:1 (rail) to 16.8:1 (panels). */
   --focus-ring: #1a0d33;
+  /* How far past the viewport edges the fixed backdrop layers paint.
+
+     A mobile browser with a dynamic toolbar (Firefox for Android especially,
+     and more so with the toolbar moved to the bottom) doesn't just resize the
+     viewport as the bar hides and shows — it translates `position: fixed`
+     boxes so bottom-anchored UI clears the bar. A layer sized exactly to the
+     viewport gets shifted off one edge, and the strip it vacates falls through
+     to the raw page gradient for the length of the animation. On /blog/ that
+     strip lands squarely on the footer, which sits at the document's bottom
+     edge with nothing under it but sky, so the footer appears to snap back out
+     of the archive's paper wash and into the wirenook blue every time the bar
+     comes back.
+
+     Overscanning the sky costs a little extra paint on layers that are already
+     composited, and means no shift of a toolbar's size can expose anything.
+     The 5rem floor clears a Firefox for Android toolbar (~56px) on a short
+     viewport, where 12vh alone wouldn't. */
+  --sky-overscan: max(5rem, 12vh);
   font-family: Unique, "Trebuchet MS", "Century Gothic", Arial, sans-serif;
 }
 
@@ -83,11 +101,6 @@
 
 html {
   background: linear-gradient(155deg, #65b8e6 0%, #519ed5 48%, #8abbe9 100%);
-  /* Firefox's elastic overscroll bounce (trackpad scroll past the top/bottom)
-     reveals a strip of raw browser canvas beyond the rendered document that
-     CSS backgrounds can't paint into, showing white. Disabling the bounce
-     keeps scrolling clamped at the document edge instead. */
-  overscroll-behavior-y: none;
 }
 
 body {
@@ -96,7 +109,27 @@ body {
   color: var(--ink);
   background: linear-gradient(155deg, #65b8e6 0%, #519ed5 48%, #8abbe9 100%);
   overflow-x: hidden;
-  overscroll-behavior-y: none;
+}
+
+/* Firefox's elastic overscroll bounce (trackpad scroll past the top/bottom)
+   reveals a strip of raw browser canvas beyond the rendered document that CSS
+   backgrounds can't paint into, showing white. Disabling the bounce keeps
+   scrolling clamped at the document edge instead.
+
+   Fine pointers only, because on the root this property does more than suppress
+   a paint artefact: it cancels the browser's own overscroll gesture, and the
+   gesture at the top of a touchscreen document is pull-to-refresh. Declared
+   unconditionally it took that away on every page of the site to answer a
+   trackpad bounce no phone performs — a touch browser meets a downward drag at
+   the top with its refresh affordance rather than by sliding the document off
+   its own painted area, so there is no bare canvas there to cover. A laptop
+   with a touchscreen still reports `fine` for its primary pointer, which is the
+   answer this wants: it has the trackpad the rule exists for. */
+@media (pointer: fine) {
+  html,
+  body {
+    overscroll-behavior-y: none;
+  }
 }
 
 a {
@@ -137,7 +170,11 @@ a:focus-visible {
 .page-shell::before {
   content: "";
   position: fixed;
-  inset: 0;
+  /* Bottom edge only: both background-position values below are measured from
+     the top of this box, so growing that edge would slide the whole wallpaper.
+     Growing downward just lets repeat-y tile further, which is what the
+     overscan is for. */
+  inset: 0 0 calc(var(--sky-overscan) * -1);
   z-index: -4;
   pointer-events: none;
   /* Forces its own compositor layer so Firefox doesn't clip/drop it during
@@ -162,7 +199,7 @@ a:focus-visible {
   position: fixed;
   inset: 0 auto 0 0;
   width: clamp(7rem, 12vw, 27.5rem);
-  height: 100vh;
+  height: calc(100vh + var(--sky-overscan));
   transform: translateZ(0);
   will-change: transform;
   background-image:
@@ -1753,6 +1790,61 @@ h2 {
    its h3. */
 .work-amoeba p a {
   color: var(--paper);
+}
+
+/* Space Trucking gets the same treatment against its own palette (the roles
+   are src/palette.rs in the game's repo, named the same way here). What it
+   borrows is the console rather than a screen: a riveted plate face lit from
+   the top left, a stencilled amber lamp label, phosphor green kept for the
+   states a lamp shows. The game has no text in it anywhere but the version
+   string, so unlike Amoeba there is no face of its own to set this in. */
+.work-space-trucking {
+  --plate: #242b27;
+  --plate-lit: #3a443d;
+  --plate-shade: #121614;
+  --rivet: #46504a;
+  --amber: #e8a33d;
+  --phosphor: #7fd962;
+  --phosphor-hot: #bdf29b;
+  --icon-lit: #a7b3a9;
+  --glint: #e7e3d1;
+  /* Same re-pointing the Amoeba card does, for the same reason: the
+     page-tuned magenta is unreadable on plate. Both phosphors clear 8:1. */
+  --link-hover: var(--phosphor-hot);
+  --link-active: var(--phosphor);
+  /* The ring is drawn 2px outside the link, which is still the card's own
+     plate rather than the page behind it, so the near-black default vanishes
+     here. Glint reads 11.3:1. */
+  --focus-ring: var(--glint);
+  border-color: var(--rivet);
+  background: var(--plate);
+  color: var(--glint);
+  /* The bevel every raised thing in the game carries: the lit edge toward the
+     light, the shaded one away from it. Inset shadows rather than a two-tone
+     border, so the 1px border above stays the card's own edge. */
+  box-shadow:
+    inset 1px 1px 0 var(--plate-lit),
+    inset -1px -1px 0 var(--plate-shade);
+}
+
+/* Painted on the plate, not printed: the console labels its hardware in
+   stencilled capitals and lights them amber, at 6.7:1 here. */
+.work-space-trucking h3 {
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Prose keeps the Atkinson .license-entry p gives it. Etched-icon grey is the
+   muted tier, at 6.7:1. */
+.work-space-trucking p {
+  color: var(--icon-lit);
+}
+
+/* Prose stays muted and the links in it don't, as on the Amoeba card. The
+   title keeps the amber it inherits from its h3. */
+.work-space-trucking p a {
+  color: var(--glint);
 }
 
 /* The three-column layout needs the wave gutter (16vw) plus all three
