@@ -11,7 +11,7 @@
 				<div class="license-list">
 					{{/* The cohost archive is deliberately absent: it is reached from the
            blog and from cohost's own chrome, not listed here as a work. */}}
-					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "vrchat") }}
+					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "space-trucking" "vrchat") }}
 					{{ range $pages.ByTitle }}
 						{{/* A work that lives outside Hugo has no page here for its title to
              point at, so it names its destinations in `links` instead. The
