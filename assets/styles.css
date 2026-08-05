@@ -1804,6 +1804,61 @@ h2 {
   color: var(--paper);
 }
 
+/* Space Trucking gets the same treatment against its own palette (the roles
+   are src/palette.rs in the game's repo, named the same way here). What it
+   borrows is the console rather than a screen: a riveted plate face lit from
+   the top left, a stencilled amber lamp label, phosphor green kept for the
+   states a lamp shows. The game has no text in it anywhere but the version
+   string, so unlike Amoeba there is no face of its own to set this in. */
+.work-space-trucking {
+  --plate: #242b27;
+  --plate-lit: #3a443d;
+  --plate-shade: #121614;
+  --rivet: #46504a;
+  --amber: #e8a33d;
+  --phosphor: #7fd962;
+  --phosphor-hot: #bdf29b;
+  --icon-lit: #a7b3a9;
+  --glint: #e7e3d1;
+  /* Same re-pointing the Amoeba card does, for the same reason: the
+     page-tuned magenta is unreadable on plate. Both phosphors clear 8:1. */
+  --link-hover: var(--phosphor-hot);
+  --link-active: var(--phosphor);
+  /* The ring is drawn 2px outside the link, which is still the card's own
+     plate rather than the page behind it, so the near-black default vanishes
+     here. Glint reads 11.3:1. */
+  --focus-ring: var(--glint);
+  border-color: var(--rivet);
+  background: var(--plate);
+  color: var(--glint);
+  /* The bevel every raised thing in the game carries: the lit edge toward the
+     light, the shaded one away from it. Inset shadows rather than a two-tone
+     border, so the 1px border above stays the card's own edge. */
+  box-shadow:
+    inset 1px 1px 0 var(--plate-lit),
+    inset -1px -1px 0 var(--plate-shade);
+}
+
+/* Painted on the plate, not printed: the console labels its hardware in
+   stencilled capitals and lights them amber, at 6.7:1 here. */
+.work-space-trucking h3 {
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Prose keeps the Atkinson .license-entry p gives it. Etched-icon grey is the
+   muted tier, at 6.7:1. */
+.work-space-trucking p {
+  color: var(--icon-lit);
+}
+
+/* Prose stays muted and the links in it don't, as on the Amoeba card. The
+   title keeps the amber it inherits from its h3. */
+.work-space-trucking p a {
+  color: var(--glint);
+}
+
 /* The three-column layout needs the wave gutter (16vw) plus all three
    columns near their preferred widths; below ~86rem the middle column gets
    squeezed toward its minimum and its contents clip, so stack well before
