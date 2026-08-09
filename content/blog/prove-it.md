@@ -1,6 +1,6 @@
 ---
 title: "Thinking Scientifically about Using Technology"
-date: 2026-07-28T00:00:00Z
+date: 2026-07-28T16:00:00-07:00
 highlight: true
 ---
 
