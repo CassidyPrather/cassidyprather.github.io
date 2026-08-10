@@ -19,7 +19,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{{ block "title" . }}cohost! - @{{ site.Data.cohost.handle }}{{ end }}</title>
-		{{ with .Description | default .Summary }}<meta name="description" content="{{ . | plainify | truncate 200 }}">{{ end }}
+		{{/* The card a link to one of these unfurls into is a card for a post on
+		     this site, not for cohost's chrome around it — the partial's header
+		     says how it differs from the <title> above. */}}
+		{{ partial "social-meta.html" . }}
 		<link rel="icon" href="{{ "images/no-relicensing/cohost/eggbug.png" | relURL }}">
 		{{/* Cohost set its own theme-color; keeping it means the browser chrome
 		     goes cherry on mobile too, which is most of the illusion on a

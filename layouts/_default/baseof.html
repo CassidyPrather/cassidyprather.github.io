@@ -5,8 +5,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{{ block "title" . }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
-		{{ with site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+		{{ partial "social-meta.html" . }}
 		<link rel="icon" href="{{ "images/wirenook/link-charm.png" | relURL }}">
+		{{/* Discord tints the bar down the side of a link card with this, and a
+		     phone browser tints its own chrome with it. The cohost shell has
+		     set one since it was written; this is the same value the page
+		     itself paints behind everything (--sky in assets/styles.css). */}}
+		<meta name="theme-color" content="#5aa8dc">
 		{{/* The blog is the only thing here that syndicates, and every page says
 		     so rather than just the blog itself — a reader landing on the home
 		     page or a works page should still find something to subscribe to,
