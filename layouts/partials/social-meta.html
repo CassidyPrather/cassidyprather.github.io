@@ -1,0 +1,124 @@
+{{- /*
+	What a link to this page unfurls into.
+
+	Discord, Bluesky, Mastodon, Slack, iMessage and X all build their preview
+	card out of the same handful of <meta> tags, and the site used to carry
+	almost none of them: `<title>` supplied the heading and the site-wide
+	description in hugo.toml supplied the body, so a post about CLI design and
+	a post about tarot unfurled as the same card with a different title. This
+	partial fills that card from the post instead — its own words, its own
+	dates, and a picture out of the post where there is one.
+
+	Both shells call it. A cohost-typed post keeps cohost's chrome on the page
+	and cohost's wording in `<title>`, but a link to one is a link to a post on
+	this site, and the card says what the post says rather than what the shell
+	around it says.
+
+	Front matter, all optional:
+	  description  Body text for the card, in place of the post's summary.
+	  image        Path under images/ (as mounted into assets), in place of the
+	               picture picked out of the post.
+
+	Picking that picture is the one rule here that isn't mechanical. A card
+	image is not just linked by the platform that shows it — Discord and X
+	fetch it, re-encode it and serve it from their own CDNs for as long as they
+	care to — so this only ever offers art from images/wirenook/, which is
+	ours. The cohost archive's attachments are other people's work, staged
+	under images/no-relicensing/ precisely because no license was granted for
+	them (see that directory's README), and posting them to this site is not
+	the same act as handing them to an image cache we don't run. Those posts
+	fall back to the site card. A post that wants a specific picture anyway can
+	name one with `image`, which is deliberately not filtered: that is an
+	author saying yes on purpose.
+*/ -}}
+{{- $rfc3339 := "2006-01-02T15:04:05Z07:00" -}}
+{{- $isPost := and .IsPage (eq .Section "blog") -}}
+
+{{- /* Cohost let a post go untitled and plenty did, so the card dates those
+    the way the blog index and the feed already do. */ -}}
+{{- $title := cond .IsHome site.Title .Title -}}
+{{- if and (not $title) (not .Date.IsZero) }}{{ $title = .Date.Format "2 January 2006" }}{{ end -}}
+{{- if not $title }}{{ $title = site.Title }}{{ end -}}
+
+{{- /* Everything above the fold of the post, flattened to the one paragraph a
+    card has room for. .Summary is the copy before <!--more-->, or Hugo's own
+    first-70-words cut where a post doesn't place one, so this is the post's
+    actual opening rather than a line of metadata about it. Markup comes out,
+    entities come back to characters, and the hard line breaks the cohost
+    import depends on collapse to spaces — a card is a single run of text.
+
+    300 characters is past where every platform stops reading (X truncates
+    around 200, Bluesky and Discord nearer 300), so the cut is theirs to make
+    on a string that already ends at a word boundary. */ -}}
+{{- $description := .Description -}}
+{{- if not $description }}{{ $description = .Summary }}{{ end -}}
+{{- $description = trim ($description | plainify | htmlUnescape | replaceRE `\s+` " ") " " -}}
+{{- if not $description }}{{ $description = site.Params.description }}{{ end -}}
+{{- $description = $description | truncate 300 -}}
+
+{{- /* The card's picture, most specific source first. */ -}}
+{{- $image := "" -}}
+{{- $imageAlt := "" -}}
+{{- with .Params.image }}{{ $image = resources.Get . }}{{ end -}}
+{{- if and (not $image) $isPost -}}
+	{{- /* The first of our own images in the post body, found in the markdown
+	    rather than the rendered HTML: a rendered <img> carries whatever path
+	    was written, and prove-it.md writes a relative one ("../../images/…")
+	    that only means anything next to the page it came from. The alternation
+	    is the two ways a post puts an image in front of a path — a markdown
+	    image, or a src attribute on the co-image shortcode or on raw HTML —
+	    and the leading ../ segments come off after. Only the first of those
+	    carries alt text where the pattern can reach it, so a card off the
+	    other branch goes without rather than inventing one. */ -}}
+	{{- with findRESubmatch `(?:!\[([^\]]*)\]\(|src=")((?:\.\./)*/?images/wirenook/[^")\s]+)` .RawContent 1 -}}
+		{{- $found := index . 0 -}}
+		{{- $image = resources.Get (replaceRE `^(?:\.\./)*/?` "" (index $found 2)) -}}
+		{{- $imageAlt = index $found 1 -}}
+	{{- end -}}
+{{- end -}}
+{{- /* Every image on this site keeps its source next to its export under the
+    same stem (static/images/README.md), so the path picked out of a post can
+    land on a vector — and neither Hugo's image pipeline nor any platform's
+    card renderer takes an SVG. Drop back to the site card rather than failing
+    the build over it. */ -}}
+{{- if and $image (or (ne $image.MediaType.MainType "image") (eq $image.MediaType.Type "image/svg+xml")) -}}
+	{{- $image = "" -}}
+{{- end -}}
+{{- if $image -}}
+	{{- /* Fit rather than fill: a figure cropped to a card's shape is a figure
+	    with its axis missing. Only ever downwards — an image already inside
+	    the box is left alone rather than upscaled into a blurry one. */ -}}
+	{{- if or (gt $image.Width 1200) (gt $image.Height 630) -}}
+		{{- $image = $image.Fit "1200x630" -}}
+	{{- end -}}
+{{- else -}}
+	{{- $image = partialCached "social-card.html" . "social-card" -}}
+	{{- $imageAlt = "wirenook.net" -}}
+{{- end -}}
+
+<meta name="description" content="{{ $description }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:type" content="{{ cond $isPost "article" "website" }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{- with $image }}
+	<meta property="og:image" content="{{ .Permalink }}">
+	<meta property="og:image:width" content="{{ .Width }}">
+	<meta property="og:image:height" content="{{ .Height }}">
+	{{- with $imageAlt }}
+		<meta property="og:image:alt" content="{{ . }}">
+	{{- end }}
+{{- end }}
+{{- if $isPost }}
+	<meta property="article:published_time" content="{{ .Date.Format $rfc3339 }}">
+	{{- /* Lastmod is the commit that last touched the post's file; hugo.toml
+	    has the note on what that does and doesn't count as an edit. */}}
+	<meta property="article:modified_time" content="{{ .Lastmod.Format $rfc3339 }}">
+	<meta property="article:author" content="{{ site.Params.author }}">
+{{- end }}
+{{- /* X reads the og: tags for everything it doesn't find a twitter: tag for,
+    so the card type is the only one of these that has to be here. The handle
+    rides along because it puts a byline on the card. */}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@cassidy_prather">

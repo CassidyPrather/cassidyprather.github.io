@@ -62,6 +62,37 @@ One wart, documented at length in `hugo.toml`: the Hugo output format is keyed
 paths in a post body to absolute URLs, and a feed reader has no way to resolve
 a relative path against this site. The key is the only part that says RSS.
 
+## Link cards
+
+`layouts/partials/social-meta.html` is what a link to a page here unfurls into
+on Discord, Bluesky, Mastodon, Slack or X. Both shells call it from their
+`<head>`; before it existed the site shipped a `<title>` and one site-wide
+description, so every post previewed as the same card with a different heading.
+
+The body text is the post's own opening — `description` from front matter if
+it is set, otherwise `.Summary`, which is the copy before `<!--more-->` —
+flattened to a single run of text and cut at 300 characters, past where any
+platform stops reading. Untitled cohost posts are dated on the card the way the
+blog index and the feed already date them, and a cohost post's card describes
+the post rather than the cohost chrome its `<title>` wears.
+
+The picture is `image` from front matter, else the first image in the post's own
+body, else the site card `layouts/partials/social-card.html` builds by padding
+the banner out to 1200x630. Two things there are deliberate. Only art under
+`images/wirenook/` is picked up automatically, because a card image is not just
+linked — Discord and X fetch it and re-serve it from their own CDNs — and the
+cohost archive's attachments are other people's work with no license granted;
+`image` is exempt from that filter, since naming one is an author saying yes on
+purpose. And the generated card is JPEG, the one place on this site where that
+is the right answer: the banner is transparent, and Hugo flattens transparency
+onto a background colour only for a format that cannot carry it, so a PNG or
+WebP card would arrive see-through and get composited against whatever colour
+the reader's client uses.
+
+The two one-off shells with hand-written `<head>`s, `layouts/lancer/` and
+`layouts/vrchat/`, are left out on purpose — those pages are dressed as
+somewhere else, and a wirenook card on one would give that away.
+
 ## The cohost archive
 
 `content/blog/cohost/` is the backfill of Cassidy's [cohost](https://cohost.org/)

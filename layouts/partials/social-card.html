@@ -1,0 +1,36 @@
+{{- /*
+	The picture on a link card for a page that has no picture of its own.
+
+	Every platform that unfurls a link wants roughly 1200x630 — X crops to
+	1.91:1 for `summary_large_image`, Discord and Slack letterbox anything else
+	— and the banner is 3821x1280, which is nearly three times as wide as it is
+	tall. Cropping it to fit would eat the wordmark from both ends, so it gets
+	padded to the target ratio instead and lands centred in a field of the same
+	sky the page sits on.
+
+	The output is JPEG, which is the one thing here that isn't the usual answer
+	on this site (responsive-image.html has the essay on PNG versus WebP for
+	art like this). It has to be: the banner is transparent everywhere the
+	wordmark isn't, `images.Padding` only fills the border it adds, and Hugo
+	flattens transparency onto a background colour only when the target format
+	can't carry an alpha channel — which PNG and WebP both can. An unflattened
+	card would come out transparent in the middle and get composited against
+	whatever colour the reader's client happens to use, which is white on
+	Slack and near-black on Discord. Every platform re-encodes what it caches
+	anyway, so the one JPEG generation here is not the one that matters.
+
+	Returns the processed resource, or an empty string if the banner has gone
+	missing — social-meta.html treats that as "this page has no picture".
+*/ -}}
+{{- $card := "" -}}
+{{- with resources.Get "images/OPL/wirenook-banner-v2.png" -}}
+	{{- /* The height this banner would need to be 1200x630's shape, and the bar
+	    of sky above and below that gets it there. Worked out from the file
+	    rather than hardcoded so replacing the banner can't silently start
+	    stretching the card. */ -}}
+	{{- $target := int (math.Round (mul .Width (div 630.0 1200.0))) -}}
+	{{- $bar := int (math.Floor (div (sub $target .Height) 2.0)) -}}
+	{{- $padded := .Filter (images.Padding $bar 0 $bar 0 "#5aa8dc") -}}
+	{{- $card = $padded.Process "resize 1200x jpeg q90 #5aa8dc" -}}
+{{- end -}}
+{{- return $card -}}
