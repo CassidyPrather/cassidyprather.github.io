@@ -1,8 +1,13 @@
-# cass-website
+# wirenook.net
+
+https://wirenook.net/
 
 Cassidy Prather's personal website.
 
-https://wirenook.net/
+I thought it would be funny to host the source code of my personal website.
+You can see version histories of pages and blog posts here.
+That way, we don't have to rely on the lovely folks at https://archive.org/!
+
 
 ## Development
 
@@ -61,37 +66,6 @@ One wart, documented at length in `hugo.toml`: the Hugo output format is keyed
 `rss`, because that name is what makes Hugo rewrite the root-relative image
 paths in a post body to absolute URLs, and a feed reader has no way to resolve
 a relative path against this site. The key is the only part that says RSS.
-
-## Link cards
-
-`layouts/partials/social-meta.html` is what a link to a page here unfurls into
-on Discord, Bluesky, Mastodon, Slack or X. Both shells call it from their
-`<head>`; before it existed the site shipped a `<title>` and one site-wide
-description, so every post previewed as the same card with a different heading.
-
-The body text is the post's own opening — `description` from front matter if
-it is set, otherwise `.Summary`, which is the copy before `<!--more-->` —
-flattened to a single run of text and cut at 300 characters, past where any
-platform stops reading. Untitled cohost posts are dated on the card the way the
-blog index and the feed already date them, and a cohost post's card describes
-the post rather than the cohost chrome its `<title>` wears.
-
-The picture is `image` from front matter, else the first image in the post's own
-body, else the site card `layouts/partials/social-card.html` builds by padding
-the banner out to 1200x630. Two things there are deliberate. Only art under
-`images/wirenook/` is picked up automatically, because a card image is not just
-linked — Discord and X fetch it and re-serve it from their own CDNs — and the
-cohost archive's attachments are other people's work with no license granted;
-`image` is exempt from that filter, since naming one is an author saying yes on
-purpose. And the generated card is JPEG, the one place on this site where that
-is the right answer: the banner is transparent, and Hugo flattens transparency
-onto a background colour only for a format that cannot carry it, so a PNG or
-WebP card would arrive see-through and get composited against whatever colour
-the reader's client uses.
-
-The two one-off shells with hand-written `<head>`s, `layouts/lancer/` and
-`layouts/vrchat/`, are left out on purpose — those pages are dressed as
-somewhere else, and a wirenook card on one would give that away.
 
 ## The cohost archive
 
@@ -175,12 +149,5 @@ hugo --minify                                    # build ./public first
 python tools/overflow.py check                   # exit 1 on any overflow
 python tools/overflow.py -v check --widths 1380-1420:2
 ```
-
-It measures every page at every width in the sweep, which takes minutes, so
-it spreads the pages over one worker per two cores — `--jobs 1` to get a
-serial run back. CI goes further and splits the pages across six runners
-with `--shard i/n`, each writing `--json` that a final `report` merges; the
-merge exists because the stale-allowlist check cannot tell "nothing matches
-this entry" from "not my pages" until it has seen all of them.
 
 [`/licenses/`](https://wirenook.net/licenses/) / [`LICENSE`](./LICENSE).
