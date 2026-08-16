@@ -545,3 +545,44 @@ document.querySelectorAll("[data-copy]").forEach((button) => {
     }
   });
 });
+
+// Above its breakpoint an inline aside opens as a bubble centred on its marker
+// (assets/styles.css, .prose-aside). The marker is a word in a paragraph, so
+// where it lands is a result of line breaking and moves with the column width
+// — centre a fixed-width box on one that has wrapped near an edge and the box
+// hangs off the side of the post. Nothing in CSS can see where the marker
+// ended up, so the offset back inside is measured here and handed to the
+// stylesheet as --aside-shift. With the script absent the bubble is simply
+// centred, which is only ever wrong by the part that overhangs.
+const proseAsides = document.querySelectorAll(".prose-aside");
+
+if (proseAsides.length) {
+  const asideFloats = matchMedia("(min-width: 48rem)");
+
+  const placeAside = (aside) => {
+    const note = aside.querySelector(".prose-aside-note");
+    const toggle = aside.querySelector("input");
+    const column = aside.closest(".post-body, .entry-body");
+    if (!note || !toggle || !column) return;
+
+    // Always measure from the unshifted position: a stale shift from a
+    // narrower viewport would otherwise be read as where the bubble sits.
+    note.style.removeProperty("--aside-shift");
+    if (!toggle.checked || !asideFloats.matches) return;
+
+    const bounds = column.getBoundingClientRect();
+    const box = note.getBoundingClientRect();
+    const shift =
+      Math.max(0, bounds.left - box.left) - Math.max(0, box.right - bounds.right);
+    if (shift) note.style.setProperty("--aside-shift", `${Math.round(shift)}px`);
+  };
+
+  const placeAsides = () => proseAsides.forEach(placeAside);
+
+  proseAsides.forEach((aside) => {
+    aside.querySelector("input")?.addEventListener("change", () => placeAside(aside));
+  });
+
+  addEventListener("resize", placeAsides);
+  asideFloats.addEventListener("change", placeAsides);
+}

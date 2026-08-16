@@ -1623,6 +1623,122 @@ h2 {
   cursor: pointer;
 }
 
+/* The aside partway through "Social Agents" is a parenthetical inside a
+   sentence, not a section between them, and the block rhythm above would cut
+   its paragraph in half around a two-line note.
+
+   It can't be a <details> at all, which is why none of this looks like one.
+   The HTML parser closes an open <p> the moment it meets a <details> start
+   tag, so a <details> written mid-paragraph in Markdown is torn out of that
+   paragraph and lands between two of them before any stylesheet gets a say —
+   the marker ends up alone on its own line with the rest of the sentence
+   orphaned under it. A checkbox and its label are phrasing content, so the
+   paragraph survives the parse, and the toggle still needs no script.
+
+   Above the breakpoint the open note lifts out of flow into a bubble over the
+   marker, so reading it doesn't shove the rest of the post down the page.
+   Below it that shape stops working: the bubble is centred on a marker that
+   can sit anywhere along a line, and once the box is a good fraction of the
+   screen it hangs off whichever edge the marker is nearest, with nothing in
+   CSS that can pull it back. A phone gets the note unfolding into the sentence
+   instead — same markup, same toggle, and the paragraph is the only thing that
+   moves.
+
+   The note's parentheses are in the Markdown rather than generated here,
+   because this post's summary is also what goes out in the Atom feed, where
+   none of this file is loaded. A reader that drops the checkbox and shows the
+   note inline still gets a sentence with a parenthetical in it. */
+.post-body .prose-aside,
+.entry-body .prose-aside {
+  position: relative;
+}
+
+.post-body .prose-aside-marker,
+.entry-body .prose-aside-marker {
+  font-size: 0.75em;
+  vertical-align: super;
+  color: var(--link-active);
+  text-decoration: underline dotted;
+  cursor: pointer;
+}
+
+.post-body .prose-aside-marker::before,
+.entry-body .prose-aside-marker::before {
+  content: "[";
+}
+
+.post-body .prose-aside-marker::after,
+.entry-body .prose-aside-marker::after {
+  content: "]";
+}
+
+.post-body .prose-aside-marker:hover,
+.entry-body .prose-aside-marker:hover {
+  color: var(--link-hover);
+}
+
+/* The label is the whole of the control's visible self, so the box itself is
+   hidden the way that keeps it focusable and operable by Space, and the focus
+   ring it would have drawn goes on the label instead. */
+.post-body .prose-aside-marker input,
+.entry-body .prose-aside-marker input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  clip-path: inset(50%);
+}
+
+.post-body .prose-aside-marker:has(input:focus-visible),
+.entry-body .prose-aside-marker:has(input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.post-body .prose-aside-note,
+.entry-body .prose-aside-note {
+  display: none;
+  font-size: 0.9em;
+  color: var(--link-active);
+}
+
+.post-body .prose-aside:has(input:checked)>.prose-aside-note,
+.entry-body .prose-aside:has(input:checked)>.prose-aside-note {
+  display: inline;
+  /* The gap can't be a space in the Markdown: out of flow above the
+     breakpoint, that space would stay behind in the sentence and stand
+     between "excellence" and the question mark that follows it. */
+  margin-inline-start: 0.25em;
+}
+
+@media (min-width: 48rem) {
+
+  .post-body .prose-aside:has(input:checked)>.prose-aside-note,
+  .entry-body .prose-aside:has(input:checked)>.prose-aside-note {
+    display: block;
+    position: absolute;
+    margin: 0;
+    bottom: calc(100% + 0.6rem);
+    left: 50%;
+    /* Centred on the marker, then pushed back inside the column if that hangs
+       it off an edge. The marker can land anywhere along a line, so how far it
+       has to move is only knowable once the paragraph has been laid out —
+       assets/script.js measures it and sets --aside-shift. Without that script
+       the bubble stays centred, which the cap below keeps on screen. */
+    transform: translateX(calc(-50% + var(--aside-shift, 0px)));
+    z-index: 5;
+    /* max-content sizes the bubble to the note, the cap keeps it inside the
+       column — the same pairing the social-button tooltips use. */
+    width: max-content;
+    max-width: min(24rem, 60vw);
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--lavender);
+    background: var(--panel-strong);
+    box-shadow: 0 0.4rem 0.9rem var(--shadow);
+    color: var(--ink);
+  }
+}
+
 /* Markdown figures come out of the exporter at their native pixel size (the
    forest plots are 1760px wide), which is far past the column — clamp them
    here rather than sizing each one at the call site. */
