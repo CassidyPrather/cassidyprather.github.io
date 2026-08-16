@@ -2,6 +2,12 @@
     "[html]": {
         "editor.defaultFormatter": "gohugoio.gotmplfmt"
     },
+    // Hugo publishes static/ at the site root, so /images/... in a post is a
+    // valid link to static/images/... . The markdown validator resolves rooted
+    // links against the workspace folder instead and flags every one of them.
+    "markdown.validate.ignoredLinks": [
+        "/images/**"
+    ],
     "cSpell.words": [
         "wirenook",
         "brainrot",
