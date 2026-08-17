@@ -2,6 +2,9 @@
 <main class="license-main">
 	<section class="index-window">
 		<div class="window-topline">
+			<div class="post-body">
+				{{ .Content }}
+			</div>
 			<h2>Licenses</h2>
 			<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
 				</div>
@@ -35,10 +38,6 @@
 						</p>
 					</article>
 
-					{{/* The cohost archive draws two things that are not files under
-           images/: the wordmark in its top bar and the glyphs on its post
-           controls are inlined into layouts/partials/cohost/. Neither is
-           covered by the per-directory tiers below, so they are named here. */}}
 					<article class="license-entry">
 						<h3>cohost interface — marks and icons</h3>
 						<p class="license-files">
@@ -47,14 +46,9 @@
 							<code>images/no-relicensing/cohost/</code>
 						</p>
 						<p>
-							The <a href="{{ "cohost/" | relURL }}">cohost archive</a> is rebuilt
-							in cohost's own skin. The wordmark and eggbug are
-							<a href="https://antisoftware.club/">anti software software club</a>'s,
-							used here to show where these posts were written; wirenook is
-							unaffiliated, and cohost closed at the end of 2024. The post-control
-							glyphs are <a href="https://heroicons.com/">Heroicons</a> by Tailwind
-							Labs, under the
-							<a href="https://github.com/tailwindlabs/heroicons/blob/master/LICENSE">MIT license</a>.
+							<a href="{{ "cohost/" | relURL }}">Cohost's</a> wordmark and eggbug are
+							<a href="https://en.wikipedia.org/wiki/Cohost">anti software software club</a>'s,
+							Post-control glyphs are <a href="https://heroicons.com/">Heroicons</a> by Tailwind Labs, under the <a href="https://github.com/tailwindlabs/heroicons/blob/master/LICENSE">MIT license</a>.
 						</p>
 					</article>
 
@@ -72,8 +66,6 @@
 						</article>
 					{{ end }}
 
-					{{/* The pylon art descends from the Stanford bunny; these are the
-           canonical sources for the scan itself. */}}
 					<aside class="license-callout">
 						<p><a href="https://graphics.stanford.edu/data/3Dscanrep/#bunny">Read about the stanford bunny!</a></p>
 						<p><a href="https://faculty.cc.gatech.edu/~turk/bunny/bunny.html">And some more, too!</a></p>

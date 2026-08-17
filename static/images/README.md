@@ -1,20 +1,18 @@
 # Images
 
+<!-- thanks claube for generating this doc but IDK if it's useful -->
+
 Every image the site serves lives under this directory, one subdirectory per
 *license situation*. `data/image_licenses.toml` is the single source of truth
 for what each directory means, and the [licenses](https://wirenook.net/licenses/)
 page reads it.
 
-The [press kit](https://wirenook.net/style/) is *not* a listing of this
-directory — it is the hand-picked set in `data/press_kit.toml`, so adding a
-file here does not put it on that page.
-
-| Directory   | Contents                                       | License                                  |
-| ----------- | ---------------------------------------------- | ---------------------------------------- |
-| `wirenook/` | Original wirenook.net art and its source files | CC0 1.0 (AGPLv3 transfer in progress)    |
-| `lancer/`   | Утопия assets derived from COMP/CON            | GPL-3.0                                  |
-| `no-relicensing/` | Other people's assets and VRChat screenshots, byte-identical to upstream (incl. `archive/` for flagged files) | Upstream terms (see its README) |
-| `OPL/`     | Open Pixel License media, authored by Ron Kyle Almira | OPL v1.1                            |
+| Directory         | Contents                                                                                                      | License                               |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `wirenook/`       | Original wirenook.net art and its source files                                                                | CC0 1.0 (AGPLv3 transfer in progress) |
+| `lancer/`         | Утопия assets derived from COMP/CON                                                                           | GPL-3.0                               |
+| `no-relicensing/` | Other people's assets and VRChat screenshots, byte-identical to upstream (incl. `archive/` for flagged files) | Upstream terms (see its README)       |
+| `OPL/`            | Open Pixel License media, authored by Ron Kyle Almira                                                         | OPL v1.1                              |
 
 ## Conventions
 
@@ -25,6 +23,7 @@ file here does not put it on that page.
   `waves.png`; a `foo.xcf` would likewise be the source of `foo.png`. If no
   same-stem source file exists, the committed file *is* the source. Since
   `static/` is published verbatim, the live site serves its own sources.
+  (That said, if it's too big it's too big and gets relegated to just git lfs)
 
 ## Metadata
 
@@ -34,6 +33,8 @@ license/creator tags by [`tools/images.py`](../../tools/images.py), which
 needs [exiftool](https://exiftool.org/) on the PATH (`apt install
 libimage-exiftool-perl`, `brew install exiftool`, `winget install exiftool`).
 CI fails when a file drifts; to fix locally:
+
+<!-- todo cassidy: maybe i want to keep vrcx screenshot data though -->
 
 ```sh
 python tools/images.py check   # report drift, bad names, stray files
