@@ -1,0 +1,99 @@
+/* wirenook — design tokens and webfonts. First file of the theme; see
+   README.md for the load order and for the two things a host page has to
+   supply (a font directory beside the stylesheet, and --cloud-backdrop).
+
+   Plain CSS, no build step: this used to be a Go template so the cloud
+   backdrop could name a build-time WebP variant, and that one interpolation
+   is now the --cloud-backdrop custom property 03-backdrop.css reads. */
+:root {
+  color-scheme: light;
+  --wave-gutter: clamp(8.75rem, 16vw, 13.5rem);
+  --sky: #5aa8dc;
+  --ice: #d7fbff;
+  --cyan: #73f4ff;
+  --blue: #365fc6;
+  --violet: #6d2c95;
+  --lavender: #b9a8ff;
+  --pink: #ffd6f5;
+  --magenta: #ff00e6;
+  --ink: #271452;
+  --banana: #fff9b1;
+  /* Text-bearing panels are fully opaque on purpose: the striped
+     index-window behind them otherwise bleeds through and makes prose hard
+     to read. Keep any translucency to decorative surfaces only. */
+  --panel: #d8f7ff;
+  --panel-strong: #e7fcff;
+  --line: rgba(231, 252, 255, 0.9);
+  --shadow: rgba(65, 24, 127, 0.28);
+  /* Link states are tokens rather than literals because a legible accent
+     depends on what the link sits on, and links here inherit their colour
+     from whatever panel holds them. These two values clear 4.5:1 on every
+     panel surface (--panel, --panel-strong, --ice, --pink, white); the two
+     surfaces they don't clear — the mid-blue page background under the
+     footer, and the violet link-rail — re-point them further down. */
+  --link-hover: #a3006d;
+  --link-active: #6d2c95;
+  /* One near-black focus ring for the whole site. Every ring here is drawn
+     outside its element (outline-offset), so what it needs contrast against
+     is the page behind the control, not the control's own fill — and that is
+     light or mid-tone everywhere, including behind the dark link-rail.
+     Measured 5.2:1 (rail) to 16.8:1 (panels). */
+  --focus-ring: #1a0d33;
+  /* How far past the viewport edges the fixed backdrop layers paint.
+
+     A mobile browser with a dynamic toolbar (Firefox for Android especially,
+     and more so with the toolbar moved to the bottom) doesn't just resize the
+     viewport as the bar hides and shows — it translates `position: fixed`
+     boxes so bottom-anchored UI clears the bar. A layer sized exactly to the
+     viewport gets shifted off one edge, and the strip it vacates falls through
+     to the raw page gradient for the length of the animation. On /blog/ that
+     strip lands squarely on the footer, which sits at the document's bottom
+     edge with nothing under it but sky, so the footer appears to snap back out
+     of the archive's paper wash and into the wirenook blue every time the bar
+     comes back.
+
+     Overscanning the sky costs a little extra paint on layers that are already
+     composited, and means no shift of a toolbar's size can expose anything.
+     The 5rem floor clears a Firefox for Android toolbar (~56px) on a short
+     viewport, where 12vh alone wouldn't. */
+  --sky-overscan: max(5rem, 12vh);
+  font-family: Unique, "Trebuchet MS", "Century Gothic", Arial, sans-serif;
+}
+
+@font-face {
+  font-family: Unique;
+  src: url("fonts/Unique.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Atkinson-Regular;
+  src: url('fonts/AtkinsonHyperlegible-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Atkinson-Italic;
+  src: url('fonts/AtkinsonHyperlegible-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Atkinson-Bold;
+  src: url('fonts/AtkinsonHyperlegible-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Atkinson-BoldItalic;
+  src: url('fonts/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}

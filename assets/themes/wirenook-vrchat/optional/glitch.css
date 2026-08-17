@@ -1,4 +1,14 @@
-/* https://www.cssportal.com/css-glitch-text-effect/ */
+/* Chromatic-aberration glitch text, after
+   https://www.cssportal.com/css-glitch-text-effect/
+
+   Not part of the sub-theme's load order and not concatenated with it: no
+   page uses it today, and it assumes a black page rather than wirenook's
+   sky. Kept because it is the one piece of the standalone VRChat skin that
+   was written rather than vendored. Link it yourself where it is wanted.
+
+   Markup: <div class="glitch-wrapper"><div class="glitch"
+   data-text="TEXT">TEXT</div></div>. The animation is suppressed by the
+   base theme's prefers-reduced-motion rule. */
 
 .glitch-wrapper {
    width: 100%;

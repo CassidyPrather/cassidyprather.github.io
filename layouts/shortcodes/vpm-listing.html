@@ -1,0 +1,22 @@
+{{- /* The VPM repository listing, rendered client-side.
+
+    /vpm/listing.json is published onto this domain by a different repository,
+    so there is no build of this site that can read it off disk — and the
+    listing changes when that repository publishes, not when this one does.
+    Fetching it in the browser is what keeps the page honest between deploys.
+
+    Takes an optional `url` for a listing somewhere other than the default.
+    assets/vpm-listing.js renders it and owns the empty and failed states. */ -}}
+{{- $url := .Get "url" | default "vpm/listing.json" -}}
+{{- if not (urls.Parse $url).IsAbs -}}
+	{{- $url = $url | relURL -}}
+{{- end -}}
+<div class="vpm-listing" data-vpm-listing data-vpm-url="{{ $url }}"></div>
+{{- /* Once per page, however many listings it holds — the script picks up
+    every container on its own. */ -}}
+{{- if not (.Page.Store.Get "vpmScript") -}}
+	{{- .Page.Store.Set "vpmScript" true -}}
+	{{- with resources.Get "vpm-listing.js" | fingerprint -}}
+		<script src="{{ .RelPermalink }}" defer></script>
+	{{- end -}}
+{{- end -}}

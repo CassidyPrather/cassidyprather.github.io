@@ -1,0 +1,273 @@
+/* wirenook-vrchat — the skin itself.
+
+   Three things come across from VRChat's interface: the diagonal line art
+   down the left gutter, the typeface, and the rounded panels. Everything
+   else is inherited from wirenook, including the sky, the clouds, the
+   page frame and every breakpoint. */
+
+/* ---- the banner down the left gutter ----------------------------------
+   wirenook fills this strip with a field of drifting sparkles. Here the
+   same fixed box is masked to VRChat's line art instead.
+
+   The mask is what makes the colour ours: the source SVG is flat #1e2a31
+   and would disappear against anything dark, so the element paints a cyan
+   gradient and the artwork is applied as an alpha mask over it. That also
+   pays for the right-hand fade — the gradient runs out to transparent
+   rather than needing a second mask composited with the first, which is
+   the part with the shakiest browser support. */
+.theme-wirenook-vrchat .wave-field {
+  /* `to right`, not an angle: this box is a couple of hundred pixels wide and
+     a whole viewport tall, and CSS measures a gradient's angle against the
+     box's own diagonal — anything off the horizontal runs mostly downwards
+     here and fades the artwork out at the floor instead of at the margin. */
+  background-image: linear-gradient(to right,
+      var(--wnv-line) 0%,
+      var(--wnv-line) 35%,
+      var(--wnv-line-soft) 72%,
+      rgba(143, 230, 242, 0) 100%);
+  background-size: 100% 100%;
+  background-position: left top;
+  background-repeat: no-repeat;
+  -webkit-mask-image: url("images/no-relicensing/vrchat-background-lines.svg");
+  mask-image: url("images/no-relicensing/vrchat-background-lines.svg");
+  /* Scaled to the column's height, not its width. The art is square and the
+     column is a slice of a viewport, so it ends up far wider than the box and
+     the gutter shows only its left edge — where the fans converge — in one
+     piece, rather than tiling a whole square several times down the page. */
+  -webkit-mask-size: auto 100%;
+  mask-size: auto 100%;
+  -webkit-mask-position: left top;
+  mask-position: left top;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  /* Applied after the mask, so it outlines the strokes rather than the box. */
+  filter: drop-shadow(0 0 2px rgba(31, 209, 237, 0.55));
+  opacity: 0.85;
+}
+
+/* The sigil triangle is wirenook's own mark and reads as a second, competing
+   line motif once the gutter is line art too. */
+.theme-wirenook-vrchat .sigil-lines {
+  display: none;
+}
+
+/* ---- typography -------------------------------------------------------
+   Set on <body> rather than :root so it beats the site-wide family by
+   inheritance without touching specificity anywhere else. */
+.theme-wirenook-vrchat {
+  font-family: var(--wnv-font);
+}
+
+/* VRChat's headings are light-weight and tightly leaded (Bootstrap's h1-h6
+   rule, which their build leaves at 300). Scoped to the page body so the
+   window's topline chip keeps the site's own display face. */
+.theme-wirenook-vrchat .vrc-content :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 300;
+  line-height: 1.1;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+/* ---- dark surfaces ----------------------------------------------------
+   Every panel on these pages is a VRChat card dropped onto the wirenook one,
+   so each re-points the three tokens the base theme resolves against
+   whichever surface a link happens to sit on. Left alone, the site-wide
+   magenta hover lands at 1.9:1 here and the near-black focus ring at 1.2:1 —
+   both tuned for light panels, both illegible on these.
+
+   One list, so a new panel is added by naming it here rather than by
+   restating the colours somewhere else and getting one of them wrong. */
+.theme-wirenook-vrchat :is(.contentBubble, .vpm-package, .vpm-listing-head, .vpm-status),
+.theme-wirenook-vrchat .vrc-content> :is(h1, h2, h3, h4, h5, h6) {
+  background: var(--wnv-surface);
+  border: 1px solid var(--wnv-border);
+  color: var(--wnv-text);
+  box-shadow: 0 0.8rem 2rem rgba(10, 10, 13, 0.28);
+  --link-hover: var(--wnv-link-hover);
+  --link-active: var(--wnv-line-soft);
+  --focus-ring: #e7fcff;
+}
+
+.theme-wirenook-vrchat :is(.contentBubble, .vpm-package, .vpm-listing-head, .vpm-status) a,
+.theme-wirenook-vrchat .vrc-content> :is(h1, h2, h3, h4, h5, h6) a {
+  color: var(--wnv-link);
+}
+
+/* A heading at the top level of the content sits directly on the window's
+   stripes, which is the one surface the base theme refuses to set text on:
+   ~1400 distinct colours behind the glyphs. Wirenook's answer is a flat chip
+   (`.window-topline h2`); this is the same move in VRChat's dress, a section
+   label as one of their pills. Only the top level, so a heading inside a
+   bubble is left alone — it already has a flat surface under it. */
+.theme-wirenook-vrchat .vrc-content> :is(h1, h2, h3, h4, h5, h6) {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 clamp(0.7rem, 1.4vw, 1rem);
+  padding: 0.25em 0.85em;
+  border-radius: 999px;
+  overflow-wrap: anywhere;
+}
+
+/* ---- content bubbles --------------------------------------------------
+   VRChat's panels are pill-round and centred, which is what these have
+   always been; the measurements are the ones from the standalone page this
+   replaces, re-expressed against the shell's own gutters. */
+.theme-wirenook-vrchat .contentBubble {
+  border-radius: 2em;
+  padding: clamp(1rem, 2.4vw, 1.6rem) clamp(1.1rem, 3vw, 2.2rem);
+  margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+  text-align: center;
+  /* Credits lists are mostly bare booth.pm / jinxxy URLs, which have no break
+     points; anywhere (not break-word) so they also stop setting the bubble's
+     min-content width. */
+  overflow-wrap: anywhere;
+}
+
+.theme-wirenook-vrchat .contentBubble> :last-child {
+  margin-bottom: 0;
+}
+
+.theme-wirenook-vrchat .vrc-content> :last-child {
+  margin-bottom: 0;
+}
+
+.theme-wirenook-vrchat .HorizontalImage {
+  display: block;
+  width: 92%;
+  height: auto;
+  margin: 1rem auto 0;
+  border: 1px solid var(--wnv-border);
+  border-radius: 0.75rem;
+}
+
+/* ---- the VPM listing --------------------------------------------------
+   Rendered from /vpm/listing.json by vpm-listing.js. Every state below has
+   to hold a page on its own, including the ones with nothing in them: the
+   file is published from another repository and starts empty. */
+.theme-wirenook-vrchat .vpm-listing {
+  display: grid;
+  gap: clamp(0.8rem, 1.6vw, 1.2rem);
+}
+
+.theme-wirenook-vrchat :is(.vpm-listing-head, .vpm-status) {
+  border-radius: 1.25rem;
+  padding: clamp(0.9rem, 2vw, 1.3rem) clamp(1rem, 2.4vw, 1.6rem);
+  text-align: center;
+}
+
+.theme-wirenook-vrchat .vpm-listing-name {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  font-weight: 300;
+}
+
+/* vcc:// is a protocol handler the Creator Companion registers when it
+   installs, so this is a button that does nothing at all on a machine
+   without VCC — hence the repository URL beside it, which is the same
+   destination for anyone pasting it in by hand. */
+.theme-wirenook-vrchat .vpm-add {
+  display: inline-block;
+  padding: 0.55rem 1.4rem;
+  border: 1px solid var(--wnv-line);
+  border-radius: 999px;
+  background: rgba(31, 209, 237, 0.12);
+  color: var(--wnv-line-soft);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.theme-wirenook-vrchat .vpm-add:hover,
+.theme-wirenook-vrchat .vpm-add:focus-visible {
+  background: rgba(31, 209, 237, 0.24);
+}
+
+.theme-wirenook-vrchat .vpm-url {
+  display: block;
+  margin: 0.7rem 0 0;
+  font-size: 0.85rem;
+  color: var(--wnv-muted);
+  overflow-wrap: anywhere;
+}
+
+.theme-wirenook-vrchat .vpm-packages {
+  display: grid;
+  /* minmax(0, 1fr), not the implicit auto: a package id is one unbreakable
+     token, and an auto track is floored at its content's min-content width. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(0.8rem, 1.6vw, 1.2rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Structured data rather than prose, so this one is left-aligned where the
+   bubbles above it are centred. */
+.theme-wirenook-vrchat .vpm-package {
+  border-radius: 1.25rem;
+  padding: clamp(1rem, 2.2vw, 1.4rem) clamp(1.1rem, 2.6vw, 1.7rem);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.theme-wirenook-vrchat .vpm-package-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.8rem;
+  margin-bottom: 0.35rem;
+}
+
+.theme-wirenook-vrchat .vpm-name {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  font-weight: 300;
+}
+
+.theme-wirenook-vrchat .vpm-version {
+  flex-shrink: 0;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--wnv-line);
+  border-radius: 999px;
+  background: rgba(31, 209, 237, 0.12);
+  color: var(--wnv-line-soft);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.theme-wirenook-vrchat .vpm-id {
+  display: block;
+  margin: 0 0 0.6rem;
+  font-size: 0.82rem;
+  color: var(--wnv-muted);
+}
+
+.theme-wirenook-vrchat .vpm-desc {
+  margin: 0 0 0.7rem;
+  line-height: 1.55;
+}
+
+.theme-wirenook-vrchat .vpm-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+}
+
+/* The empty and failed states. Neither is an error the reader can act on,
+   so both are quiet: muted italic on the same card as everything else. */
+.theme-wirenook-vrchat .vpm-status {
+  margin: 0;
+  color: var(--wnv-muted);
+  font-style: italic;
+}
+
+/* Nothing has been fetched yet. The container reserves no height, so the
+   listing arriving does not shove the page around; it is only hidden so a
+   reader without JS is not left looking at an empty box forever. */
+.theme-wirenook-vrchat .vpm-listing:empty {
+  display: none;
+}

@@ -1,17 +1,31 @@
-<!DOCTYPE html>
-<html lang="{{ site.Language.Lang }}">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		{{ with .Params.author }}<meta name="author" content="{{ . }}">{{ end }}
-		<title>{{ .Title }} — {{ site.Title }}</title>
-		{{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
-		<link href="{{ "vrchat/VRChatStylesheetMinimized.css" | relURL }}" rel="stylesheet" type="text/css" media="all">
-		<link href="{{ "vrchat/fx.css" | relURL }}" rel="stylesheet" type="text/css" media="all">
-	</head>
-	<body class="FauxSidebars">
-		<div class="content-outer">
-			{{ .Content }}
-		</div>
-	</body>
-</html>
+{{/* The VRChat pages. Everything structural here is the site's own — the
+     shell, the window frame, the topline chip — and the sub-theme loaded
+     below repaints the left gutter, the type and the panels inside it.
+     assets/themes/wirenook-vrchat/README.md has what that covers. */}}
+
+{{ define "body-class" }}theme-wirenook-vrchat{{ end }}
+
+{{/* Loaded from the "head" block, so it lands after the base theme and can
+     re-point it at equal specificity. Same concatenate-in-filename-order
+     rule as the base theme; baseof.html has the note on why the sort
+     matters. */}}
+{{ define "head" }}
+{{ with sort (resources.Match "themes/wirenook-vrchat/*.css") "Name" }}
+	{{ with resources.Concat "vrchat.css" . | fingerprint }}
+		<link rel="stylesheet" href="{{ .RelPermalink }}">
+	{{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "main" }}
+<main class="license-main">
+	<section class="index-window">
+		<div class="window-topline">
+			<h2>{{ .Title }}</h2>
+			<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
+				</div>
+
+				<div class="vrc-content">{{ .Content }}</div>
+			</section>
+		</main>
+{{ end }}

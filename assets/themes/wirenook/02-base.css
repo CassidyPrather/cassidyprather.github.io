@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: linear-gradient(155deg, #65b8e6 0%, #519ed5 48%, #8abbe9 100%);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background: linear-gradient(155deg, #65b8e6 0%, #519ed5 48%, #8abbe9 100%);
+  overflow-x: hidden;
+}
+
+/* Firefox's elastic overscroll bounce (trackpad scroll past the top/bottom)
+   reveals a strip of raw browser canvas beyond the rendered document that CSS
+   backgrounds can't paint into, showing white. Disabling the bounce keeps
+   scrolling clamped at the document edge instead.
+
+   Fine pointers only, because on the root this property does more than suppress
+   a paint artefact: it cancels the browser's own overscroll gesture, and the
+   gesture at the top of a touchscreen document is pull-to-refresh. Declared
+   unconditionally it took that away on every page of the site to answer a
+   trackpad bounce no phone performs — a touch browser meets a downward drag at
+   the top with its refresh affordance rather than by sliding the document off
+   its own painted area, so there is no bare canvas there to cover. A laptop
+   with a touchscreen still reports `fine` for its primary pointer, which is the
+   answer this wants: it has the trackpad the rule exists for. */
+@media (pointer: fine) {
+  html,
+  body {
+    overscroll-behavior-y: none;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+a:active {
+  color: var(--link-active);
+}
+
+/* :focus-visible, not :focus — :focus also fires on mouse-down, which made
+   every click flash the hover colour. The rest of the file already uses
+   :focus-visible for its components. */
+a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

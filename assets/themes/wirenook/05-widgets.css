@@ -1,0 +1,523 @@
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.intro-panel,
+.link-card,
+.socials-panel {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+}
+
+.socials-panel {
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.socials-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.social-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--ink);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 0 0.6rem rgba(115, 244, 255, 0.18), 0 0.35rem 0.85rem rgba(65, 24, 127, 0.12);
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.social-button:hover,
+.social-button:focus-visible {
+  transform: translateY(-1px);
+  background: var(--ice);
+}
+
+.social-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.social-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 0.45rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #e8f9ff;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  /* max-content keeps a short handle on one line the way nowrap did, while
+     the cap stops "@cassidyco.bsky.social" from growing wider than a phone
+     screen and being clipped away at the shell's edge. */
+  width: max-content;
+  max-width: min(16rem, 70vw);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
+  z-index: 10;
+}
+
+.social-button:hover::after,
+.social-button:focus-visible::after {
+  opacity: 1;
+}
+
+.social-icon {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--violet);
+}
+
+.social-button[data-copy].is-copied {
+  background: var(--pink);
+}
+
+.intro-panel {
+  grid-column: 1 / -1;
+  /* Hug the poem's longest line rather than spanning the whole window;
+     fit-content still allows wrapping when the column gets narrow. */
+  width: fit-content;
+  justify-self: center;
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.intro-panel p {
+  max-width: 54ch;
+  margin-bottom: 0;
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.link-card {
+  min-height: 7.5rem;
+  padding: 1rem;
+  display: grid;
+  align-content: space-between;
+}
+
+.link-card span {
+  color: rgba(39, 20, 82, 0.72);
+}
+
+.link-card a {
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  /* Long bare URLs have no natural break points; wrap them rather than
+     letting them clip out of the card when the column runs narrow. */
+  overflow-wrap: anywhere;
+}
+
+.badge-card {
+  align-content: start;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  min-height: 0;
+  /* inline-size containment stops the badge block from setting this card's
+     own width, so an oversized badge grid cannot inflate the card and push
+     its siblings around. */
+  container-type: inline-size;
+}
+
+.badge-grid {
+  /* Badges are pixel art at their native 88x31 and look mushy at any other
+     size, so the column count changes rather than the badges. auto-fit reads
+     the space the card actually has: the card sits four nested layout
+     decisions below the viewport — wave gutter, the layout-grid's middle
+     track, the index window's padding, the content grid's two columns — and
+     it is between 255px and 575px wide across the whole sweep, which is room
+     for three to six badges nearly everywhere. A hard-coded two columns left
+     that space empty and wrapped the badges into twice the rows they needed. */
+  --badge-width: 88px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, var(--badge-width));
+  gap: 2px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.badge-grid a {
+  display: block;
+  line-height: 0;
+}
+
+.badge-grid img {
+  display: block;
+  /* The AGPL badge is wider than one column; let it scale in the single
+     column layout instead of hanging off the card. */
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.badge-grid .badge-wide {
+  grid-column: 1 / -1;
+}
+
+.badge-note {
+  margin: 0;
+  font-size: 0.78rem;
+  text-align: center;
+  color: rgba(39, 20, 82, 0.72);
+}
+
+.right-stack {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+}
+
+.webring,
+.neolink-panel,
+.death-clock,
+.feature-object {
+  position: relative;
+  border: 2px solid rgba(232, 246, 255, 0.75);
+  background: rgba(216, 247, 255, 0.24);
+  padding: 1rem;
+}
+
+.neolink-panel {
+  display: grid;
+  justify-items: center;
+}
+
+.neolink-panel iframe {
+  max-width: 100%;
+}
+
+.death-clock {
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+  /* Contained for the same reason as .webring: the five readout cells must
+     not set the stacked column's minimum width. */
+  container-type: inline-size;
+}
+
+.death-clock-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.death-clock-title {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.death-clock-status {
+  font-size: 0.82rem;
+}
+
+/* The index window's dot announces "Online"; this one is a heartbeat. */
+.death-clock .blink-dot {
+  background: var(--magenta);
+  box-shadow: 0 0 0.75rem var(--magenta);
+  animation: heartbeatDot 1.1s ease-in-out infinite;
+}
+
+@keyframes heartbeatDot {
+
+  0%,
+  48%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+
+  12% {
+    transform: scale(1.45);
+    opacity: 1;
+  }
+
+  30% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.death-clock-readout {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.death-cell {
+  flex: 1 1 0;
+  /* A flex item's default minimum is its content's width; zero it so the
+     five cells split whatever the panel has evenly instead of refusing to
+     shrink and shoving the readout out of the panel. */
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  padding: 0.5rem 0.15rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  box-shadow: inset 0 0 0.6rem rgba(115, 244, 255, 0.18);
+}
+
+.death-num {
+  font-family: Atkinson-Bold, arial, sans-serif;
+  font-weight: 700;
+  /* Tracks the panel on screens too narrow for the full-size digits; the
+     cqi term only wins below ~19rem of panel, so desktop is untouched. */
+  font-size: min(1.1rem, 6cqi);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.death-clock-bar {
+  height: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  overflow: hidden;
+}
+
+.death-clock-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
+}
+
+.death-clock-note {
+  margin: 0;
+  font-size: 0.82rem;
+  font-family: Atkinson-Italic, arial, sans-serif;
+  font-style: italic;
+  color: rgba(39, 20, 82, 0.8);
+}
+
+/* The bonus round: past the estimate the heartbeat settles into a steady
+   gold glow and the bar overflows into candy stripes. Mostly for people who
+   mess with the clock (?dies=2020-01-01) — or for Cassidy in 2083. */
+.death-clock.is-overtime {
+  border-color: var(--banana);
+  box-shadow: 0 0 1.1rem rgba(255, 0, 230, 0.35);
+}
+
+.death-clock.is-overtime .blink-dot {
+  animation: none;
+  background: var(--banana);
+  box-shadow: 0 0 0.75rem var(--banana);
+}
+
+.death-clock.is-overtime .death-clock-fill {
+  background: repeating-linear-gradient(135deg, var(--magenta) 0 8px, var(--banana) 8px 16px);
+}
+
+.portal-image {
+  display: block;
+  width: min(20rem, 100%);
+  aspect-ratio: 900 / 620;
+  height: auto;
+  margin: 0 auto 1rem;
+  object-fit: contain;
+  animation: hoverPortal 6s ease-in-out infinite;
+}
+
+/* The ring, its orbit radius and its buttons are all sized against this
+   panel rather than in bare rem: a fixed 12rem ring is wider than a small
+   phone once the reader raises their default font, and as the widest thing
+   in the stacked column it dragged every panel past the screen edge.
+   inline-size containment keeps the panel from flooring the grid track it
+   sits in (same move as the badge card); the cqi caps let the whole
+   assembly shrink with the panel while leaving it pixel-identical wherever
+   the rem sizes fit. */
+.webring {
+  container-type: inline-size;
+}
+
+.spinner {
+  position: relative;
+  width: min(12rem, 96cqi);
+  aspect-ratio: 1;
+  margin: 1rem auto;
+  border: 1px dashed rgba(39, 20, 82, 0.4);
+  border-radius: 50%;
+}
+
+.spinner a {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(5.2rem, 36cqi);
+  min-height: 2.05rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-strong);
+  box-shadow: inset 0 0 0.75rem rgba(115, 244, 255, 0.3), 0 0.45rem 1rem rgba(65, 24, 127, 0.12);
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 700ms cubic-bezier(0.2, 0.9, 0.25, 1.2);
+  transform: translate(-50%, -50%) rotate(calc(var(--i) * (360deg / var(--count, 4)) + var(--spin, 0deg))) translateY(calc(-1 * min(4.35rem, 30cqi))) rotate(calc((var(--i) * (-360deg / var(--count, 4))) - var(--spin, 0deg)));
+}
+
+.spinner a img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 999px;
+}
+
+.spin-controls {
+  display: flex;
+  /* Three rigid pills; on a sliver of a screen SPIN drops to its own line
+     instead of flooring the column width. */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+
+.spin-button {
+  position: relative;
+  display: block;
+  min-height: 2.7rem;
+  padding: 0 1.4rem;
+  border: 2px solid var(--violet);
+  border-radius: 999px;
+  background: var(--ice);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 0 0.85rem rgba(115, 244, 255, 0.35), 0 0.45rem 1.1rem rgba(65, 24, 127, 0.13);
+}
+
+.spin-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.7rem;
+  padding: 0;
+}
+
+/* Border-drawn chevron so we don't depend on the display font having
+   nice arrow glyphs. */
+.spin-step-glyph {
+  display: block;
+  width: 0.5em;
+  height: 0.5em;
+  border-right: 0.16em solid currentColor;
+  border-bottom: 0.16em solid currentColor;
+}
+
+.spin-step-glyph-prev {
+  transform: translateX(15%) rotate(135deg);
+}
+
+.spin-step-glyph-next {
+  transform: translateX(-15%) rotate(-45deg);
+}
+
+/* The chevrons are <a>, SPIN is a <button>; setting colour here rather than
+   letting a:hover reach only the anchors keeps all three in step. */
+.spin-button:hover,
+.spin-button:focus-visible {
+  background: var(--pink);
+  color: var(--link-hover);
+}
+
+.spin-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.feature-object {
+  min-height: clamp(13rem, 23vw, 18rem);
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  padding: 0.75rem;
+  pointer-events: none;
+  display: grid;
+  place-items: end center;
+}
+
+.feature-image {
+  display: block;
+  position: relative;
+  right: auto;
+  bottom: auto;
+  width: min(118%, 31rem);
+  max-width: none;
+  height: auto;
+  margin: -3.2rem -1.2rem -1.4rem auto;
+  opacity: 0.88;
+  z-index: 0;
+}
+
+@keyframes hoverPortal {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(2deg);
+  }
+
+  50% {
+    transform: translateY(-0.55rem) rotate(-1deg);
+  }
+}
+
+@keyframes blinkDot {
+
+  0%,
+  58% {
+    opacity: 1;
+  }
+
+  59%,
+  100% {
+    opacity: 0.22;
+  }
+}
+
+.site-footer {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding: 0.75rem 0;
+  text-align: center;
+  font-size: 0.82rem;
+  border-top: 1px solid rgba(231, 252, 255, 0.45);
+  /* The only text on the site that sits straight on the page gradient rather
+     than on a panel. At 0.7 it managed 3.5:1 over the gradient's dark stop;
+     0.9 clears 4.5:1 across the whole sweep and still reads as muted. */
+  color: rgba(39, 20, 82, 0.9);
+  /* Same reason the accents are re-pointed: against mid-blue, the panel-tuned
+     magenta drops to 2.6:1. These are the darkest members of the same family
+     that clear 4.5:1 on every stop of the gradient. */
+  --link-hover: #50006b;
+  --link-active: #2e0a5e;
+}
+
+.site-footer a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
