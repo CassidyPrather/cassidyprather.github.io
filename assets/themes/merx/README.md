@@ -36,7 +36,7 @@ Load this alone — not after wirenook — and put `merx-notice` on `<body>`:
 </body>
 ```
 
-`layouts/paracausal.html` is the only caller in this repo, and it fills those
+`layouts/_default/paracausal.html` is the only caller in this repo, and it fills those
 strings from the page's front matter.
 
 ## What the host page has to supply

@@ -7,6 +7,16 @@
 	from somewhere tidier: `url` in the front matter of content/adam-carpenter.md
 	puts it exactly where the story says it is, and no alias is involved.
 
+	In _default/, not at the root of layouts/, and that is load-bearing rather
+	than tidiness: a template named for a page's `layout` is only found at the
+	layouts root by the template system Hugo introduced in v0.146, and
+	.github/workflows/deploy.yml pins v0.140.0. Under that version the root
+	file matches nothing, the page renders no output at all — "found no layout
+	file for \"html\" for layout \"paracausal\"", a WARN, not an error, so the
+	build still succeeds — and the deploy 404s on it while every other page
+	looks fine. _default/ is found by both lookup systems, and is where the
+	rest of this site's layout-named templates already live.
+
 	It is deliberately not a wirenook page, so it is a whole document rather
 	than a block inside layouts/_default/baseof.html — nothing here loads the
 	site's theme, its fonts, its header, its footer or its backdrop. The skin

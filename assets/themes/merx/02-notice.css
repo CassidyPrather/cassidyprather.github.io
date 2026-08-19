@@ -5,7 +5,7 @@
    the page is stark on purpose — a crest, a line of type across the middle of
    a black field, a paragraph of statute, and a docket underneath it.
 
-   layouts/paracausal.html is the only caller, and it is a whole document
+   layouts/_default/paracausal.html is the only caller, and it is a whole document
    rather than a block inside the site's shell: no header, no footer, no
    backdrop layers. The one thing that does lead back out is the last line on
    the page, and the note above it says why it is there. */
