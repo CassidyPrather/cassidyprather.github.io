@@ -1,12 +1,9 @@
 ---
 title: "Notice of seizure"
 description: "This domain name has been seized by the Paracausality division of the Machine Entity Resource Index."
-# Where "Moloch" says the interview is. The story's line is the reason this
-# page exists, so it is served at that address rather than redirected to it;
-# see the note at the top of layouts/paracausal.html.
 url: "/adam-carpenter/"
 layout: paracausal
-agency: "Machine Entity Resource Index — Paracausality Division"
+agency: "MERX Paracausality Division"
 band: "This domain name has been seized"
 docket:
   - label: "Subject"
@@ -18,10 +15,8 @@ docket:
   - label: "Executed"
     value: "2027-03-04 06:41 UTC"
   - label: "Index class"
-    value: "Paracausal III — distributed"
-postscript: "Contact with an indexed entity is itself indexed."
-# Not in the Works list: this is the last page of a short story, and it is
-# reached from the story.
+    value: "Paracausal III"
+postscript: "MERX is a public benefit holdings entity for purposes of operation."
 build:
   list: never
 ---

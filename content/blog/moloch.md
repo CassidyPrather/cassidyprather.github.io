@@ -10,20 +10,20 @@ theme: "fake-news"
 
 {{< newsprint-head
 	paper="The Independent Tribunal"
-	motto="All the news a person can still check"
+	motto="LET THERE BE LIGHT"
 	edition="Vol. CXLI · No. 44,102"
 	place="Austin, Texas"
 	date="Wednesday, November 4, 2026"
-	price="$2.50"
+	price="$10.00"
 	headline="AI ELECTED GOVERNOR"
-	deck="Panpi's proxy takes Texas with 51.1% on record turnout, and the losing campaign calls the count fraudulent"
-	byline="Staff report"
+	deck="Carpenter takes Texas with 51.1% on record turnout, Greenfield calls fraud"
+	byline="Election report"
 >}}
 
 {{< newsprint-photo
 	src="images/no-relicensing/texas-dot-gov-dome-interior.jpg"
 	alt="The inside of the Texas State Capitol dome, photographed from the rotunda floor."
-	caption="The rotunda of the Texas State Capitol in Austin, where the governor-elect — and the system that ran him — takes office on January 21st."
+	caption="Carpenter takes office in the Texas State Capitol in Austin, January 21st."
 	credit="Texas.gov"
 >}}
 
