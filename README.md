@@ -18,6 +18,10 @@ templated inside them, so another repo can link them directly.
 - [`themes/wirenook/`](./assets/themes/wirenook/README.md) — the site skin.
 - [`themes/wirenook-vrchat/`](./assets/themes/wirenook-vrchat/README.md) — a
   sub-theme for the VRChat pages, scoped to a class on `<body>`.
+- [`themes/fake-news/`](./assets/themes/fake-news/README.md) — a sub-theme
+  that prints a blog post as the front page of a broadsheet.
+- [`themes/merx/`](./assets/themes/merx/README.md) — not a sub-theme: the
+  whole skin of one page, which is not supposed to look like this site.
 
 Each README says what a host page has to supply.
 

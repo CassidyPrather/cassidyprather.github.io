@@ -1,0 +1,36 @@
+/* merx — design tokens.
+
+   Not a sub-theme. Everything else in assets/themes/ layers over
+   ../wirenook/; this one is the whole skin of a page that is not supposed to
+   look like it came from this site at all — a seizure notice on a domain the
+   story's federal agency has taken. It is still scoped to a class on the body
+   (.merx-notice), for the same reason the sub-themes are: a stylesheet that
+   can only reach the page that asked for it cannot leak into one that did
+   not.
+
+   Nothing here is a wirenook value. No sky, no clouds, no Unique, no
+   Atkinson: an agency does not paint its notice in the house style of the
+   site it just took. The two stacks below are system faces, which is also
+   what a page like this would really be set in, and they cost the reader no
+   font download at all. */
+.merx-notice {
+  /* The page, and the slightly lifted surface the notice itself sits on. */
+  --merx-void: #06070a;
+  --merx-panel: #0c0f15;
+
+  /* Text, at 14.4:1 on the void, and the quieter tier the docket's values and
+     the foot are set in, at 7.2:1. */
+  --merx-text: #d6dae2;
+  --merx-muted: #939bab;
+
+  /* The one warm colour on the page: the agency line, the rules around the
+     headline, and the docket's labels. 9.1:1 on the void. */
+  --merx-alert: #e0a341;
+
+  /* Hairlines. Decorative only — nothing is ever set in this. */
+  --merx-rule: #2a303c;
+
+  --merx-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* The docket is a machine record and is set as one. */
+  --merx-mono: ui-monospace, SFMono-Regular, "Cascadia Mono", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
+}

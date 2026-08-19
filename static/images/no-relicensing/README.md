@@ -17,6 +17,8 @@ the galleries until sorted.
 | `slide-shield.png`                 | Screenshot taken in [VRChat](https://hello.vrchat.com/)                  |
 | `slide-earmuff.png`                | Screenshot taken in [VRChat](https://hello.vrchat.com/)                  |
 | `slide-culling-performance.png`    | Screenshot taken in [VRChat](https://hello.vrchat.com/)                  |
+| `texas-dot-gov-dome-interior.jpg`  | [Texas.gov](https://www.texas.gov/)                                      |
+| `merx-design.png`                  | Drawn for ["Moloch"](https://wirenook.net/blog/moloch/); source in `design/merx/` |
 
 ## `cohost/`
 

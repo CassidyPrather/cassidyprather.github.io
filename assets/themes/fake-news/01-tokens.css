@@ -1,0 +1,46 @@
+/* fake-news — design tokens.
+   Layers over ../wirenook/; load the whole of that theme first. Everything
+   here is scoped to .theme-fake-news on <body>, so the sub-theme can only
+   reach the pages that opt in.
+
+   The palette is a printed broadsheet: warm paper, warm-black ink, and one
+   spot colour. Nothing here is pure #000 or #fff — a newspaper has neither,
+   and the two of them together on a screen is the one combination that reads
+   as "web page in a serif" rather than as ink on paper.
+
+   No @font-face. The site ships a display face and Atkinson Hyperlegible and
+   nothing with serifs (static/fonts/), and a broadsheet is a serif or it is
+   nothing — so the stacks below are system faces the reader already has.
+   Times is the newspaper face by literal descent (Times New Roman was cut for
+   The Times of London), it is on effectively every desktop, and the
+   Liberation/Nimbus/DejaVu names behind it are what Linux substitutes. Cost
+   to the reader: nothing. */
+.theme-fake-news {
+  /* Newsprint. --fn-paper is the sheet; --fn-paper-shade is the same stock a
+     shade further into the rag, used for the small chips that sit off the
+     sheet and for the placeholder plate. */
+  --fn-paper: #f4efe3;
+  --fn-paper-shade: #e6dcc7;
+
+  /* Ink, and the greyer tier the captions and folio line are set in. Both
+     measured on --fn-paper: 16.3:1 and 8.1:1. */
+  --fn-ink: #16120d;
+  --fn-ink-muted: #4f463a;
+
+  /* Rules. A broadsheet's hairlines are ink at less than full strength rather
+     than a lighter colour, so these are alpha rather than mixed tints — they
+     stay right if the paper tone is ever changed underneath them. */
+  --fn-rule: rgba(22, 18, 13, 0.85);
+  --fn-rule-faint: rgba(22, 18, 13, 0.3);
+
+  /* The one spot colour, and the only place the page is not black on cream:
+     link hover and the "photo to come" slug. 7.8:1 on the paper. */
+  --fn-hot: #8f1d12;
+
+  --fn-serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", "DejaVu Serif", serif;
+  /* Everything that is not the article itself — the folio line, the credits,
+     the printer's slug at the top of the sheet. On paper this would be a
+     condensed grotesque; on screen it is whatever the reader's system calls
+     Helvetica, which is close enough at the sizes it is used at. */
+  --fn-sans: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+}

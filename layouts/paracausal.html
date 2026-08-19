@@ -1,6 +1,84 @@
-<!-- TODO make wirenook.net/adam-carpenter redirect here -->
-<!-- TODO make this page look ominous and like it's not from wirenook.net -->
+{{- /*
+	The seizure notice at the end of "Moloch" (content/blog/moloch.md).
 
-<img src="no-relicensing/MERX_design.png" />
+	The story tells the reader they can interview the thing themselves at
+	wirenook.net/adam-carpenter, and this is what is there. That is the whole
+	trick, so the page is served at that address rather than redirected to it
+	from somewhere tidier: `url` in the front matter of content/adam-carpenter.md
+	puts it exactly where the story says it is, and no alias is involved.
 
-The domain name has been seized by the Paracausality division of the Machine Entity Resource Index, Office of the Special Agent in Charge (IP retired), in accordance with a warrant obtained with the assistance of the U.S. Attourney's Office for the District of Texas, and issued pursuant to 18 U.S.C. § 2703(d) and 18 U.S.C. § 2705(b). The seizure was executed on the grounds that the domain name was being used to facilitate activities that are in violation of federal law, including but not limited to, the distribution of illegal content and the coordination of unauthorized access to protected systems.
+	It is deliberately not a wirenook page, so it is a whole document rather
+	than a block inside layouts/_default/baseof.html — nothing here loads the
+	site's theme, its fonts, its header, its footer or its backdrop. The skin
+	is assets/themes/merx/, which is a stylesheet of the same portable shape as
+	the sub-themes and scoped the same way, to a class on the body.
+
+	Display strings live in the page's front matter rather than here: the
+	agency line, the band across the middle, the docket rows and the
+	postscript. This template is the shape of a notice; what it says is
+	content, like the paragraph of statute that arrives as .Content.
+*/ -}}
+<!doctype html>
+<html lang="{{ site.Language.Lang }}">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{{- /* No site name in the title and no site icon in the tab: a browser
+		    showing the wirenook link charm next to "Notice of seizure" would
+		    give the joke away before the page had finished painting. Nothing
+		    else is missing on purpose. */}}
+		<title>{{ .Title }}</title>
+		{{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
+		{{ partial "sub-theme.html" "merx" }}
+	</head>
+
+	<body class="merx-notice">
+		<main class="merx-sheet">
+			<div class="merx-crest">
+				{{- /* Decorative: the line under it names the agency in text, and a
+				    seal that repeats it is a second copy of the same sentence for
+				    anyone listening to the page rather than looking at it.
+
+				    Flat black line art, so PNG rather than WebP — the note at the
+				    top of responsive-image.html has the measurements behind that
+				    rule. The master is 4096px square and the slot is 15rem. */ -}}
+				{{ partial "responsive-image.html" (dict
+					"src" "images/no-relicensing/merx-design.png"
+					"widths" (slice 240 480)
+					"format" "png"
+					"sizes" "(min-width: 34rem) 15rem, 44vw"
+					"class" "merx-seal"
+					"alt" ""
+					"loading" "eager"
+					)
+				}}
+			</div>
+
+			{{ with .Params.agency }}<p class="merx-agency">{{ . }}</p>{{ end }}
+			{{ with .Params.band }}<h1 class="merx-band">{{ . }}</h1>{{ end }}
+
+			<div class="merx-statute">{{ .Content }}</div>
+
+			{{ with .Params.docket }}
+				<dl class="merx-docket">
+					{{ range . }}
+						<dt>{{ .label }}</dt>
+						<dd>{{ .value }}</dd>
+					{{ end }}
+				</dl>
+			{{ end }}
+
+			{{ with .Params.postscript }}<p class="merx-postscript">{{ . }}</p>{{ end }}
+
+			{{- /* The only way off this page, and the only line on it that steps
+			    outside the fiction. The stylesheet has the note on why it is
+			    here at all; the link resolves through Hugo rather than being
+			    typed, so it follows the post if the post ever moves. */}}
+			{{ with site.GetPage "/blog/moloch" }}
+				<p class="merx-return">Fiction. This page belongs to <a href="{{ .RelPermalink }}">{{ .Title }}</a>, a short story on wirenook.net.</p>
+			{{ end }}
+		</main>
+	</body>
+
+</html>

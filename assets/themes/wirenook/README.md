@@ -73,9 +73,13 @@ clock are driven entirely from script. See `assets/script.js` in this repo.
 
 ## Sub-themes
 
-`../wirenook-vrchat/` layers over this one. A sub-theme loads *after* the
-whole of wirenook and scopes itself to a class on `<body>`, so it can only
-reach the pages that opt in.
+`../wirenook-vrchat/` and `../fake-news/` layer over this one. A sub-theme
+loads *after* the whole of wirenook and scopes itself to a class on `<body>`,
+so it can only reach the pages that opt in.
+
+`../merx/` is scoped the same way and is not one of them: it replaces this
+theme rather than layering over it, for a page that is deliberately not
+supposed to look like this site.
 
 ## Licence
 

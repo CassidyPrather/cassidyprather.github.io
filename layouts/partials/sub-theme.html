@@ -15,6 +15,13 @@
 	One target name per sub-theme, so the layouts that ask for the same one
 	share a published file rather than getting a copy each.
 
+	Not every caller is layering. layouts/paracausal.html is a whole document
+	with no base theme under it at all and asks for themes/merx/ through here
+	anyway, because what this does — concatenate a directory in filename order,
+	fingerprint it, link it — is the same job either way. The scoping rule still
+	holds there: that stylesheet is scoped to a class too, and the layout sets
+	it.
+
 	A name with no directory behind it emits nothing and the page renders in
 	the base theme alone, which is the right failure for a value that can
 	arrive from a page's front matter: a typo costs the skin, not the build.

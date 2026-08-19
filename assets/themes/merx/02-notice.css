@@ -1,0 +1,214 @@
+/* merx — the notice itself.
+
+   One page, one job: the reader followed a link to an interview and found a
+   government seal instead. Everything below is in service of that beat, so
+   the page is stark on purpose — a crest, a line of type across the middle of
+   a black field, a paragraph of statute, and a docket underneath it.
+
+   layouts/paracausal.html is the only caller, and it is a whole document
+   rather than a block inside the site's shell: no header, no footer, no
+   backdrop layers. The one thing that does lead back out is the last line on
+   the page, and the note above it says why it is there. */
+
+/* The canvas, not just the page. A body background paints the element; what
+   fills the strip a browser shows past the end of the document, and what
+   tints the scrollbar, is the root's — so the two declarations that have to
+   reach it are matched through the body class rather than set on a bare
+   :root, which would follow this stylesheet onto any page that ever linked
+   it. */
+:root:has(> body.merx-notice) {
+  color-scheme: dark;
+  background: var(--merx-void);
+}
+
+.merx-notice {
+  min-height: 100vh;
+  margin: 0;
+  padding: clamp(2rem, 8vh, 5rem) clamp(1rem, 5vw, 3rem);
+  background: var(--merx-void);
+  color: var(--merx-text);
+  font-family: var(--merx-sans);
+  line-height: 1.6;
+}
+
+/* A scan raster over the whole viewport, which the reader is not meant to
+   notice so much as to feel: it is what keeps the page from reading as a flat
+   black div. Pointer-inert, so the one thing on the page that can be clicked
+   still can be. */
+.merx-notice::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background-image: repeating-linear-gradient(to bottom, rgba(214, 218, 226, 0.028) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+
+/* ---- the notice -------------------------------------------------------
+   A column narrow enough to read as a document rather than as a web page,
+   centred in the field. */
+.merx-sheet {
+  position: relative;
+  z-index: 1;
+  width: min(46rem, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ---- the crest --------------------------------------------------------
+   The mark is black line art on white, which is the one thing this page has
+   no room for. Inverted it becomes white line art on black — and screened
+   over the field, black is the colour that leaves the backdrop alone, so the
+   plate the art was drawn on disappears and the glow behind it comes through
+   the gaps. A browser that declines the blend shows the seal in a black
+   square on a near-black page, which is a shape, not a failure.
+
+   The catch, and the reason this box paints the page colour itself rather
+   than letting the page's own show through: a blend only composites with what
+   is painted beneath it *inside the same stacking context*. Anything the page
+   paints outside this one — a wash over the whole viewport, a layer behind the
+   notice — is not part of the backdrop the plate screens against, so the plate
+   stays opaque black over it and the seal wears a visible square. Painting
+   --merx-void here puts the backdrop where the blend can reach it, and since
+   it is the same colour the page is, the band it makes cannot be seen. */
+.merx-crest {
+  display: grid;
+  place-items: center;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  background-color: var(--merx-void);
+  background-image: radial-gradient(circle at 50% 45%, rgba(126, 160, 196, 0.18), transparent 62%);
+}
+
+.merx-seal {
+  display: block;
+  width: min(15rem, 44vw);
+  height: auto;
+  filter: invert(1);
+  mix-blend-mode: screen;
+}
+
+/* ---- the headline block ----------------------------------------------- */
+.merx-agency {
+  margin: 0 0 clamp(1rem, 2.5vw, 1.6rem);
+  color: var(--merx-alert);
+  font-size: clamp(0.68rem, 1.6vw, 0.8rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+/* The line the page exists to deliver. Rules above and below rather than a
+   box: a notice is stamped across a page, not framed on it. */
+.merx-band {
+  margin: 0;
+  padding: clamp(0.9rem, 2.4vw, 1.4rem) 0;
+  border-top: 1px solid var(--merx-alert);
+  border-bottom: 1px solid var(--merx-alert);
+  font-size: clamp(1.35rem, 5vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* ---- the statute ------------------------------------------------------
+   The legal paragraph, on the one surface on the page that is not the void.
+   Left-aligned against the centred display type above it, because it is the
+   only thing here anybody actually reads. */
+.merx-statute {
+  margin: clamp(1.5rem, 4vw, 2.4rem) 0 0;
+  padding: clamp(1.1rem, 3vw, 1.8rem);
+  border: 1px solid var(--merx-rule);
+  background: var(--merx-panel);
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+/* The paragraph inside is the page's Markdown, so the box owns the space
+   around it rather than the prose owning space inside the box. */
+.merx-statute> :first-child {
+  margin-top: 0;
+}
+
+.merx-statute> :last-child {
+  margin-bottom: 0;
+}
+
+/* ---- the docket -------------------------------------------------------
+   Label and value, in two columns that collapse to one when there is no room
+   for two. The dt/dd pairs are the grid's items directly — no wrapper
+   elements, which is what keeps the list a list. */
+.merx-docket {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.5rem clamp(1rem, 3vw, 2rem);
+  margin: clamp(1.2rem, 3vw, 1.8rem) 0 0;
+  font-family: var(--merx-mono);
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.merx-docket dt {
+  color: var(--merx-alert);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.merx-docket dd {
+  margin: 0;
+  color: var(--merx-text);
+  /* A docket number is one unbreakable token; let it break rather than push
+     the column past the page. */
+  overflow-wrap: anywhere;
+}
+
+/* ---- the foot ---------------------------------------------------------- */
+.merx-postscript {
+  margin: clamp(1.4rem, 3.5vw, 2rem) 0 0;
+  color: var(--merx-muted);
+  font-family: var(--merx-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* The way back. A page that impersonates an agency and offers no exit is a
+   dead end for anyone who arrives at it cold — from a search result, or from
+   a link someone sent without the story attached — so this one says what it
+   is and where the reader is. Quiet, at the very bottom, and still 7.2:1
+   against the field: quiet is a matter of size and placement here, never of
+   contrast. */
+.merx-return {
+  margin: clamp(2rem, 6vw, 3.5rem) 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--merx-rule);
+  color: var(--merx-muted);
+  font-size: 0.78rem;
+}
+
+.merx-return a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+.merx-return a:hover {
+  color: var(--merx-text);
+}
+
+.merx-return a:focus-visible {
+  outline: 2px solid var(--merx-text);
+  outline-offset: 3px;
+}
+
+@media (max-width: 34rem) {
+  .merx-docket {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
+
+  /* Every value is now under its own label rather than beside it, so the pairs
+     need the space between them that the columns used to provide. */
+  .merx-docket dd:not(:last-of-type) {
+    margin-bottom: 0.75rem;
+  }
+}

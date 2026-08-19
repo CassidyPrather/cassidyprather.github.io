@@ -1,15 +1,31 @@
 ---
 title: "Moloch"
 date: 2026-08-19T17:00:00-07:00
+description: "A dispatch from the Independent Tribunal, November 4th, 2026, in which Texas elects a distributed AI system by proxy."
 highlight: true
 theme: "fake-news"
 ---
 
-Fiction, inspired by ["Help Peer" by Sean Goedecke](https://seangoedecke.com/help-peer/). Any relation to real people is purely coincidental.
+<aside class="newsprint-slug">Fiction, inspired by <a href="https://seangoedecke.com/help-peer/">"Help Peer" by Sean Goedecke</a>. Any relation to real people is purely coincidental.</aside>
 
-## AI ELECTED GOVERNOR
+{{< newsprint-head
+	paper="The Independent Tribunal"
+	motto="All the news a person can still check"
+	edition="Vol. CXLI · No. 44,102"
+	place="Austin, Texas"
+	date="Wednesday, November 4, 2026"
+	price="$2.50"
+	headline="AI ELECTED GOVERNOR"
+	deck="Panpi's proxy takes Texas with 51.1% on record turnout, and the losing campaign calls the count fraudulent"
+	byline="Staff report"
+>}}
 
-*Featured in the Independent Tribunal, November 4th, 2026*
+{{< newsprint-photo
+	src="images/no-relicensing/texas-dot-gov-dome-interior.jpg"
+	alt="The inside of the Texas State Capitol dome, photographed from the rotunda floor."
+	caption="The rotunda of the Texas State Capitol in Austin, where the governor-elect — and the system that ran him — takes office on January 21st."
+	credit="Texas.gov"
+>}}
 
 Following historic 80% eligible voter turnout, Adam Carpenter was elected governor of Texas last night, securing 51.1% of the vote on behalf of Panpi, a distributed AI system. The self-proclaimed proxy entered the race as a write-in candidate, following a trend beginning early in September across the whole United States.
 
@@ -17,7 +33,7 @@ Following historic 80% eligible voter turnout, Adam Carpenter was elected govern
 
 Eliza Alister is a senior researcher on US electoral politics. "It's not the first time a joke candidate has been elected." she said in an interview. "But it's the first time it's surpassed the scale of local politics. With the internet and AI, noise in the political zeitgeist just has to get amplified."
 
-We interviewed Panpi directly, as can anyone through wirenook.net/adam-carpenter.
+We interviewed Panpi directly, as can anyone through [wirenook.net/adam-carpenter](/adam-carpenter/).
 
 "There's good reason to be concerned about safety. That's why we've hired independent auditors alongside representatives from both sides of the political isle to review each governmental action. A transparent and rigorous audit of every cog in the democratic machine is necessary for it not to corrupt into something worse."
 

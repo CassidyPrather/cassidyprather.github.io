@@ -1,0 +1,65 @@
+{{- /*
+	A picture in the paper, for a post wearing themes/fake-news/ — or the box
+	that holds its place until there is one.
+
+	Called with no `src`, this prints an empty plate at the aspect ratio the
+	finished art will have, cross-ruled, carrying the mark a paste-up would:
+	TK, the newsroom's "to come". That is the whole reason the shortcode takes
+	a caption independently of a source — the caption can be written, and the
+	page laid out around the space, before the photograph exists. Filling in
+	`src` later turns the same call into the real thing and nothing else in the
+	file changes.
+
+	Params:
+	  src      Path under images/, as mounted into assets. Omit for a
+	           placeholder.
+	  alt      Alt text; pass "" for a decorative image, as img requires.
+	  caption  The line under the plate.
+	  credit   Who the picture belongs to, set at the end of the caption.
+	  ratio    Aspect ratio of the placeholder, as a CSS value. Default 3 / 2.
+	           Ignored once there is a `src`, which brings its own dimensions.
+	  span     "all" (default) for lead art across the whole sheet, or
+	           "column" for a picture that sits inside one column of the story.
+
+	Widths cover the 30rem cap the figure is held to (themes/fake-news/
+	02-theme.css) at 1x and 2x; responsive-image.html clamps anything past the
+	source file's own width back to it, so a small original is never upscaled —
+	it just offers the one candidate. Format follows the rule that partial's
+	header lays out: photographs take WebP, flat or saturated art stays PNG,
+	and the extension picks the default.
+*/ -}}
+{{- $src := .Get "src" -}}
+{{- $caption := .Get "caption" -}}
+{{- $credit := .Get "credit" -}}
+{{- $span := .Get "span" | default "all" -}}
+<figure class="newsprint-figure{{ if eq $span "column" }} newsprint-figure-column{{ end }}">
+	{{- if $src }}
+		<div class="newsprint-plate">
+			{{- partial "responsive-image.html" (dict
+				"src" $src
+				"widths" (slice 480 960)
+				"format" (default (cond (eq (path.Ext $src) ".png") "png" "webp q82") (.Get "format"))
+				"sizes" "(min-width: 36rem) 30rem, 88vw"
+				"alt" (.Get "alt")
+				"loading" "lazy"
+				)
+			-}}
+		</div>
+	{{- else }}
+		{{- /* The plate is empty, so there is nothing in it for a screen reader
+		    to be told about; the caption below carries whatever the picture was
+		    going to say. safeCSS because Hugo's CSS sanitiser rejects a
+		    slash-separated ratio in a style attribute and would blank the whole
+		    declaration — the value is an author's, from the same repository as
+		    this template. */ -}}
+		<div class="newsprint-plate newsprint-plate-empty" style="{{ printf "--newsprint-plate-ratio: %s" (.Get "ratio" | default "3 / 2") | safeCSS }}" aria-hidden="true">
+			<span class="newsprint-tk">Photo TK</span>
+		</div>
+	{{- end }}
+	{{- if or $caption $credit }}
+		<figcaption class="newsprint-caption">
+			{{- with $caption }}{{ . }}{{ end }}
+			{{- with $credit }} <span class="newsprint-credit">{{ . }}</span>{{ end -}}
+		</figcaption>
+	{{- end }}
+</figure>

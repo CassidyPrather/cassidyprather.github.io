@@ -1,0 +1,58 @@
+{{- /*
+	The top of a front page, for a post wearing themes/fake-news/: the paper's
+	nameplate, the folio line under it, and the story's own banner headline,
+	deck and byline.
+
+	One block rather than five, because all of it is display type that the
+	stylesheet has to be able to find in a fixed order, and none of it is
+	prose: what follows this call in the Markdown is the article itself, and
+	nothing else in the file has to know it is being printed.
+
+	Params:
+	  paper     The paper's name, set as the nameplate (required).
+	  motto     A line under the nameplate, if it has one.
+	  edition   Volume and number, or whatever sits at the left of the folio.
+	  place     Where the paper is published.
+	  date      The date printed on the paper — not the post's own date, which
+	            the page already carries above the sheet.
+	  price     Cover price, at the right of the folio.
+	  headline  The banner headline (required).
+	  deck      The line under it saying what the story is.
+	  byline    Who filed it.
+
+	Everything but the two required params is optional and simply absent when
+	unset; a paper with no motto emits no motto. The folio's three cells are
+	spaced apart rather than centred (themes/fake-news/02-theme.css), so a
+	missing cell moves the other two outwards rather than leaving a gap.
+*/ -}}
+{{- $paper := .Get "paper" -}}
+{{- $headline := .Get "headline" -}}
+{{- if not $paper }}{{ errorf "newsprint-head: no paper= given (%s)" .Position }}{{ end -}}
+{{- if not $headline }}{{ errorf "newsprint-head: no headline= given (%s)" .Position }}{{ end -}}
+{{- /* Place and date are one cell with a separator between them, and either
+    one of them alone is that cell on its own. */ -}}
+{{- $dateline := slice -}}
+{{- with .Get "place" }}{{ $dateline = $dateline | append . }}{{ end -}}
+{{- with .Get "date" }}{{ $dateline = $dateline | append . }}{{ end -}}
+{{- $edition := .Get "edition" -}}
+{{- $price := .Get "price" -}}
+<header class="newsprint-head">
+	<p class="newsprint-nameplate">{{ $paper }}</p>
+	{{- with .Get "motto" }}
+		<p class="newsprint-motto">{{ . }}</p>
+	{{- end }}
+	{{- if or $edition $dateline $price }}
+		<p class="newsprint-folio">
+			{{- with $edition }}<span>{{ . }}</span>{{ end }}
+			{{- with $dateline }}<span>{{ delimit . " · " }}</span>{{ end }}
+			{{- with $price }}<span>{{ . }}</span>{{ end }}
+		</p>
+	{{- end }}
+	<h2 class="newsprint-headline">{{ $headline }}</h2>
+	{{- with .Get "deck" }}
+		<p class="newsprint-deck">{{ . }}</p>
+	{{- end }}
+	{{- with .Get "byline" }}
+		<p class="newsprint-byline">{{ . }}</p>
+	{{- end }}
+</header>

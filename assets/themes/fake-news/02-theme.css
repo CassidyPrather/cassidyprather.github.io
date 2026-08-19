@@ -1,0 +1,417 @@
+/* fake-news — the skin itself.
+
+   A blog post printed as the front page of a broadsheet. Everything
+   structural is still wirenook's: the sky, the clouds, the double-framed
+   index-window, the topline chip with the post's title in it. What changes is
+   what lies inside the frame — the prose panel becomes a sheet of newsprint,
+   and the furniture a front page is made of (nameplate, folio line, banner
+   headline, deck, byline, lead art with a caption under it) is dressed here.
+
+   The markup for that furniture is not wirenook's and cannot be: a post body
+   is whatever its Markdown renders to. Two shortcodes supply it —
+   layouts/shortcodes/newsprint-head.html and newsprint-photo.html — and the
+   README lists every class they emit, so a page outside this repo can print
+   the same front page with the same stylesheet. */
+
+/* ---- the sheet --------------------------------------------------------
+   wirenook's .post-body is an opaque light panel with a hairline border, sat
+   on the window's stripes. Here it is a sheet of newsprint lying on them:
+   same box, no border (paper has edges, not rules), and a shadow that lifts
+   it off the desk.
+
+   The two dot grids are the paper's tooth. They are far too faint to see as
+   dots at any normal zoom — that is the point; what they do is stop a large
+   flat cream rectangle reading as a #f4efe3 div. The offset second grid keeps
+   them from lining up into a visible weave. */
+.theme-fake-news .post-body {
+  border: 0;
+  padding: clamp(1.1rem, 2.6vw, 2.2rem);
+  background-color: var(--fn-paper);
+  background-image:
+    radial-gradient(circle, rgba(22, 18, 13, 0.05) 0 0.5px, transparent 0.6px),
+    radial-gradient(circle, rgba(22, 18, 13, 0.035) 0 0.5px, transparent 0.6px);
+  background-size: 3px 3px, 7px 5px;
+  box-shadow:
+    inset 0 0 3.5rem rgba(93, 74, 42, 0.16),
+    0 1rem 2.6rem rgba(20, 14, 40, 0.34);
+  color: var(--fn-ink);
+  font-family: var(--fn-serif);
+  /* Newsprint sets small and leads tight. Times has a small x-height for its
+     point size, so the figure below is a little over the base theme's 1rem to
+     land in the same place on the page. */
+  font-size: 1.05rem;
+  line-height: 1.48;
+  /* A justified rag is the shape of a printed column, and the columns below
+     are narrow enough that justifying without hyphenation would open rivers
+     through them. `lang` is on the html element, so the browser has a
+     dictionary. Never on an identifier or a URL — an inserted hyphen is a
+     character the reader cannot tell from one that is really there; the base
+     theme makes that exception at its narrowest breakpoint, and it applies at
+     every width here. */
+  text-align: justify;
+  hyphens: auto;
+}
+
+.theme-fake-news .post-body :is(code, kbd, samp, pre) {
+  hyphens: manual;
+}
+
+/* The base theme sets a details summary in Atkinson's bold cut by name, so it
+   survives the family above unless it is named back. */
+.theme-fake-news .post-body summary {
+  font-family: var(--fn-serif);
+}
+
+/* ---- links on paper ---------------------------------------------------
+   The two surfaces this skin owns re-point the three tokens the base theme
+   resolves against whichever panel a link sits on. Left alone, the site-wide
+   magenta hover reads 3.4:1 on newsprint. The replacements are the ink itself
+   (8.1:1) and the spot colour a press would have run a second pass for
+   (7.8:1); the focus ring goes to full-strength ink, at 16.3:1.
+
+   One list, so a new surface is added by naming it here rather than by
+   restating the colours somewhere else and getting one of them wrong. */
+.theme-fake-news :is(.post-body, .post-meta) {
+  --link-hover: var(--fn-hot);
+  --link-active: var(--fn-ink-muted);
+  --focus-ring: var(--fn-ink);
+}
+
+/* A newspaper has no links in it, so these are printed rather than
+   highlighted: the ink they are already set in, underlined the way a
+   typesetter would mark a reference. Colour arrives on hover. */
+.theme-fake-news .post-body a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+/* The date the post was published here, which is not the date printed on the
+   paper. It sits on the window's stripes rather than on the sheet, so it keeps
+   the base theme's chip and only changes stock. */
+.theme-fake-news .post-meta {
+  border-color: var(--fn-rule);
+  background: var(--fn-paper);
+  color: var(--fn-ink-muted);
+  font-family: var(--fn-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ---- the printer's slug ------------------------------------------------
+   The author's note at the top of the sheet — what this is, and who it is not
+   about. Not part of the paper, and deliberately not dressed as it: set in the
+   sans, ruled off, and held at the muted tier so the nameplate below it is
+   still the first thing the eye lands on. */
+.theme-fake-news .newsprint-slug {
+  display: block;
+  margin: 0 0 clamp(0.9rem, 2vw, 1.4rem);
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--fn-rule-faint);
+  color: var(--fn-ink-muted);
+  font-family: var(--fn-sans);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+/* ---- nameplate and folio ---------------------------------------------- */
+.theme-fake-news .newsprint-head {
+  margin: 0 0 clamp(1rem, 2.4vw, 1.6rem);
+  padding-bottom: 0.7rem;
+  border-bottom: 3px solid var(--fn-rule);
+  text-align: center;
+}
+
+.theme-fake-news .newsprint-nameplate {
+  margin: 0;
+  /* The cap is measured rather than chosen: at the widest the sheet ever gets
+     (72rem of .blog-main, less the window's frame and the sheet's own gutter,
+     which is 1024px), "The Independent Tribunal" sets on one line in this face
+     up to 4.16rem. A flagship's nameplate is one line where there is room for
+     one; below about 1200px there is not, and it breaks to two, which is what
+     a narrow broadsheet does too. */
+  font-size: clamp(1.9rem, 8vw, 4rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  /* Justification is for the columns; a nameplate is centred display type, and
+     a two-line one would otherwise have its first line stretched out to the
+     margins. Same for every other display line in this block. */
+  text-align: center;
+  text-wrap: balance;
+}
+
+.theme-fake-news .newsprint-motto {
+  margin: 0.35rem 0 0;
+  color: var(--fn-ink-muted);
+  font-size: 0.82rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Volume and number, place and date, cover price. Space-between at any width
+   that can hold the three on one line, which is what makes it read as the rule
+   under a nameplate rather than as a caption; the narrow case is at the foot
+   of this file. */
+.theme-fake-news .newsprint-folio {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.15rem 1.2rem;
+  margin: 0.55rem 0 0;
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--fn-rule);
+  border-bottom: 1px solid var(--fn-rule);
+  color: var(--fn-ink-muted);
+  font-family: var(--fn-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ---- headline, deck, byline ------------------------------------------- */
+.theme-fake-news .newsprint-headline {
+  margin: clamp(0.9rem, 2.4vw, 1.5rem) 0 0;
+  font-family: var(--fn-serif);
+  font-size: clamp(1.85rem, 6vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.03;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* The line under the headline that says what the story is. Italic, and held to
+   a measure of its own — a deck running the full width of the sheet reads as a
+   paragraph that has lost its indent. */
+.theme-fake-news .newsprint-deck {
+  max-width: 48ch;
+  margin: 0.6rem auto 0;
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  font-style: italic;
+  line-height: 1.34;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.theme-fake-news .newsprint-byline {
+  margin: 0.9rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--fn-rule-faint);
+  color: var(--fn-ink-muted);
+  font-family: var(--fn-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ---- the lead art -----------------------------------------------------
+   A figure with a plate in it. The plate is the printed area — either the
+   photograph, or the box holding its place until there is one. */
+.theme-fake-news .newsprint-figure {
+  /* Wider than this and the art stops being a picture in a newspaper and
+     starts being a hero image with a newspaper under it. The cap also keeps
+     the source file ahead of the slot it lands in: the capitol dome is 628px
+     of original, and a sheet on a 1440px screen is nearly 1000px wide. */
+  width: min(100%, 30rem);
+  margin: 0 auto clamp(1rem, 2.2vw, 1.5rem);
+}
+
+.theme-fake-news .newsprint-plate {
+  position: relative;
+  overflow: hidden;
+  background: var(--fn-paper-shade);
+}
+
+/* The base theme centres every image in a post body and leaves it at its own
+   width; inside the plate it fills the box instead.
+
+   Grey, and slightly warm with it. A halftone photograph in a paper is one ink
+   on cream stock, and a colour photograph dropped into this page is the single
+   thing that would say "web page" loudest — so the picture goes through the
+   same press as the type. */
+.theme-fake-news .newsprint-plate img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  filter: grayscale(1) contrast(1.06) brightness(1.02) sepia(0.16);
+}
+
+/* The screen the picture is printed through: a 3px dot grid multiplied over
+   the plate, which at any real zoom is texture rather than dots — and, as a
+   side effect, is what lets a 628px original hold a slot half again its size
+   without looking soft. Not on the placeholder, which is a busy box already. */
+.theme-fake-news .newsprint-plate:not(.newsprint-plate-empty)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(22, 18, 13, 0.55) 0 0.55px, transparent 0.75px);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* No picture yet. The box holds the space the finished page will give it, at
+   whatever aspect ratio the caller asks for, with the two diagonals and the
+   printer's shorthand a paste-up would carry: TK, "to come". */
+.theme-fake-news .newsprint-plate-empty {
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--newsprint-plate-ratio, 3 / 2);
+  border: 1px dashed var(--fn-rule);
+  background-image:
+    linear-gradient(to bottom right, transparent calc(50% - 0.5px), var(--fn-rule-faint) 50%, transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom left, transparent calc(50% - 0.5px), var(--fn-rule-faint) 50%, transparent calc(50% + 0.5px));
+}
+
+.theme-fake-news .newsprint-tk {
+  padding: 0.35em 0.75em;
+  border: 1px solid currentColor;
+  background: var(--fn-paper);
+  color: var(--fn-hot);
+  font-family: var(--fn-sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.theme-fake-news .newsprint-caption {
+  margin: 0.5rem 0 0;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--fn-rule-faint);
+  color: var(--fn-ink-muted);
+  font-family: var(--fn-sans);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.theme-fake-news .newsprint-credit {
+  font-size: 0.85em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---- the article ------------------------------------------------------
+   Columns, sized rather than counted: column-width lets the sheet work out how
+   many will fit, so one declaration holds from a phone (one column) through a
+   laptop (two) to a wide desktop (three), with no breakpoint of its own to
+   keep in step with the shell's. 19rem is about 38 characters of this face,
+   which is a broadsheet column, and the narrowest measure that still justifies
+   without the hyphenator working overtime.
+
+   Everything above this point in the sheet — slug, nameplate, lead art —
+   spans the lot, which is both how a front page is laid out and what keeps
+   those blocks out of the column flow. They are direct children of .post-body,
+   which is what column-span requires. */
+.theme-fake-news .post-body {
+  columns: 19rem;
+  column-gap: clamp(1.3rem, 2.6vw, 2.2rem);
+  column-rule: 1px solid var(--fn-rule-faint);
+}
+
+.theme-fake-news :is(.newsprint-slug, .newsprint-head, .newsprint-figure) {
+  column-span: all;
+}
+
+/* A picture that belongs to one column of the story rather than to the page.
+   It opts back out of the span above — after it, at equal specificity, which
+   is why this rule is here rather than up with the rest of the figure — and
+   out of the centred 30rem cap with it: inside a 19rem column there is nothing
+   to centre it against. */
+.theme-fake-news .newsprint-figure-column {
+  width: auto;
+  column-span: none;
+}
+
+/* Direct children only. The paper's furniture is paragraphs too — the motto,
+   the folio line, the deck, the byline — and this rule carries an element
+   selector the rules that set those do not, so unscoped it outranks every one
+   of them and takes their margins with it. The deck is where that shows: its
+   measure is capped and centred with auto margins, which this would quietly
+   zero. */
+.theme-fake-news .post-body>p {
+  margin: 0 0 0.75em;
+}
+
+/* The drop cap and the small-capped opening line: the two marks that say a
+   column of text is the start of a story rather than the middle of one.
+
+   `> p:first-of-type` is the lede — the first paragraph that is a child of the
+   sheet itself. The slug is an aside and the furniture above it is a header
+   and a figure precisely so this selector cannot land on any of them. */
+.theme-fake-news .post-body>p:first-of-type::first-letter {
+  float: left;
+  margin: 0.02em 0.08em 0 0;
+  font-size: 3.2em;
+  font-weight: 700;
+  line-height: 0.78;
+}
+
+.theme-fake-news .post-body>p:first-of-type::first-line {
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+}
+
+/* The end mark. A printed story ends with one because a reader cannot
+   otherwise tell a column that has ended from one that continues overleaf. */
+.theme-fake-news .post-body>p:last-of-type::after {
+  content: "\00a0\25A0";
+  font-size: 0.8em;
+}
+
+/* Crossheads — a heading written into the story's Markdown, as against the
+   banner headline the shortcode sets. Direct children only, so the h2 the
+   shortcode puts inside its header keeps the display rule above. */
+.theme-fake-news .post-body> :is(h2, h3, h4, h5) {
+  margin: 1.5em 0 0.5em;
+  font-family: var(--fn-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Set matter inside a column of justified body text, so it opts out of the
+   justification the sheet sets. */
+.theme-fake-news .post-body blockquote {
+  margin: 1.2em 0;
+  padding: 0.2em 0 0.2em 0.9em;
+  border-left: 3px solid var(--fn-rule);
+  font-style: italic;
+  text-align: left;
+}
+
+/* ---- narrow -----------------------------------------------------------
+   The folio line stops pretending it has margins to sit against: below this
+   the three items wrap to two lines, and space-between strands the last one
+   alone on the left. */
+@media (max-width: 40rem) {
+  .theme-fake-news .newsprint-folio {
+    justify-content: center;
+    gap: 0.15rem 0.9rem;
+  }
+
+  /* The base theme opens the leading up at this width, for a ~33-character
+     measure that would otherwise stack into a slab. A newspaper column is that
+     narrow on purpose and is set tight to match, so this takes back most of
+     that — and keeps the paragraph spacing the base theme grows alongside it,
+     which at this leading would read as a section break. */
+  .theme-fake-news .post-body {
+    line-height: 1.5;
+  }
+
+  .theme-fake-news .post-body>p {
+    margin-bottom: 0.75em;
+  }
+}

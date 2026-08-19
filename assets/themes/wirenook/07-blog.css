@@ -162,6 +162,66 @@
   background: var(--vrc-sunken);
 }
 
+/* The same arrangement again for the post that prints itself as a front page.
+   Its own page wears themes/fake-news/; this feed never loads that file either,
+   so the palette is restated here from themes/fake-news/01-tokens.css, which is
+   where the values are explained. On this paper the ink reads 16.3:1, the muted
+   tier the meta row is set in 8.1:1, and the spot colour the links hover to
+   7.8:1 — all comfortably clear, because newsprint is a light surface and the
+   base theme's own tuning already assumes one.
+
+   Compounded with .blog-entry for the same reason the block above is:
+   blog-drift.css loads after this file and re-points these same properties on
+   every card in the feed. */
+.blog-entry.entry-fake-news {
+  --fn-paper: #f4efe3;
+  --fn-paper-shade: #e6dcc7;
+  --fn-ink: #16120d;
+  --fn-ink-muted: #4f463a;
+  --fn-rule-faint: rgba(22, 18, 13, 0.3);
+  --link-hover: #8f1d12;
+  --link-active: var(--fn-ink-muted);
+  --focus-ring: var(--fn-ink);
+  border-color: var(--fn-rule-faint);
+  background: var(--fn-paper);
+  color: var(--fn-ink);
+  font-family: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", "DejaVu Serif", serif;
+}
+
+/* The card's title is the paper's headline in miniature: centred, in caps, over
+   a rule. Everything the sub-theme does to the real one is a matter of scale,
+   which a feed has none of, so only the shape carries over. */
+.blog-entry.entry-fake-news .entry-title {
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--fn-rule-faint);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* The summary is the post's own words, so as on the VRChat card only the face
+   changes hands. */
+.blog-entry.entry-fake-news .entry-body {
+  font-family: inherit;
+}
+
+/* The meta row is the folio line of a paper this size: the sans, tracked out,
+   at the muted tier. */
+.blog-entry.entry-fake-news .entry-meta {
+  border-top-color: var(--fn-rule-faint);
+  color: var(--fn-ink-muted);
+  font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.blog-entry.entry-fake-news .entry-permalink {
+  border-color: var(--fn-rule-faint);
+  background: var(--fn-paper-shade);
+}
+
 .blog-highlights {
   position: sticky;
   top: clamp(0.75rem, 2vw, 1.5rem);
