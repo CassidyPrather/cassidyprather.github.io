@@ -1,7 +1,7 @@
 ---
 title: "VRChat Development Stack: August 2026"
 date: 2026-08-18T23:50:00-07:00
-highlight: true
+highlight: false
 theme: "wirenook-vrchat"
 ---
 
