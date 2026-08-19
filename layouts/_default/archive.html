@@ -12,7 +12,13 @@
 					{{/* The cohost archive is deliberately absent: it is reached from the
            blog and from cohost's own chrome, not listed here as a work. */}}
 					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "space-trucking" "vrchat") }}
-					{{ range $pages.ByTitle }}
+					{{/* Sorted and labelled by LinkTitle, which is `linkTitle` in front
+             matter where a page sets one and its title otherwise. A page
+             names itself for the thing it is, and that is not always what
+             tells it apart from its neighbours in a list: /vrchat/ is
+             "VRChat" at the top of its own window and needs more than that
+             sitting next to the attendee guide. */}}
+					{{ range $pages.ByLinkTitle }}
 						{{/* A work that lives outside Hugo has no page here for its title to
              point at, so it names its destinations in `links` instead. The
              first one is the work itself, and the title takes it. */}}
@@ -22,7 +28,7 @@
 							{{ $href = (index . 0).url }}
 						{{ end }}
 						<article class="license-entry work-{{ .Type }}">
-							<h3><a href="{{ $href }}">{{ .Title }}</a></h3>
+							<h3><a href="{{ $href }}">{{ .LinkTitle }}</a></h3>
 							{{ with .Description }}<p>{{ . | markdownify }}</p>{{ end }}
 							{{ range $links }}
 								<p class="work-link">{{ .label }}: <a href="{{ .url }}">{{ .url }}</a></p>

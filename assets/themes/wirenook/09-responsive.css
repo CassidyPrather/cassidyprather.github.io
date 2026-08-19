@@ -1,0 +1,170 @@
+/* The three-column layout needs the wave gutter (16vw) plus all three
+   columns near their preferred widths; below ~86rem the middle column gets
+   squeezed toward its minimum and its contents clip, so stack well before
+   that happens. The wave gutter itself stays until 62rem (further down). */
+@media (max-width: 86rem) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .link-rail {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: stretch;
+    /* The rail spans the page from here down, so the charms need their room
+       inside the grid; the shell's gutter is narrower than the overhang once
+       the wave gutter collapses. */
+    padding-inline: var(--charm-overhang);
+  }
+
+  .rail-link {
+    padding-left: 3rem;
+  }
+
+  .rail-link:nth-child(even) {
+    padding-right: 3rem;
+  }
+
+  .index-window {
+    min-height: auto;
+  }
+
+  .right-stack {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  /* Webring and neolink pair up side by side; the death clock and the bunny
+     each get a full row. */
+  .right-stack .death-clock,
+  .right-stack .feature-object {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 62rem) {
+  .page-shell {
+    --wave-gutter: clamp(1rem, 2.6vw, 2.4rem);
+    padding-left: clamp(1rem, 2.6vw, 2.4rem);
+  }
+
+  .blog-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-highlights {
+    position: static;
+  }
+}
+
+@media (max-width: 40rem) {
+
+  /* A blog post sits inside three nested padded boxes — the shell, the window's
+     double frame, the prose panel — and each one charged full price for its
+     gutter. At 412px (a Pixel's viewport) that spent 105px of the 412 on frame
+     and left the text measuring 307px: about 30 characters a line, which is
+     what makes the reading feel boxed in. The two outer layers are frame
+     rather than reading surface, so they give the width back; only the panel
+     the text actually sits on keeps a full gutter. Vertical padding stays
+     generous — height is free in a column you scroll. */
+  .page-shell {
+    padding: 0.9rem 0.55rem;
+  }
+
+  .index-window {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .post-body,
+  .blog-entry,
+  .archive-intro {
+    padding: 1.05rem 0.9rem;
+  }
+
+  /* Nested one level deeper again, inside .post-body. */
+  .bun-quote {
+    padding: 1.1rem 0.85rem;
+  }
+
+  /* Long-form prose at a ~33-character measure. A little more leading than the
+     desktop 1.55 stops the lines stacking into a slab, and hyphenation takes
+     the worst of the rag out of a column this narrow (`lang` is on <html>, so
+     the browser has a dictionary to work from). */
+  .post-body,
+  .entry-body,
+  .archive-intro {
+    line-height: 1.65;
+    hyphens: auto;
+  }
+
+  /* Never hyphenate an identifier, a path, or a URL — the inserted hyphen is a
+     character the reader cannot tell from one that's really there. */
+  .post-body :is(code, kbd, samp, pre),
+  .entry-body :is(code, kbd, samp, pre) {
+    hyphens: manual;
+  }
+
+  /* Paragraph spacing has to grow with the leading or the gap between
+     paragraphs stops reading as wider than the gap between lines. The `:not`
+     leaves the bun.com pull-quote on its own measurements, which are lifted
+     from that site and shouldn't drift with ours. */
+  .post-body p:not(.bun-quote p),
+  .entry-body p {
+    margin-bottom: 1.25em;
+  }
+
+  .post-body pre,
+  .entry-body pre {
+    padding: 0.7rem;
+  }
+
+  /* The entry title and its "Read more" both sit tighter to the summary than
+     two paragraphs of that summary sit to each other. At desktop leading that
+     reads as pairing; once the leading opens up it reads as a collision. */
+  .entry-title {
+    margin-bottom: 0.6rem;
+  }
+
+  .entry-more {
+    margin-top: 0.85rem;
+  }
+
+  .wave-field {
+    opacity: 0.4;
+  }
+
+  /* Panels run nearly edge-to-edge here, so the rulers sit behind content
+     more often — fade them like the wave-field rather than dropping them. */
+  .tick-rulers {
+    opacity: 0.55;
+  }
+
+  .link-rail,
+  .content-grid,
+  .right-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .rail-link {
+    min-height: 3.7rem;
+  }
+
+  .feature-image {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(100%, 25rem);
+    margin-left: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

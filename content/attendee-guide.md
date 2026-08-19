@@ -1,12 +1,11 @@
 ---
-title: "VRChat Attendee's Guide"
+title: "VRChat Attendee's Guide for Large Events"
 description: "So VRChat doesn't crash in big instances"
 author: "Cassidy Prather"
 type: vrchat
 ---
 
 <div class="contentBubble">
-  <h1>VRChat Attendee's Guide for Large Events</h1>
   <p>All settings are available in the <strong>main (expanded) menu</strong>.</p>
 </div>
 <div class="contentBubble">

@@ -12,7 +12,7 @@
 				<div class="license-list">
 					<article class="license-entry">
 						<h3>Site Code — AGPLv3</h3>
-						<p class="license-files"><code>index.html</code> <code>script.js</code> <code>styles.css</code></p>
+						<p class="license-files"><code>index.html</code> <code>script.js</code> <code>themes/wirenook/</code> <code>themes/wirenook-vrchat/</code></p>
 						<p>
 							Licensed under the
 							<a href="{{ "LICENSE" | relURL }}">GNU Affero General Public License v3.0</a>.
@@ -49,6 +49,25 @@
 							<a href="{{ "cohost/" | relURL }}">Cohost's</a> wordmark and eggbug are
 							<a href="https://en.wikipedia.org/wiki/Cohost">anti software software club</a>'s,
 							Post-control glyphs are <a href="https://heroicons.com/">Heroicons</a> by Tailwind Labs, under the <a href="https://github.com/tailwindlabs/heroicons/blob/master/LICENSE">MIT license</a>.
+						</p>
+					</article>
+
+					{{/* The VRChat pages wear VRChat's own dress, and two pieces of it
+           are theirs rather than ours: the palette the sub-theme is built
+           from, and the icon font it loads straight off their CDN. The line
+           art in the gutter is a file under images/no-relicensing/ and is
+           covered by that directory's tier below. */}}
+					<article class="license-entry">
+						<h3>VRChat interface — palette and icon font</h3>
+						<p class="license-files">
+							<code>themes/wirenook-vrchat/</code>
+							<code>images/no-relicensing/vrchat-background-lines.svg</code>
+						</p>
+						<p>
+							The <a href="{{ "vrchat/" | relURL }}">VRChat pages</a> are dressed in
+							<a href="https://hello.vrchat.com/">VRChat</a>'s own interface colours, and
+							load their trust-rank and status glyphs from their CDN. wirenook is
+							unaffiliated with VRChat; the marks and the artwork are theirs.
 						</p>
 					</article>
 

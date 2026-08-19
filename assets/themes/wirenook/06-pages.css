@@ -1,0 +1,344 @@
+/*
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#-..............=%@@@@@@@@@@@
+@@@@#+=======+#@@+==+#%*===##+==+%@*========#@#===*%@@@@@@@@@@@@@@@@@%+-+%@@@@@@@@@@@@#=-*@@@@@@@@@@
+@@@@#- ..#*: .-@@:. -*#-  .**: .:%@-. :*%...*@*.  =%@@@@@@@@@@@@@@@@#--#%*:..........=#%+:+%@@@@@@@@
+@@@@#- ..#=:.:=@@:. -*%+...==...=%@-. :*%%#*#@*.  =%@@@@@@@@@@@@@@@=:+%#=:............-*%#-:#%@@@@@@
+@@@@#- ..-+*%@@@@:. -*%#+-.--:-+*%@-. .:=#%@@@*.  =%@@@@@@@@@@@@%#--#%*-...............:=#%+:+%@@@@@
+@@@@#- ..#@@@@@@@:. -*#-  .**: ..%@-. :*@%*=*@*.  =%%*=+@@@@@@@%*:+%%=:..................-*@%--#@@@@
+@@@@#- ..#@@@@@@@:. -*#-  .**: ..%@-. :=*...*@*.  -=:..=@@@@@@@*-+@#-:....................:+%#-=%@@@
+@@@@%*===%@@@@@@@===+#%*==+##+==+%@+========#@#========*@@@@@@@#=-@#-.....................:+%*-+@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%*.#%=:....................:%%==#@@@@
+@@@@#+======+#@@@%*+=====+#%@%#+=====+*%%+====+#%*=======+%@@@@@#-=%*-...................:=@#:+%@@@@
+@@@@*...=*-. :+@@-. .-*-  .*@*: .:*=. .-%##:. :+%-..:++: .:#@@@@%+.%%=:..................-*@+-*@@@@@
+@@@@#=+%%-...-%@@-. .=#-  .*@+. .:#+: .-@@@-. :+%+=#%+:...*%@@@@@#.*%*-.................:-%@:+%@@@@@
+@@@@@@%#:. .=%@@@-. .=#-  .*@+. .:#+: .-@@@-. :+@@@%+: .:*%@@@@@@%=-#%*=-:............:-+#%*:*%@@@@@
+@@@@@%#.. .+##*%@-. .=#-  .*@+. .:#+: .-@@@-. :+@@%-. .-#%##%@@@@%#:-+#%%%+-::....::=*%%%*=:=#@@@@@@
+@@@@%*.  .*=..:*@-. .=#-  .*@*. .:#+: .-@@@-. :+@%-. .=*-..-#@@@@@@%#*=--+#%%#+==*#%%*=--+#%%@@@@@@@
+@@@@#==========#@%+=======*%@%*=======+#@@@+===*%+=========+%@@@@@@@@@@%#+--=*#%%*+--=*%@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%+:..-*%@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%@@@@@@@@@@@@@@@@@@@
+
+!!post your asci here to troll cassidy!!
+*/
+
+.license-main {
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.archive-intro {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  margin-bottom: 1rem;
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.archive-intro> :last-child {
+  margin-bottom: 0;
+}
+
+.license-list {
+  display: grid;
+  /* minmax(0, 1fr) rather than the implicit `auto`: an auto track is floored
+     at its content's min-content width, so a single unbreakable path in a
+     .license-files <code> would push the whole column wider than the window
+     it sits in. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.license-entry {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.license-entry h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1.15rem;
+}
+
+.license-entry p {
+  margin-bottom: 0.5rem;
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.license-entry p:last-child {
+  margin-bottom: 0;
+}
+
+/* Prose rendered from Markdown — license blurbs, blog posts, the press-kit
+   notes — routinely carries a bare URL, which is a single token as wide as
+   it is long. `anywhere` rather than `break-word` so it also stops setting
+   the block's min-content width, which is what pushes a grid track wider
+   than the container holding it. */
+.license-entry p,
+.license-callout p,
+.press-kit-note p,
+.archive-intro,
+.entry-body,
+.post-body {
+  overflow-wrap: anywhere;
+}
+
+/* Fenced code blocks carry pre-formatted lines that must not be re-wrapped --
+   the chat export in the "Prove It" post is a box-drawing table, and wrapping
+   it would shred the alignment that makes it a table at all. So the long line
+   has to go somewhere, and `white-space: pre` with the UA's default
+   `overflow: visible` sends it straight out of the panel: at every width it
+   spilled ~2500px past the column, then got swallowed by .page-shell's
+   `overflow-x: clip`, which made the far side of the table unreachable rather
+   than merely ugly. `overflow-x: auto` turns that spill into a scroll region
+   the reader can actually pan. Hugo already emits `tabindex="0"` on <pre> for
+   exactly this, so the region is keyboard-scrollable once it exists. */
+.post-body pre,
+.entry-body pre {
+  max-width: 100%;
+  overflow-x: auto;
+  /* Panning that table on a touch screen must not chain into the page once it
+     hits the end of its scroll: Chrome on Android reads the handed-off gesture
+     as a back-navigation swipe, so a reader trying to reach the right-hand
+     columns leaves the post instead. */
+  overscroll-behavior-x: contain;
+  margin: 1.4rem 0;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  padding: 0.8rem 0.9rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+/* The block already draws the panel; a nested <code> must not draw a second
+   one on top of it, and it inherits the smaller font from the <pre>.
+
+   It also has to carry a width. A fence with a language on it goes through
+   Chroma, which wraps every line in a `<span style="display:flex">`; those
+   wrappers are block-level flex containers, so they size to the <pre>'s content
+   box rather than to the lines they hold, and a line longer than the column
+   overflows its wrapper instead of widening it. Nothing up the chain sees that
+   width, because a default <code> is an inline box with none of its own to hand
+   to the <pre> — on a 360px viewport a 611px jj-log line left `pre.scrollWidth`
+   sitting at `clientWidth`, so the `overflow-x: auto` above had nothing to
+   scroll and the right-hand half of the line was clipped away with no way to
+   reach it. Sizing this box to its widest line rebuilds that chain, and
+   `min-width: 100%` keeps a short block filling the panel rather than shrinking
+   to fit its text. */
+.post-body pre code,
+.entry-body pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  display: block;
+  width: max-content;
+  min-width: 100%;
+}
+
+.license-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  color: rgba(39, 20, 82, 0.65);
+  font-size: 0.88rem;
+}
+
+.license-files code {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  /* Paths like fonts/AtkinsonHyperlegible-BoldItalic.ttf are one long token
+     with no natural break point. */
+  overflow-wrap: anywhere;
+}
+
+.gallery-section {
+  margin-top: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.gallery-section h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1.15rem;
+}
+
+.gallery-section>p {
+  margin-bottom: 0.5rem;
+  line-height: 1.55;
+}
+
+.gallery-license {
+  font-size: 0.72rem;
+  vertical-align: middle;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  padding: 0.15em 0.5em;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.gallery-grid {
+  display: grid;
+  /* The 9.5rem floor outgrows a small screen (or a large reader font);
+     min() keeps the single remaining column inside the panel there. */
+  grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr));
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.gallery-item {
+  /* <figure> ships with a 1em 40px UA margin, which was quietly insetting
+     every card 40px inside its grid cell — and on a sliver-width screen
+     squeezed the card narrower than its own label. The cell's gap and the
+     card's padding already provide the spacing. */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+  padding: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.gallery-item img {
+  max-width: 100%;
+  height: 7rem;
+  object-fit: contain;
+  /* Checkerboard so transparent art reads against the panel. */
+  background:
+    repeating-conic-gradient(rgba(255, 255, 255, 0.55) 0% 25%, rgba(215, 251, 255, 0.35) 0% 50%) 0 0 / 1rem 1rem;
+}
+
+.gallery-item figcaption {
+  font-size: 0.78rem;
+  color: rgba(39, 20, 82, 0.65);
+  overflow-wrap: anywhere;
+}
+
+.gallery-item code {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+/* A file name is one unbreakable token, and a centred flex item is sized to
+   fit-content — which bottoms out at min-content, not at the cell. Without a
+   break opportunity the name sets the card's floor and hangs out of the grid
+   cell at every width where the name is longer than the column. */
+.gallery-item>* {
+  max-width: 100%;
+}
+
+.gallery-item a,
+.gallery-item code {
+  overflow-wrap: anywhere;
+}
+
+/* Cards with no preview (an offsite source file) still have to hold a grid
+   cell the same size as the ones carrying a 7rem image. */
+.gallery-item-source {
+  min-height: 9.6rem;
+}
+
+.gallery-note {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  /* 0.55 gave 3.7:1 on --panel; 0.7 clears 4.5:1 at this size. */
+  color: rgba(39, 20, 82, 0.7);
+}
+
+.gallery-alt,
+.gallery-offsite {
+  display: inline-block;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  padding: 0.05em 0.4em;
+  border-radius: 3px;
+  font-size: 0.7rem;
+}
+
+.gallery-alt {
+  margin-left: 0.3rem;
+}
+
+/* Placeholders keep the grid's rhythm while reading as not-yet-shipped.
+   This used to be `opacity: 0.62` on the whole figure, which multiplied into
+   every colour inside it — the caption landed at 3.4:1 and the "coming soon"
+   label at 2.3:1, and any future change to those colours would have been
+   silently scaled too. The dashed empty box already carries the meaning, so
+   the recession is a background tint that leaves text contrast alone. */
+.gallery-item-coming {
+  background: rgba(255, 255, 255, 0.1);
+  border-style: dashed;
+}
+
+.gallery-coming {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 7rem;
+  border: 1px dashed rgba(39, 20, 82, 0.5);
+  font-size: 0.78rem;
+  color: rgba(39, 20, 82, 0.7);
+}
+
+.press-kit-note,
+.license-callout {
+  margin-top: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  line-height: 1.55;
+  font-family: Atkinson-Regular, arial, sans-serif;
+}
+
+.press-kit-note p,
+.license-callout p {
+  margin-bottom: 0.5rem;
+}
+
+.press-kit-note>p:last-child,
+.license-callout>p:last-child {
+  margin-bottom: 0;
+}
+
+.guestbook-intro {
+  max-width: 60ch;
+  margin: 0 auto 1.2rem;
+  padding: clamp(0.85rem, 1.7vw, 1.2rem);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  line-height: 1.55;
+}
+
+.guestbook-frame-wrap {
+  position: relative;
+  margin: 0 auto;
+  max-width: 44rem;
+  padding: clamp(0.75rem, 1.7vw, 1.2rem);
+  border: 3px double var(--line);
+  background: var(--panel-strong);
+  box-shadow:
+    inset 0 0 1rem rgba(115, 244, 255, 0.25),
+    0 0.9rem 2.2rem var(--shadow);
+}
+
+.guestbook-frame {
+  display: block;
+  width: 100%;
+  height: min(80vh, 50rem);
+  min-height: 32rem;
+  border: 1px solid rgba(232, 246, 255, 0.55);
+  background: var(--ice);
+  color-scheme: light;
+}

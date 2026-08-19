@@ -9,6 +9,18 @@ You can see version histories of pages and blog posts here.
 That way, we don't have to rely on the lovely folks at https://archive.org/!
 
 
+## Themes
+
+The site's CSS lives in `assets/themes/` as plain, portable stylesheets —
+numbered files concatenated in filename order, no build step and nothing
+templated inside them, so another repo can link them directly.
+
+- [`themes/wirenook/`](./assets/themes/wirenook/README.md) — the site skin.
+- [`themes/wirenook-vrchat/`](./assets/themes/wirenook-vrchat/README.md) — a
+  sub-theme for the VRChat pages, scoped to a class on `<body>`.
+
+Each README says what a host page has to supply.
+
 ## Development
 
 [Hugo](https://gohugo.io/) extended v0.140.0+
