@@ -1,5 +1,6 @@
 ---
 title: "VRChat"
+linkTitle: "VRChat Package Listings"
 type: vrchat
 ---
 

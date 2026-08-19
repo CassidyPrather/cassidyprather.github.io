@@ -96,3 +96,58 @@
 .work-space-trucking p a {
   color: var(--glint);
 }
+
+/* The two VRChat entries wear the sub-theme's dress, the same way the two
+   cards above wear the pages they point at. This is the base theme rather
+   than themes/wirenook-vrchat/ on purpose: /pages/ is a wirenook page and
+   never loads the sub-theme, so the palette is restated locally here, as
+   the two cards above restate theirs. The values are the sub-theme's own —
+   themes/wirenook-vrchat/01-tokens.css is where they are explained.
+
+   The rounded box is the point of it: a .contentBubble is the one shape
+   those pages are built out of, so it is what makes a card in this list
+   read as leading to one. */
+.work-vrchat {
+  --vrc-surface: #2d363f;
+  --vrc-border: #404c58;
+  --vrc-text: #d2deea;
+  --vrc-muted: #9fb0c2;
+  --vrc-link: #3fc9de;
+  --vrc-link-hot: #8fe6f2;
+  /* Same re-pointing the two cards above do, for the same reason: the
+     page-tuned magenta falls to 1.6:1 on this surface. The teals read
+     6.2:1 and 8.6:1. */
+  --link-hover: var(--vrc-link-hot);
+  --link-active: var(--vrc-link);
+  /* The ring is drawn 2px outside the link, which is still the card's own
+     surface rather than the page behind it, so the near-black default
+     vanishes here. This is the sub-theme's ring, at 11.5:1. */
+  --focus-ring: #e7fcff;
+  border-color: var(--vrc-border);
+  border-radius: 2em;
+  background: var(--vrc-surface);
+  color: var(--vrc-text);
+  /* VRChat's stack without VRCCustom in front of it: that face carries only
+     U+E000-E0FF, none of which a card in this list has any use for, and
+     asking their CDN for it from /pages/ would be a request for nothing. */
+  font-family: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Their headings are light-weight rather than uppercase — the two cards above
+   shout because the things they lead to shout, and this one doesn't. */
+.work-vrchat h3 {
+  color: var(--vrc-link-hot);
+  font-weight: 300;
+}
+
+/* .license-entry p hands prose to Atkinson; VRChat sets its entire interface
+   in one face, so this card follows it down. Muted tier reads 5.5:1. */
+.work-vrchat p {
+  font-family: inherit;
+  color: var(--vrc-muted);
+}
+
+/* Prose stays muted and the links in it don't, as on both cards above. */
+.work-vrchat p a {
+  color: var(--vrc-text);
+}
