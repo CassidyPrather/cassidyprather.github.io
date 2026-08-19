@@ -1,0 +1,27 @@
+{{- /*
+	The stylesheet <link> for a sub-theme, given the name of its directory
+	under assets/themes/.
+
+	Called from a layout's "head" block, so it lands after the base theme and
+	can re-point it at equal specificity. Same concatenate-in-filename-order
+	rule the base theme is assembled by; baseof.html has the note on why that
+	sort is load-bearing rather than tidiness.
+
+	Loading the files is only half of wearing a sub-theme: every rule in one is
+	scoped to a class on <body>, which the caller fills in through the
+	"body-class" block. A page that links this and sets no class gets a
+	stylesheet that can reach nothing.
+
+	One target name per sub-theme, so the layouts that ask for the same one
+	share a published file rather than getting a copy each.
+
+	A name with no directory behind it emits nothing and the page renders in
+	the base theme alone, which is the right failure for a value that can
+	arrive from a page's front matter: a typo costs the skin, not the build.
+*/ -}}
+{{- $name := . -}}
+{{- with sort (resources.Match (printf "themes/%s/*.css" $name)) "Name" -}}
+	{{- with resources.Concat (printf "%s.css" $name) . | fingerprint -}}
+		<link rel="stylesheet" href="{{ .RelPermalink }}">
+	{{- end -}}
+{{- end -}}

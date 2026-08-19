@@ -5,17 +5,11 @@
 
 {{ define "body-class" }}theme-wirenook-vrchat{{ end }}
 
-{{/* Loaded from the "head" block, so it lands after the base theme and can
-     re-point it at equal specificity. Same concatenate-in-filename-order
-     rule as the base theme; baseof.html has the note on why the sort
-     matters. */}}
-{{ define "head" }}
-{{ with sort (resources.Match "themes/wirenook-vrchat/*.css") "Name" }}
-	{{ with resources.Concat "vrchat.css" . | fingerprint }}
-		<link rel="stylesheet" href="{{ .RelPermalink }}">
-	{{ end }}
-{{ end }}
-{{ end }}
+{{/* The partial has the note on where in the cascade this lands and why.
+     layouts/blog/single.html is the other caller: a post can name the same
+     sub-theme in its front matter, and both go through here so the two pages
+     share one published stylesheet. */}}
+{{ define "head" }}{{ partial "sub-theme.html" "wirenook-vrchat" }}{{ end }}
 
 {{ define "main" }}
 <main class="license-main">

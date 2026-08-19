@@ -12,6 +12,12 @@ breakpoint — and brings three things across from VRChat's interface:
 Everything else is inherited. When something here and something in wirenook
 could both do the job, wirenook does it.
 
+The panels are named one by one rather than matched by shape, so the skin
+covers exactly what it knows about: the VRChat pages' `.contentBubble`s and
+VPM listing, and — because the blog post about VRChat may as well wear it —
+wirenook's own `.post-body` and `.post-meta`. In this repo a post opts in
+through `theme` in its front matter; see `layouts/blog/single.html`.
+
 ## Using it
 
 Load the whole of wirenook first, then this, then put
@@ -27,7 +33,7 @@ that has not asked for it. Files load in filename order, same as the parent:
 | File | What it holds |
 | --- | --- |
 | `01-tokens.css` | VRChat's palette, the font stack, the `VRCCustom` face |
-| `02-theme.css` | the gutter banner, the panels, the VPM listing |
+| `02-theme.css` | the gutter banner, the panels, the VPM listing, a blog post |
 | `optional/glitch.css` | glitch text; not loaded, not concatenated |
 
 ## What the host page has to supply

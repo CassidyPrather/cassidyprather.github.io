@@ -2,6 +2,9 @@
 title: "VRChat Development Stack: August 2026"
 date: 2026-08-11T16:00:00-07:00
 highlight: true
+# The post about VRChat wears VRChat. Names a directory under
+# assets/themes/; layouts/blog/single.html is what does something with it.
+theme: "wirenook-vrchat"
 ---
 
 It's been a **crazy** year so far.

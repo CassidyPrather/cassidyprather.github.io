@@ -58,13 +58,15 @@
 		{{ end }}
 		{{/* For stylesheets only some pages need. Anything added here loads after
 		     styles.css and can therefore re-point it at equal specificity —
-		     layouts/blog/list.html is the one caller so far. */}}
+		     layouts/blog/list.html links the drift sheet through it, and the two
+		     layouts that can wear a sub-theme link that. */}}
 		{{ block "head" . }}{{ end }}
 	</head>
 
 	{{/* The hook a sub-theme hangs off: every rule in one is scoped to a class
 	     here, so it can only reach the pages whose layout fills this block in.
-	     layouts/vrchat/ is the one caller so far. */}}
+	     layouts/vrchat/ always fills it; layouts/blog/single.html fills it for
+	     a post that named a sub-theme in its front matter. */}}
 	<body class="page-body {{ block "body-class" . }}{{ end }}">
 		<div class="page-shell">
 			{{ partial "background.html" . }}

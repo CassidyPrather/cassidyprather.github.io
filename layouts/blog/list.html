@@ -64,7 +64,11 @@
 								{{/* Past the halfway point of the ramp the typeface changes
 									     hands; see the note in assets/blog-drift.css for why that
 									     one step can't be interpolated like everything else. */}}
-								<article class="blog-entry{{ if ge $d 0.5 }} is-archive{{ end }}" data-entry data-url="{{ .RelPermalink }}" {{ with $d }}style="--drift: {{ printf "%.3f" . }}"{{ end }}>
+								{{/* A post that wears a sub-theme on its own page gets a card
+									     here in the same dress, the way /pages/ dresses the entries
+									     that lead to the VRChat pages. The skin is in the base
+									     theme, not the sub-theme: this page never loads one. */}}
+								<article class="blog-entry{{ if ge $d 0.5 }} is-archive{{ end }}{{ with .Params.theme }} entry-{{ . }}{{ end }}" data-entry data-url="{{ .RelPermalink }}" {{ with $d }}style="--drift: {{ printf "%.3f" . }}"{{ end }}>
 									{{ if .Title }}
 										<h3 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
 									{{ end }}

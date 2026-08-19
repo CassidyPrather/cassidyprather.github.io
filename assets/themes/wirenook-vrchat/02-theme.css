@@ -3,7 +3,11 @@
    Three things come across from VRChat's interface: the diagonal line art
    down the left gutter, the typeface, and the rounded panels. Everything
    else is inherited from wirenook, including the sky, the clouds, the
-   page frame and every breakpoint. */
+   page frame and every breakpoint.
+
+   Most of what follows is written against the VRChat pages' own markup; the
+   last section before the VPM listing is the exception, and dresses a
+   wirenook blog post that has asked for this skin. */
 
 /* ---- the banner down the left gutter ----------------------------------
    wirenook fills this strip with a field of drifting sparkles. Here the
@@ -76,8 +80,10 @@
    both tuned for light panels, both illegible on these.
 
    One list, so a new panel is added by naming it here rather than by
-   restating the colours somewhere else and getting one of them wrong. */
-.theme-wirenook-vrchat :is(.contentBubble, .vpm-package, .vpm-listing-head, .vpm-status),
+   restating the colours somewhere else and getting one of them wrong.
+   .post-body and .post-meta are wirenook's own, not VRChat pages': see the
+   blog-post section below. */
+.theme-wirenook-vrchat :is(.contentBubble, .vpm-package, .vpm-listing-head, .vpm-status, .post-body, .post-meta),
 .theme-wirenook-vrchat .vrc-content> :is(h1, h2, h3, h4, h5, h6) {
   background: var(--wnv-surface);
   border: 1px solid var(--wnv-border);
@@ -88,7 +94,7 @@
   --focus-ring: #e7fcff;
 }
 
-.theme-wirenook-vrchat :is(.contentBubble, .vpm-package, .vpm-listing-head, .vpm-status) a,
+.theme-wirenook-vrchat :is(.contentBubble, .vpm-package, .vpm-listing-head, .vpm-status, .post-body, .post-meta) a,
 .theme-wirenook-vrchat .vrc-content> :is(h1, h2, h3, h4, h5, h6) a {
   color: var(--wnv-link);
 }
@@ -138,6 +144,49 @@
   margin: 1rem auto 0;
   border: 1px solid var(--wnv-border);
   border-radius: 0.75rem;
+}
+
+/* ---- a blog post in this dress ----------------------------------------
+   The one shape here that is not a VRChat page. A post under content/blog/
+   opts in by naming this directory in its front matter
+   (layouts/blog/single.html), and what it renders into is wirenook's own
+   post shell — so the shell is dressed rather than rebuilt. The surface and
+   the three link tokens come from the shared selectors above, which
+   .post-body and .post-meta are named in; what is left is the shape and the
+   face.
+
+   The blog feed's card for the same post is dressed separately and in the
+   base theme, because /blog/ never loads this file — .entry-wirenook-vrchat
+   in ../wirenook/07-blog.css. */
+.theme-wirenook-vrchat .post-body {
+  border-radius: 2em;
+  /* The bubbles' padding rather than the post shell's own, which is a little
+     over half of it inline: a 2em corner needs the room, and this panel is
+     the page's .contentBubble in all but name. Left-aligned, though — it
+     holds an article rather than the line or two a bubble is written for. */
+  padding: clamp(1rem, 2.4vw, 1.6rem) clamp(1.1rem, 3vw, 2.2rem);
+}
+
+/* VRChat sets its whole interface in one face, so the prose comes off
+   Atkinson to follow it — a <details> summary included, which the base theme
+   sets in Atkinson's bold cut by name and would otherwise keep. */
+.theme-wirenook-vrchat :is(.post-body, .post-body summary) {
+  font-family: var(--wnv-font);
+}
+
+/* Light-weight, as every heading here is. Only the weight: the block rhythm
+   the base theme gives prose headings is spacing between the sections of an
+   article, which is not something VRChat's interface has an opinion about. */
+.theme-wirenook-vrchat .post-body :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 300;
+}
+
+/* The date sits on the window's stripes rather than on a panel, which is why
+   the base theme gives it a flat chip in the first place. Same chip, their
+   shape — the pill the top-level headings above are set in. */
+.theme-wirenook-vrchat .post-meta {
+  padding: 0.25em 0.85em;
+  border-radius: 999px;
 }
 
 /* ---- the VPM listing --------------------------------------------------

@@ -1,3 +1,19 @@
+{{/* A post can wear one of the site's sub-themes by naming its directory
+     under assets/themes/ in `theme` — content/blog/vrc-dev-stack.md is the
+     one caller so far, and it wears the skin of the pages it is about.
+
+     Two blocks, because loading a sub-theme and scoping it are separate
+     jobs: partials/sub-theme.html links the files, and the class below is
+     what lets them reach this page at all. baseof.html has the note on the
+     block.
+
+     The feed's card for the same post is dressed separately and in the base
+     theme, because /blog/ is a wirenook page and never loads a sub-theme —
+     .entry-wirenook-vrchat in themes/wirenook/07-blog.css. */}}
+{{ define "body-class" }}{{ with .Params.theme }}theme-{{ . }}{{ end }}{{ end }}
+
+{{ define "head" }}{{ with .Params.theme }}{{ partial "sub-theme.html" . }}{{ end }}{{ end }}
+
 {{ define "main" }}
 <main class="blog-main">
 	<section class="index-window">

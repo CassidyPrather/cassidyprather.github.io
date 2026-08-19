@@ -91,6 +91,77 @@
   text-decoration: none;
 }
 
+/* A post that wears a sub-theme on its own page gets a card in the same dress
+   here, the way /pages/ dresses the entries that lead to the VRChat pages.
+   This is the sibling of .work-vrchat in 08-works.css and is here for the
+   same reason it is there: /blog/ is a wirenook page and never loads
+   themes/wirenook-vrchat/, so the palette is restated locally rather than
+   read from it. The values are the sub-theme's own —
+   themes/wirenook-vrchat/01-tokens.css is where they are explained.
+
+   Compounded with .blog-entry rather than standing on its own, because
+   blog-drift.css loads after this file and re-points these same properties on
+   every card in the feed. At drift 0 it is painting them wirenook's panel,
+   which is the right answer for a card that has asked for nothing else, and
+   the wrong one for this card. */
+.blog-entry.entry-wirenook-vrchat {
+  --vrc-surface: #2d363f;
+  --vrc-sunken: #1a2026;
+  --vrc-border: #404c58;
+  --vrc-text: #d2deea;
+  --vrc-muted: #9fb0c2;
+  --vrc-link: #3fc9de;
+  --vrc-link-hot: #8fe6f2;
+  /* Same re-pointing the three cards in 08-works.css do, for the same reason:
+     the page-tuned magenta falls to 1.6:1 on this surface and the near-black
+     focus ring to 1.5:1. The teals read 8.6:1 and 6.2:1. The ring is drawn
+     2px outside a link that sits inside the card's own padding, so what it
+     needs contrast against is this surface rather than the feed behind it:
+     11.5:1. */
+  --link-hover: var(--vrc-link-hot);
+  --link-active: var(--vrc-link);
+  --focus-ring: #e7fcff;
+  border-color: var(--vrc-border);
+  /* The rounded box is the point of it, as it is on the works cards: a
+     .contentBubble is the shape the post's own page is built out of. */
+  border-radius: 2em;
+  background: var(--vrc-surface);
+  color: var(--vrc-text);
+  /* VRChat's stack without VRCCustom in front of it, as on the works cards:
+     that face carries only U+E000-E0FF, and asking their CDN for it from a
+     feed that renders none of those glyphs would be a request for nothing. */
+  font-family: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Their headings are light-weight, and the card's own face is already set
+   above — so this is the weight and the colour, which is exactly what
+   .work-vrchat h3 does in the works list. 8.6:1. */
+.blog-entry.entry-wirenook-vrchat .entry-title {
+  color: var(--vrc-link-hot);
+  font-weight: 300;
+}
+
+/* The summary is the post's own words, so unlike the one-line blurb on a works
+   card it stays at full strength and only the face changes hands. */
+.blog-entry.entry-wirenook-vrchat .entry-body {
+  font-family: inherit;
+}
+
+/* The meta row is the muted tier, at 5.5:1, and its rule follows the text
+   down. */
+.blog-entry.entry-wirenook-vrchat .entry-meta {
+  border-top-color: rgba(210, 222, 234, 0.28);
+  color: var(--vrc-muted);
+}
+
+/* The permalink chip is a small panel of its own, and its stock fill is the
+   light theme's brightest one. Sunk instead, which is what the sub-theme
+   insets with; the muted text on it reads 7.4:1. */
+.blog-entry.entry-wirenook-vrchat .entry-permalink {
+  border-color: var(--vrc-border);
+  background: var(--vrc-sunken);
+}
+
 .blog-highlights {
   position: sticky;
   top: clamp(0.75rem, 2vw, 1.5rem);
