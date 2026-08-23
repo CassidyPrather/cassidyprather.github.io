@@ -8,23 +8,6 @@ I thought it would be funny to host the source code of my personal website.
 You can see version histories of pages and blog posts here.
 That way, we don't have to rely on the lovely folks at https://archive.org/!
 
-
-## Themes
-
-The site's CSS lives in `assets/themes/` as plain, portable stylesheets —
-numbered files concatenated in filename order, no build step and nothing
-templated inside them, so another repo can link them directly.
-
-- [`themes/wirenook/`](./assets/themes/wirenook/README.md) — the site skin.
-- [`themes/wirenook-vrchat/`](./assets/themes/wirenook-vrchat/README.md) — a
-  sub-theme for the VRChat pages, scoped to a class on `<body>`.
-- [`themes/fake-news/`](./assets/themes/fake-news/README.md) — a sub-theme
-  that prints a blog post as the front page of a broadsheet.
-- [`themes/merx/`](./assets/themes/merx/README.md) — not a sub-theme: the
-  whole skin of one page, which is not supposed to look like this site.
-
-Each README says what a host page has to supply.
-
 ## Development
 
 [Hugo](https://gohugo.io/) extended v0.140.0+
