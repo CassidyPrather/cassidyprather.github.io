@@ -29,14 +29,12 @@ But even *they* clearly struggle hard to change peoples' minds.
 I mean, I don't have any A/B data to measure how effective their communication has been,
 but it can't be *nothing*- they convinced *me!*
 
-I can guess who the target audience is, though, through the publication.
+I can guess who Donovan's target audience is, though, through the publication.
 Works in Progress is full of non-partisan political writing.
 I was very surprised to find out, in fact, that the fabled [housing theory of everything](https://worksinprogress.co/issue/the-housing-theory-of-everything/) was one of their publications!
 That's all to say, the publication appears geared towards highly educated Americans with horses in politics who intrinsically *have* to be open to changing their mind on things. The publication is full of left wing and right wing policies, so I imagine it would hurt the brain of anyone suffering a severe case of groupthink would be absolutely incapable of reading it.
 I think that's a fair and valid group of people to write for, even if it's a sliver of the overall population.
 Thanks to the [housing theory of everything](https://worksinprogress.co/issue/the-housing-theory-of-everything/) find, I have a pretty strong guess that it's picked up by pundits, at least. So this flock article will probably do some real work (and we'll see if it ends up referenced in the podcasts next news cycle).
-
-
 
 I bought a 1 year subscription to https://worksinprogress.co/.
 Maybe it's a longshot, but if we're to have any hope at all as a civilization, publications like this are essential.
