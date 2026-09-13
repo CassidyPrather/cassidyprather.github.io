@@ -26,12 +26,41 @@ blurb = "Generic brand assets."
 [logos]
 weight = 2
 title = "Square logos"
-blurb = "More to come."
+blurb = "The triangle lockup comes in four text placements; pick whichever fits the space. All four are white line art on transparent, 4096×4096 — the previews sit on black so you can see them."
 
   [[logos.items]]
   name = "link-charm.png"
   src = "images/wirenook/link-charm.png"
   note = "Favicon."
+
+  [[logos.items]]
+  name = "wirenook-tri-center"
+  src = "images/wirenook/logo/wirenook-tri-center.png"
+  href = "press-kit/logo/wirenook-tri-center.png"
+  note = "Triangle lockup, stacked inside the mark. The default."
+
+  [[logos.items]]
+  name = "wirenook-tri-left"
+  src = "images/wirenook/logo/wirenook-tri-left.png"
+  href = "press-kit/logo/wirenook-tri-left.png"
+  note = "Triangle lockup, wordmark up the left edge."
+
+  [[logos.items]]
+  name = "wirenook-tri-right"
+  src = "images/wirenook/logo/wirenook-tri-right.png"
+  href = "press-kit/logo/wirenook-tri-right.png"
+  note = "Triangle lockup, wordmark up the right edge."
+
+  [[logos.items]]
+  name = "wirenook-tri-down"
+  src = "images/wirenook/logo/wirenook-tri-down.png"
+  href = "press-kit/logo/wirenook-tri-down.png"
+  note = "Triangle lockup, wordmark along the base."
+
+  [[logos.items]]
+  name = "wirenook-tri.svg"
+  href = "press-kit/logo/wirenook-tri.svg"
+  note = "Vector source for all four lockups. Its labels are live text in Jost, Y1AlternaSans and Y1SorikomiSansSerif, so convert them to paths or install the fonts before rendering."
 
   [[logos.items]]
   name = "wirenook-logo-1"
@@ -80,12 +109,57 @@ blurb = "Rep the site!"
   src = "press-kit/customization/wirenook-d20-v2.png"
   note = "d20 pop socket, with text."
 
-  [[customization.items]]
-  name = "Desktop wallpapers"
-  coming = true
+[wallpapers]
+weight = 4
+title = "Wallpapers"
+blurb = "Click through for the full-resolution file; the thumbnails are downsized previews."
 
-  [[customization.items]]
-  name = "Phone wallpapers"
-  coming = true
+  [[wallpapers.items]]
+  name = "lightmode-3.png"
+  src = "images/wirenook/wallpaper/desktop/lightmode-3.png"
+  href = "press-kit/wallpaper/desktop/lightmode-3.png"
+  note = "Desktop, 3840×2160. Waves and the triangle mark."
+
+  [[wallpapers.items]]
+  name = "lightmode-2.png"
+  src = "images/wirenook/wallpaper/desktop/lightmode-2.png"
+  href = "press-kit/wallpaper/desktop/lightmode-2.png"
+  note = "Desktop, 3840×2160. The same field under a dot matrix."
+
+  [[wallpapers.items]]
+  name = "nightmode-1.png"
+  src = "images/wirenook/wallpaper/desktop/nightmode-1.png"
+  href = "press-kit/wallpaper/desktop/nightmode-1.png"
+  note = "Desktop, 2560×1440. Poly Bunyn in the moon."
+
+  [[wallpapers.items]]
+  name = "phone/business.png"
+  src = "images/wirenook/wallpaper/phone/business.png"
+  href = "press-kit/wallpaper/phone/business.png"
+  note = "Phone, 1080×2424."
+
+  [[wallpapers.items]]
+  name = "phone/dark-somber.png"
+  src = "images/wirenook/wallpaper/phone/dark-somber.png"
+  href = "press-kit/wallpaper/phone/dark-somber.png"
+  note = "Phone, 1080×2424. Carries a QR code to the site."
+
+  [[wallpapers.items]]
+  name = "phone/lightmode-1.png"
+  src = "images/wirenook/wallpaper/phone/lightmode-1.png"
+  href = "press-kit/wallpaper/phone/lightmode-1.png"
+  note = "Phone, 1080×2424. Calling-card footer: wordmark and a QR code on white."
+
+  [[wallpapers.items]]
+  name = "phone/lightmode-2.png"
+  src = "images/wirenook/wallpaper/phone/lightmode-2.png"
+  href = "press-kit/wallpaper/phone/lightmode-2.png"
+  note = "As above, dot matrix over the waves."
+
+  [[wallpapers.items]]
+  name = "phone/lightmode-3.png"
+  src = "images/wirenook/wallpaper/phone/lightmode-3.png"
+  href = "press-kit/wallpaper/phone/lightmode-3.png"
+  note = "As above, waves only."
 
 # coming = true for "coming soon" stuff

@@ -24,6 +24,12 @@ page reads it.
   same-stem source file exists, the committed file *is* the source. Since
   `static/` is published verbatim, the live site serves its own sources.
   (That said, if it's too big it's too big and gets relegated to just git lfs)
+- **Press-kit previews are not the asset**: `wirenook/logo/wirenook-tri-*.png`
+  and everything under `wirenook/wallpaper/` are downsized stand-ins that exist
+  so the gallery on [/style/](https://wirenook.net/style/) has something light
+  to show. The file people actually download is the master in `design/`, which
+  `hugo.toml` mounts to `/press-kit/` and `data/press_kit.toml` points the card's
+  link at. Change one and change the other.
 
 ## Metadata
 

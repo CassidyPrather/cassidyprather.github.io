@@ -164,3 +164,62 @@ enableGitInfo = true
   [[module.mounts]]
     source = "design/wirenook/phone/socket/wirenook_d20_v2_resize_notext-FINAL.png"
     target = "static/press-kit/customization/wirenook-d20-v2-notext.png"
+
+  # The triangle lockups: 4096² transparent line art, one SVG holding all four.
+  # static/images/wirenook/logo/ carries the small previews the gallery shows;
+  # these mounts are what the download links hand over.
+  [[module.mounts]]
+    source = "design/wirenook/logo/wirenook-tri.svg"
+    target = "static/press-kit/logo/wirenook-tri.svg"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/wirenook-tri-center.png"
+    target = "static/press-kit/logo/wirenook-tri-center.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/wirenook-tri-left.png"
+    target = "static/press-kit/logo/wirenook-tri-left.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/wirenook-tri-right.png"
+    target = "static/press-kit/logo/wirenook-tri-right.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/logo/wirenook-tri-down.png"
+    target = "static/press-kit/logo/wirenook-tri-down.png"
+
+  # Wallpapers, at the resolution they were rendered at. Same split as the
+  # logos above: the gallery previews live under static/images/wirenook/, and
+  # only the masters people actually download come through here. The Inkscape
+  # canvases behind them run to 84 MB each and stay unpublished in design/.
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/lightmode-2.png"
+    target = "static/press-kit/wallpaper/desktop/lightmode-2.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/lightmode-3.png"
+    target = "static/press-kit/wallpaper/desktop/lightmode-3.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/nightmode-1.png"
+    target = "static/press-kit/wallpaper/desktop/nightmode-1.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/lightmode-phone-1.png"
+    target = "static/press-kit/wallpaper/phone/lightmode-1.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/lightmode-phone-2.png"
+    target = "static/press-kit/wallpaper/phone/lightmode-2.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/lightmode-phone-3.png"
+    target = "static/press-kit/wallpaper/phone/lightmode-3.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/business-phone.png"
+    target = "static/press-kit/wallpaper/phone/business.png"
+
+  [[module.mounts]]
+    source = "design/wirenook/wallpaper/dark-phone-somber.png"
+    target = "static/press-kit/wallpaper/phone/dark-somber.png"
