@@ -205,14 +205,6 @@ enableGitInfo = true
     target = "static/press-kit/wallpaper/desktop/nightmode-1.png"
 
   [[module.mounts]]
-    source = "design/wirenook/wallpaper/lightmode-phone-1.png"
-    target = "static/press-kit/wallpaper/phone/lightmode-1.png"
-
-  [[module.mounts]]
-    source = "design/wirenook/wallpaper/lightmode-phone-2.png"
-    target = "static/press-kit/wallpaper/phone/lightmode-2.png"
-
-  [[module.mounts]]
     source = "design/wirenook/wallpaper/lightmode-phone-3.png"
     target = "static/press-kit/wallpaper/phone/lightmode-3.png"
 
