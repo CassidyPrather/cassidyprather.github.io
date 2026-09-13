@@ -9,7 +9,7 @@ page reads it.
 
 | Directory         | Contents                                                                                                      | License                               |
 | ----------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| `wirenook/`       | Original wirenook.net art and its source files                                                                | CC0 1.0 (AGPLv3 transfer in progress) |
+| `wirenook/`       | Original wirenook.net art and its source files                                                                | AGPLv3                                |
 | `lancer/`         | Утопия assets derived from COMP/CON                                                                           | GPL-3.0                               |
 | `no-relicensing/` | Other people's assets and VRChat screenshots, byte-identical to upstream (incl. `archive/` for flagged files) | Upstream terms (see its README)       |
 | `OPL/`            | Open Pixel License media, authored by Ron Kyle Almira                                                         | OPL v1.1                              |

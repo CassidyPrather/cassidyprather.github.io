@@ -62,12 +62,19 @@ OXIPNG_LEVEL = 6
 
 # Directory -> XMP tags every stampable file in it must carry. "no-relicensing"
 # is deliberately absent: those files stay byte-identical to upstream.
-# The wirenook license still needs updating once the IP transfer concludes.
+#
+# The wirenook tier used to stamp CC0 with Ron Kyle Almira as creator, pending
+# an IP transfer. That transfer is done: the commissions are works made for
+# hire, so Cassidy Prather is the author and owner from the moment of creation
+# and the tier carries the site's own licence. Ron drew a good deal of this
+# artwork and the agreements waive attribution, but the credit is worth keeping
+# where a waiver cannot erase it, so the licences page names the artist even
+# though the file metadata no longer has to.
 POLICIES: dict[str, dict[str, str]] = {
     "wirenook": {
-        "XMP-dc:Creator": "Ron Kyle Almira",
-        "XMP-dc:Rights": "CC0 1.0 - no rights reserved",
-        "XMP-cc:License": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "XMP-dc:Creator": "Cassidy Prather",
+        "XMP-dc:Rights": "GNU Affero General Public License v3.0",
+        "XMP-cc:License": "https://www.gnu.org/licenses/agpl-3.0.html",
     },
     "lancer": {
         "XMP-dc:Source": "https://github.com/massif-press/compcon",
