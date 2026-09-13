@@ -148,18 +148,18 @@ blurb = "Click through for the full-resolution file; the thumbnails are downsize
   name = "phone/lightmode-1.png"
   src = "images/wirenook/wallpaper/phone/lightmode-1.png"
   href = "press-kit/wallpaper/phone/lightmode-1.png"
-  note = "Phone, 1080×2424. Calling-card footer: wordmark and a QR code on white."
+  note = "Phone, 1080×2424. Dot matrix over the waves. Calling-card footer: the wordmark and a QR code to the site, on white."
 
   [[wallpapers.items]]
   name = "phone/lightmode-2.png"
   src = "images/wirenook/wallpaper/phone/lightmode-2.png"
   href = "press-kit/wallpaper/phone/lightmode-2.png"
-  note = "As above, dot matrix over the waves."
+  note = "The same art as lightmode-1, with the wordmark in orange."
 
   [[wallpapers.items]]
   name = "phone/lightmode-3.png"
   src = "images/wirenook/wallpaper/phone/lightmode-3.png"
   href = "press-kit/wallpaper/phone/lightmode-3.png"
-  note = "As above, waves only."
+  note = "As lightmode-1, waves only, no dot matrix."
 
 # coming = true for "coming soon" stuff
