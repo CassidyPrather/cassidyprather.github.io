@@ -1,0 +1,36 @@
+{{/* A Gaussian-splat viewer in the site's window frame. The splats and the two
+     libraries that draw them (three.js, gaussian-splats-3d) are served from
+     static/apartment/ rather than a CDN; the licenses page credits both. The
+     viewer script reads the scene list from data-scenes on its container. */}}
+
+{{ define "head" }}
+<style>
+	.splat-frame { position: relative; width: 100%; height: min(75vh, 720px); background: #0e1014; overflow: hidden; }
+	.splat-frame canvas { display: block; }
+	.splat-status { margin: 0.6em 0 0; font-size: 0.9em; opacity: 0.8; }
+</style>
+<script type="importmap">
+{ "imports": {
+	"three": "{{ "apartment/vendor/three.module.js" | relURL }}",
+	"@mkkellogg/gaussian-splats-3d": "{{ "apartment/vendor/gaussian-splats-3d.module.js" | relURL }}"
+} }
+</script>
+{{ end }}
+
+{{ define "main" }}
+<main class="license-main">
+	<section class="index-window">
+		<div class="window-topline">
+			<h2>{{ .Title }}</h2>
+			<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
+				</div>
+
+				<div class="post-body">{{ .Content }}</div>
+				<div class="splat-frame" id="splat-view"
+					data-base="{{ "apartment/" | relURL }}"
+					data-scenes="{{ delimit .Params.scenes "," }}"></div>
+				<p class="splat-status" id="splat-status">Loading…</p>
+			</section>
+		</main>
+<script type="module" src="{{ "apartment/viewer.js" | relURL }}"></script>
+{{ end }}

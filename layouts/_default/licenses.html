@@ -94,6 +94,21 @@
 						</p>
 					</article>
 
+					{{/* The apartment page's splat viewer runs on two MIT libraries,
+           served from static/apartment/vendor/ next to their licence files. */}}
+					<article class="license-entry">
+						<h3>Apartment viewer — three.js and gaussian-splats-3d</h3>
+						<p class="license-files">
+							<code>static/apartment/vendor/</code>
+						</p>
+						<p>
+							The <a href="{{ "apartment/" | relURL }}">apartment</a> scan is drawn with
+							<a href="https://threejs.org/">three.js</a> (r170, © three.js authors) and
+							<a href="https://github.com/mkkellogg/GaussianSplats3D">gaussian-splats-3d</a>
+							(0.4.7, © Mark Kellogg), both under the MIT license.
+						</p>
+					</article>
+
 					{{/* Image licensing is per-directory; data/image_licenses.toml is the
            single source of truth, shared with the style-page gallery. */}}
 					{{ $sections := slice }}
