@@ -17,9 +17,23 @@ const viewer = new GS.Viewer({
   sphericalHarmonicsDegree: 0,
 });
 
+// GitHub Pages gzips .splat files, so Content-Length is the compressed size and the
+// library's streaming loader chokes on the longer decompressed body. Fetch them here
+// (the browser decompresses) and hand the library blob: URLs with exact sizes.
+async function fetchAll() {
+  let done = 0;
+  return Promise.all(scenes.map(async (s) => {
+    const res = await fetch(`${base}${s}.splat`);
+    if (!res.ok) throw new Error(`${s}.splat: ${res.status}`);
+    const url = URL.createObjectURL(await res.blob());
+    status.textContent = `Loading rooms… ${++done} of ${scenes.length}`;
+    return url;
+  }));
+}
+
 const t0 = performance.now();
-viewer
-  .addSplatScenes(scenes.map((s) => ({ path: `${base}${s}.splat`, format: GS.SceneFormat.Splat })), true)
+fetchAll()
+  .then((urls) => viewer.addSplatScenes(urls.map((path) => ({ path, format: GS.SceneFormat.Splat })), true))
   .then(() => {
     viewer.start();
     status.textContent = 'Drag to orbit, right-drag to pan, scroll to zoom.';
