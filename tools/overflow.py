@@ -660,6 +660,12 @@ def _measure_shard(
                 lambda route: route.continue_(),
             )
             context.route(f"{base}/**", lambda route: route.continue_())
+            # Splat scenes are ~16MB each, and once they load the viewer
+            # renders them in software GL every frame, which starves the main
+            # thread the sweep runs on: /apartment alone took ~45 minutes. The
+            # frame's size comes from CSS and the canvas is created before any
+            # scene loads, so both are still measured without them.
+            context.route("**/*.splat", lambda route: route.abort())
             page = context.new_page()
             if font_px is not None:
                 # The CDP knob is the browser's font-settings preference --
