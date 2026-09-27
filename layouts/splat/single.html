@@ -6,7 +6,13 @@
 {{ define "head" }}
 <style>
 	.splat-frame { position: relative; width: 100%; height: min(75vh, 720px); background: #0e1014; overflow: hidden; }
-	.splat-frame canvas { display: block; }
+	/* three.js pins the canvas to a px size, and the library only corrects it
+	   from a ResizeObserver, a frame after layout. Sizing the box from CSS keeps
+	   it inside the frame on that frame too; the drawing buffer catches up. */
+	.splat-frame canvas { display: block; width: 100% !important; height: 100% !important; }
+	/* The library's loading toast has min-width: 250px, wider than the frame on
+	   the narrowest screens. */
+	.splat-frame [class^="spinnerContainerMin"] { min-width: 0; max-width: calc(100% - 16px); box-sizing: border-box; }
 	.splat-status { margin: 0.6em 0 0; font-size: 0.9em; opacity: 0.8; }
 </style>
 <script type="importmap">
