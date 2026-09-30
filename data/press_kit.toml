@@ -1,153 +1,179 @@
-[branding]
-weight = 1
-title = "Branding"
-blurb = "Generic brand assets."
+# Everything /style/ shows, read by layouts/_default/style.html. Section order
+# and presentation live in the layout; this file is the inventory.
+#
+# src   preview the page shows (under images/ it goes through Hugo's image
+#       pipeline and gets width/height; anything else is linked verbatim)
+# href  the file a click downloads, when it isn't the preview itself
+# alt   alt text; also the only caption a card carries
 
-  [[branding.items]]
-  name = "wirenook-banner-v2.png"
-  src = "images/OPL/wirenook-banner-v2.png"
-  note = "The banner at the top of every page."
+# The triangle lockup. `main` is the hero; the lockups swap into it. Previews
+# are white on black grayscale, so the page screens them onto its stage; the
+# downloads are 4096² white line art on transparent.
+[logo]
+svg = "press-kit/logo/wirenook-tri.svg"
+# The SVG's labels are live text in these faces.
+svg_fonts = "Jost · Y1AlternaSans · Y1SorikomiSansSerif"
+charm = { src = "images/wirenook/link-charm.png", alt = "Rabbit-head favicon" }
 
-  [[branding.items]]
-  name = "poly-bunyn-dithered.png"
-  src = "images/wirenook/poly-bunyn-dithered.png"
-  note = "Poly Bunyn, dithered. The front-page feature art."
-
-  [[branding.items]]
-  name = "wirenook-88x31.gif"
-  src = "images/wirenook/wirenook-88x31.gif"
-  note = "88×31 button, for link rows and webrings."
-
-  [[branding.items]]
-  name = "wirenook-200x59.png"
-  src = "images/wirenook/wirenook-200x59.png"
-  note = "200×59 button, as listed in the UDURGH webring."
-
-[logos]
-weight = 2
-title = "Square logos"
-blurb = "The triangle lockup comes in four text placements; pick whichever fits the space. All four are white line art on transparent, 4096×4096 — the previews sit on black so you can see them."
-
-  [[logos.items]]
-  name = "link-charm.png"
-  src = "images/wirenook/link-charm.png"
-  note = "Favicon."
-
-  [[logos.items]]
-  name = "wirenook-tri-center"
+  [[logo.lockups]]
   src = "images/wirenook/logo/wirenook-tri-center.png"
   href = "press-kit/logo/wirenook-tri-center.png"
-  note = "Triangle lockup, stacked inside the mark. The default."
+  alt = "Triangle mark: rabbit, WIRE NOOK stacked inside"
 
-  [[logos.items]]
-  name = "wirenook-tri-left"
+  [[logo.lockups]]
   src = "images/wirenook/logo/wirenook-tri-left.png"
   href = "press-kit/logo/wirenook-tri-left.png"
-  note = "Triangle lockup, wordmark up the left edge."
+  alt = "Triangle mark: WIRENOOK up the left edge"
 
-  [[logos.items]]
-  name = "wirenook-tri-right"
+  [[logo.lockups]]
   src = "images/wirenook/logo/wirenook-tri-right.png"
   href = "press-kit/logo/wirenook-tri-right.png"
-  note = "Triangle lockup, wordmark up the right edge."
+  alt = "Triangle mark: WIRENOOK up the right edge"
 
-  [[logos.items]]
-  name = "wirenook-tri-down"
+  [[logo.lockups]]
   src = "images/wirenook/logo/wirenook-tri-down.png"
   href = "press-kit/logo/wirenook-tri-down.png"
-  note = "Triangle lockup, wordmark along the base."
+  alt = "Triangle mark: WIRENOOK along the base"
 
-  [[logos.items]]
-  name = "wirenook-tri.svg"
-  href = "press-kit/logo/wirenook-tri.svg"
-  note = "Vector source for all four lockups. Its labels are live text in Jost, Y1AlternaSans and Y1SorikomiSansSerif, so convert them to paths or install the fonts before rendering."
+# Older marks. Shown small, behind a disclosure, never beside the lockups.
+[[alt_logos]]
+src = "press-kit/logo/wirenook-logo-1.svg"
+png = "press-kit/logo/wirenook-logo-1.png"
+alt = "Target rings, >WIRENOOK.NET banner, rabbit"
 
-  [[logos.items]]
-  name = "wirenook-logo-1"
-  src = "press-kit/logo/wirenook-logo-1.svg"
-  alt = "press-kit/logo/wirenook-logo-1.png"
-  alt_label = "PNG"
-  note = "Alternate."
+[[alt_logos]]
+src = "press-kit/logo/wirenook-logo-2.svg"
+png = "press-kit/logo/wirenook-logo-2.png"
+alt = "Rabbit in a moon ring, blackletter Wirenook.Net"
 
-  [[logos.items]]
-  name = "wirenook-logo-2"
-  src = "press-kit/logo/wirenook-logo-2.svg"
-  alt = "press-kit/logo/wirenook-logo-2.png"
-  alt_label = "PNG"
-  note = "Alternate."
+[[alt_logos]]
+src = "press-kit/logo/wirenook-logo-co-4.svg"
+png = "press-kit/logo/wirenook-logo-co-4.png"
+alt = "Target rings, >CASSIDY CO banner, rabbit"
 
-  [[logos.items]]
-  name = "wirenook-logo-co-4"
-  src = "press-kit/logo/wirenook-logo-co-4.svg"
-  alt = "press-kit/logo/wirenook-logo-co-4.png"
-  alt_label = "PNG"
-  note = "Alternate."
+# Colour. The site's own tokens are read straight out of
+# assets/themes/wirenook/01-tokens.css by the layout, so they can't drift;
+# these are the rest, sampled from the art.
+[[palette]]
+colors = ["#b0aed5", "#898db8", "#a88bbc", "#7179a5", "#d7dae6"]
+alt = "Lightmode wallpapers"
 
-[customization]
-weight = 3
-title = "Customization"
-blurb = "Rep the site!"
+[[palette]]
+colors = ["#0b0c25", "#13153f", "#15086a", "#645e77", "#242949"]
+alt = "Nightmode and dark wallpapers"
 
-  [[customization.items]]
-  name = "wirenook-phone.png"
-  src = "press-kit/customization/wirenook-phone.png"
-  note = "Phone case design. Raster export. I got mine from [The Phone Case Place](https://thephonecaseplace.com/) and they printed it well."
+[[palette]]
+colors = ["#f3ecd5", "#3288be", "#50afc8", "#5f37be", "#95fae6", "#6a3996"]
+alt = "Business wallpaper and d20 socket"
 
-  [[customization.items]]
-  name = "wirenook-phone-resized.svg"
-  href = "https://github.com/CassidyPrather/cassidyprather.github.io/raw/main/design/wirenook/phone/Wirenook_phone_resized.svg"
-  external = true
-  note = "Inkscape SVG source (link only)."
+[[palette]]
+colors = ["#ff6600", "#0693fa", "#1a1a1a", "#f7f7f7", "#c0c0c0"]
+alt = "WNN wallpapers"
 
-  [[customization.items]]
-  name = "wirenook-d20-v2-notext.png"
-  src = "press-kit/customization/wirenook-d20-v2-notext.png"
-  note = "d20 pop socket, no text. Sized for a 1.5in socket."
+# Faces. `sample` is set in the face itself.
+[[type]]
+family = "Unique"
+file = "fonts/Unique.ttf"
+sample = "wirenook"
 
-  [[customization.items]]
-  name = "wirenook-d20-v2.png"
-  src = "press-kit/customization/wirenook-d20-v2.png"
-  note = "d20 pop socket, with text."
+[[type]]
+family = "Atkinson-Regular"
+name = "Atkinson Hyperlegible"
+file = "fonts/AtkinsonHyperlegible-Regular.ttf"
+sample = "Aa Bb Cc 0123"
+  [[type.cuts]]
+  family = "Atkinson-Italic"
+  file = "fonts/AtkinsonHyperlegible-Italic.ttf"
+  [[type.cuts]]
+  family = "Atkinson-Bold"
+  file = "fonts/AtkinsonHyperlegible-Bold.ttf"
+  [[type.cuts]]
+  family = "Atkinson-BoldItalic"
+  file = "fonts/AtkinsonHyperlegible-BoldItalic.ttf"
 
-[wallpapers]
-weight = 4
-title = "Wallpapers"
-blurb = "Click through for the full-resolution file; the thumbnails are downsized previews."
+# Marks and buttons. `embed` gets a copyable <a><img></a> snippet.
+[[marks]]
+src = "images/OPL/wirenook-banner-v2.png"
+alt = "WIRENOOK.net banner: globe, orbit ring, checkered rabbit"
+wide = true
 
-  [[wallpapers.items]]
-  name = "lightmode-3.png"
-  src = "images/wirenook/wallpaper/desktop/lightmode-3.png"
-  href = "press-kit/wallpaper/desktop/lightmode-3.png"
-  note = "Desktop, 3840×2160. Waves and the triangle mark."
+[[marks]]
+src = "images/wirenook/wirenook-88x31.gif"
+alt = "wirenook.net"
+embed = true
+pixel = true
 
-  [[wallpapers.items]]
-  name = "lightmode-2.png"
-  src = "images/wirenook/wallpaper/desktop/lightmode-2.png"
-  href = "press-kit/wallpaper/desktop/lightmode-2.png"
-  note = "Desktop, 3840×2160. The same field under a dot matrix."
+[[marks]]
+src = "images/wirenook/poly-bunyn-dithered.png"
+alt = "Poly Bunyn: low-poly rabbit, dithered"
 
-  [[wallpapers.items]]
-  name = "nightmode-1.png"
-  src = "images/wirenook/wallpaper/desktop/nightmode-1.png"
-  href = "press-kit/wallpaper/desktop/nightmode-1.png"
-  note = "Desktop, 2560×1440. Poly Bunyn in the moon."
+# Things to print.
+[[wear]]
+src = "press-kit/customization/wirenook-phone.png"
+alt = "Phone case: grid, WIRENOOK.net bar, icons"
+source = "https://github.com/CassidyPrather/cassidyprather.github.io/raw/main/design/wirenook/phone/Wirenook_phone_resized.svg"
 
-  [[wallpapers.items]]
-  name = "phone/business.png"
-  src = "images/wirenook/wallpaper/phone/business.png"
-  href = "press-kit/wallpaper/phone/business.png"
-  note = "Phone, 1080×2424."
+[[wear]]
+src = "press-kit/customization/wirenook-d20-v2-notext.png"
+alt = "d20 pop socket, no text, 1.5 in"
+round = true
 
-  [[wallpapers.items]]
-  name = "phone/dark-somber.png"
-  src = "images/wirenook/wallpaper/phone/dark-somber.png"
-  href = "press-kit/wallpaper/phone/dark-somber.png"
-  note = "Phone, 1080×2424. Carries a QR code to the site."
+[[wear]]
+src = "press-kit/customization/wirenook-d20-v2.png"
+alt = "d20 pop socket, WIRENOOK.net"
+round = true
 
-  [[wallpapers.items]]
-  name = "phone/lightmode-3.png"
-  src = "images/wirenook/wallpaper/phone/lightmode-3.png"
-  href = "press-kit/wallpaper/phone/lightmode-3.png"
-  note = "Phone, 1080×2424. Calling-card footer: the WIRENOOK mark and a QR code to the site."
+# Wallpapers. `size` is the download's resolution.
+[[walls]]
+kind = "desktop"
+src = "images/wirenook/wallpaper/desktop/lightmode-3.png"
+href = "press-kit/wallpaper/desktop/lightmode-3.png"
+size = "3840×2160"
+alt = "Lilac waves, diamond checker, triangle mark"
 
-# coming = true for "coming soon" stuff
+[[walls]]
+kind = "desktop"
+src = "images/wirenook/wallpaper/desktop/lightmode-2.png"
+href = "press-kit/wallpaper/desktop/lightmode-2.png"
+size = "3840×2160"
+alt = "Lilac waves under a dot matrix, triangle mark"
+
+[[walls]]
+kind = "desktop"
+src = "images/wirenook/wallpaper/desktop/nightmode-1.png"
+href = "press-kit/wallpaper/desktop/nightmode-1.png"
+size = "2560×1440"
+alt = "Night sky, Poly Bunyn in the moon"
+
+[[walls]]
+kind = "phone"
+src = "images/wirenook/wallpaper/phone/wnn-ascii.png"
+size = "1080×2388"
+alt = "WNN in three rings over dripping ASCII, orange bars, WIRENOOK"
+
+[[walls]]
+kind = "phone"
+src = "images/wirenook/wallpaper/phone/wnn-stripes.png"
+size = "1080×2388"
+alt = "Glowing WNN rings over black stripes fading to black, orange bars"
+
+[[walls]]
+kind = "phone"
+src = "images/wirenook/wallpaper/phone/lightmode-3.png"
+href = "press-kit/wallpaper/phone/lightmode-3.png"
+size = "1080×2424"
+alt = "Lilac waves, triangle mark, WIRENOOK and QR footer"
+
+[[walls]]
+kind = "phone"
+src = "images/wirenook/wallpaper/phone/business.png"
+href = "press-kit/wallpaper/phone/business.png"
+size = "1080×2424"
+alt = "Cream to cyan ripples, Wirenook.net, square circle triangle"
+
+[[walls]]
+kind = "phone"
+src = "images/wirenook/wallpaper/phone/dark-somber.png"
+href = "press-kit/wallpaper/phone/dark-somber.png"
+size = "1080×2424"
+alt = "Dark diagonal bands, triangle mark and QR, moon rabbit"

@@ -13,7 +13,7 @@ cascade.
 | `03-backdrop.css` | `.page-shell` and the fixed decorative layers behind it |
 | `04-shell.css` | banner, layout grid, link rail, the index-window frame |
 | `05-widgets.css` | panels, socials, badges, webring, death clock, footer |
-| `06-pages.css` | licenses/archive lists, galleries, press-kit notes, guestbook |
+| `06-pages.css` | licenses/archive lists, guestbook |
 | `07-blog.css` | blog feed, post bodies, Markdown prose, code blocks |
 | `08-works.css` | per-work card skins (Amoeba, Space Trucking) |
 | `09-responsive.css` | the breakpoints and `prefers-reduced-motion` |
