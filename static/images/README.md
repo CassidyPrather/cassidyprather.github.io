@@ -29,9 +29,9 @@ page reads it.
   so the gallery on [/style/](https://wirenook.net/style/) has something light
   to show. The file people actually download is the master in `design/`, which
   `hugo.toml` mounts to `/press-kit/` and `data/press_kit.toml` points the card's
-  link at. Change one and change the other. The two `wnn-*.webp` phone
-  wallpapers are the exception for now: they have no master in `design/` yet,
-  so the file in `static/` is both the preview and the download.
+  link at. Change one and change the other. The two `wnn-*` phone wallpapers
+  are the exception: the file here is the full-size master, and the gallery
+  resizes it through Hugo's image pipeline instead.
 
 ## Metadata
 

@@ -147,14 +147,14 @@ alt = "Night sky, Poly Bunyn in the moon"
 
 [[walls]]
 kind = "phone"
-src = "images/wirenook/wallpaper/phone/wnn-ascii.webp"
-size = "905×2000"
+src = "images/wirenook/wallpaper/phone/wnn-ascii.png"
+size = "1080×2388"
 alt = "WNN in three rings over dripping ASCII, orange bars, WIRENOOK"
 
 [[walls]]
 kind = "phone"
-src = "images/wirenook/wallpaper/phone/wnn-stripes.webp"
-size = "905×2000"
+src = "images/wirenook/wallpaper/phone/wnn-stripes.png"
+size = "1080×2388"
 alt = "Glowing WNN rings over black stripes fading to black, orange bars"
 
 [[walls]]
