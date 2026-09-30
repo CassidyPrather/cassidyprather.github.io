@@ -1,0 +1,773 @@
+/* /style/ only. Loads after the theme (layouts/_default/style.html's "head"
+   block), so it leans on the theme's tokens and can re-point its rules. */
+
+.kit-main {
+  max-width: 72rem;
+  margin: 0 auto;
+  counter-reset: kit;
+}
+
+/* The chips below set display, which would otherwise beat [hidden]. */
+.kit [hidden] {
+  display: none !important;
+}
+
+.kit .window-topline {
+  justify-content: flex-start;
+}
+
+.kit .window-topline>.status-light {
+  margin-left: auto;
+}
+
+.kit-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.kit-jump a,
+.kit-file {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  text-decoration: none;
+  cursor: pointer;
+  /* A chip's label is a file name or a font list, and either can be one long
+     token on a phone. */
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.kit-jump a:hover,
+.kit-file:hover {
+  background: var(--ink);
+  color: var(--panel-strong);
+}
+
+.kit-file small {
+  font-size: 0.72rem;
+  opacity: 0.8;
+}
+
+.kit button:focus-visible,
+.kit select:focus-visible,
+.kit input:focus-visible,
+.kit summary:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Each block is numbered in the corner instead of titled. */
+.kit-block {
+  position: relative;
+  counter-increment: kit;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1.4rem, 2.5vw, 1.8rem) clamp(0.8rem, 2vw, 1.4rem) clamp(0.8rem, 2vw, 1.4rem);
+  scroll-margin-top: 1rem;
+}
+
+.kit-block::before {
+  content: counter(kit, decimal-leading-zero);
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.1rem 0.45rem;
+  background: var(--ink);
+  color: var(--panel-strong);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+/* ---- brief ------------------------------------------------------------- */
+
+.kit-brief {
+  margin: 0;
+  padding: 0.8rem 1rem 0.7rem;
+  border-left: 0.5rem solid #ff6600;
+  background: var(--panel-strong);
+  font-family: Atkinson-Regular, arial, sans-serif;
+  line-height: 1.5;
+}
+
+.kit-brief blockquote {
+  margin: 0;
+}
+
+.kit-brief ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.kit-brief figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+/* ---- logo -------------------------------------------------------------- */
+
+.kit-logo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(0.8rem, 2vw, 1.4rem);
+  align-items: start;
+}
+
+.kit-stage {
+  isolation: isolate;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 8%;
+  border: 5px double var(--line);
+  transition: background-color 0.25s;
+}
+
+.kit-stage[data-stage="night"] {
+  background:
+    radial-gradient(circle, rgba(185, 168, 255, 0.35) 1px, transparent 1.5px) 0 0 / 14px 14px,
+    radial-gradient(circle at 50% 40%, #13153f, #0b0c25 70%);
+}
+
+.kit-stage[data-stage="sky"] {
+  background:
+    repeating-linear-gradient(172deg, rgba(84, 80, 188, 0.2) 0 7px, rgba(111, 244, 255, 0.24) 8px 13px),
+    linear-gradient(160deg, var(--sky), var(--lavender));
+}
+
+.kit-stage[data-stage="orange"] {
+  background: #ff6600;
+}
+
+.kit-stage[data-stage="paper"] {
+  background: #f7f7f7;
+}
+
+/* The previews are white line art on black with no alpha. Screen drops the
+   black onto whatever the stage is; on paper, invert and multiply drop the
+   (now) white instead. */
+.kit-hero {
+  width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+}
+
+.kit-stage[data-stage="paper"] .kit-hero {
+  filter: invert(1);
+  mix-blend-mode: multiply;
+}
+
+.kit-logo-side {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.kit-lockups {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.kit-lockup {
+  display: block;
+  border: 2px solid transparent;
+  background: #000;
+}
+
+.kit-lockup img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.kit-lockup[aria-current="true"] {
+  border-color: var(--magenta);
+}
+
+.kit-lockup:hover {
+  border-color: var(--ink);
+}
+
+.kit-stages {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.kit-dot {
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.kit-dot[aria-pressed="true"] {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--ink);
+}
+
+.kit-dot-night { background: #0b0c25; }
+.kit-dot-sky { background: linear-gradient(160deg, var(--sky), var(--lavender)); }
+.kit-dot-orange { background: #ff6600; }
+.kit-dot-paper { background: #f7f7f7; }
+
+.kit-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.kit-charm {
+  justify-self: start;
+}
+
+.kit-charm img {
+  display: block;
+  width: 3rem;
+  height: auto;
+}
+
+.kit-alts {
+  grid-column: 1 / -1;
+  font-size: 0.85rem;
+}
+
+.kit-alts summary {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0.15rem 0.5rem;
+  border: 1px dashed rgba(39, 20, 82, 0.5);
+  color: rgba(39, 20, 82, 0.8);
+}
+
+.kit-alts ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kit-alts li {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+}
+
+.kit-alts img {
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  background: #000;
+  filter: grayscale(1);
+  opacity: 0.85;
+}
+
+.kit-alts a:hover img {
+  filter: none;
+  opacity: 1;
+}
+
+/* ---- colour ------------------------------------------------------------ */
+
+.kit-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.kit-swatches+.kit-swatches {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed rgba(39, 20, 82, 0.25);
+}
+
+.kit-swatch {
+  display: grid;
+  gap: 0.2rem;
+  width: 6.2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: copy;
+}
+
+.kit-chip {
+  display: block;
+  height: 3.6rem;
+  background: var(--c);
+  border: 1px solid rgba(39, 20, 82, 0.2);
+  transition: transform 0.15s;
+}
+
+.kit-swatch:hover .kit-chip {
+  transform: translateY(-3px);
+}
+
+.kit-swatch code,
+.kit-swatch small {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.74rem;
+  overflow-wrap: anywhere;
+}
+
+.kit-swatch small {
+  color: rgba(39, 20, 82, 0.72);
+  font-size: 0.68rem;
+}
+
+.kit-copy-root {
+  align-self: center;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* ---- type -------------------------------------------------------------- */
+
+.kit-type {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: 1rem;
+}
+
+.kit-face {
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+  min-width: 0;
+}
+
+.kit-face-big {
+  margin: 0;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.kit-face-set {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.kit-face figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.kit-license {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+/* ---- marks, merch ------------------------------------------------------ */
+
+.kit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
+  gap: 0.75rem;
+}
+
+.kit-card {
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+  justify-items: center;
+  align-content: center;
+  min-width: 0;
+  padding: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background:
+    repeating-conic-gradient(rgba(255, 255, 255, 0.55) 0% 25%, rgba(215, 251, 255, 0.35) 0% 50%) 0 0 / 1rem 1rem;
+}
+
+.kit-card-wide {
+  grid-column: 1 / -1;
+}
+
+.kit-art {
+  display: block;
+  max-width: 100%;
+}
+
+.kit-art img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  max-height: 10rem;
+  object-fit: contain;
+  transition: transform 0.2s;
+}
+
+.kit-card-wide .kit-art img {
+  max-height: 12rem;
+}
+
+.kit-card-round .kit-art img {
+  border-radius: 50%;
+}
+
+.kit-art:hover img {
+  transform: scale(1.04);
+}
+
+.kit-pixel img {
+  width: 176px;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.kit-card figcaption {
+  display: flex;
+  gap: 0.3rem;
+}
+
+/* ---- wallpapers -------------------------------------------------------- */
+
+.kit-wall-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kit-wall-desktop {
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+}
+
+.kit-wall-phone {
+  margin-top: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(7.5rem, 100%), 1fr));
+}
+
+.kit-wall {
+  position: relative;
+  display: block;
+  min-width: 0;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  overflow: hidden;
+}
+
+.kit-wall-phone .kit-wall {
+  border-radius: 0.9rem;
+  border-width: 3px;
+}
+
+.kit-wall img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s;
+}
+
+.kit-wall:hover img {
+  transform: scale(1.03);
+}
+
+.kit-wall small {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0.1rem 0.4rem;
+  background: var(--ink);
+  color: var(--panel-strong);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.65rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.kit-wall:hover small,
+.kit-wall:focus-visible small {
+  opacity: 1;
+}
+
+/* ---- mixer ------------------------------------------------------------- */
+
+.kit-mix {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: clamp(0.8rem, 2vw, 1.4rem);
+  align-items: start;
+}
+
+.kit-mix-view {
+  position: sticky;
+  top: 1rem;
+  display: grid;
+  place-items: center;
+  min-height: 12rem;
+  padding: 0.6rem;
+  background:
+    repeating-conic-gradient(rgba(39, 20, 82, 0.1) 0% 25%, transparent 0% 50%) 0 0 / 1rem 1rem,
+    var(--panel-strong);
+  border: 5px double var(--line);
+}
+
+.kit-mix-view canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 72vh;
+  box-shadow: 0 0.6rem 1.8rem var(--shadow);
+}
+
+.kit-mix-controls {
+  display: grid;
+  gap: 0.7rem;
+  min-width: 0;
+  font-size: 0.85rem;
+}
+
+.kit-mix-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.kit-mix legend,
+.kit-mix-label {
+  float: left;
+  width: 3.6rem;
+  padding: 0;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.7rem;
+  color: rgba(39, 20, 82, 0.72);
+}
+
+.kit-mix-layers {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.kit-mix-layer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.kit-mix select {
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.2rem 0.3rem;
+  border: 1px solid var(--ink);
+  background: var(--panel-strong);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.kit-mix input[type="range"] {
+  flex: 1 1 5rem;
+  min-width: 0;
+  width: 5rem;
+  accent-color: var(--violet);
+}
+
+/* Radio chips: sizes, palettes, colour roles. The input stays in the
+   accessibility tree; the label is what shows. */
+.kit-pick {
+  position: relative;
+  display: inline-flex;
+}
+
+.kit-pick input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.kit-pick span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  border: 1px solid rgba(39, 20, 82, 0.35);
+  background: var(--panel-strong);
+  font-size: 0.75rem;
+}
+
+.kit-pick input:checked+span {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.kit-pick input:focus-visible+span {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.kit-pick-color span {
+  min-width: 1.3rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.kit-pick-palette span {
+  width: 2.6rem;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+.kit-pick-palette i {
+  flex: 1;
+  align-self: stretch;
+}
+
+.kit-preset {
+  display: inline-grid;
+  place-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  padding: 0;
+  border: 1px solid rgba(39, 20, 82, 0.35);
+  background: var(--panel-strong);
+  cursor: pointer;
+}
+
+.kit-preset:hover {
+  border-color: var(--ink);
+}
+
+.kit-preset canvas {
+  display: block;
+}
+
+.kit-mix-layer[disabled] {
+  opacity: 0.45;
+}
+
+.kit-mix-actions .kit-file {
+  font-size: 1rem;
+}
+
+.kit-mix-css {
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--ink);
+  color: var(--panel-strong);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.72rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---- foot -------------------------------------------------------------- */
+
+.kit-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel-strong);
+  font-family: Atkinson-Regular, arial, sans-serif;
+  font-size: 0.85rem;
+}
+
+.kit-foot p,
+.kit-credit p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.kit-foot>p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.kit-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.2rem;
+  z-index: 10;
+  max-width: calc(100vw - 2rem);
+  padding: 0.35rem 0.8rem;
+  background: var(--ink);
+  color: var(--panel-strong);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+  transform: translate(-50%, 200%);
+  visibility: hidden;
+  transition: transform 0.2s, visibility 0.2s;
+  pointer-events: none;
+}
+
+.kit-toast.is-on {
+  transform: translate(-50%, 0);
+  visibility: visible;
+}
+
+@media (max-width: 760px) {
+  .kit-logo,
+  .kit-mix {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kit-mix-view {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .kit-swatch {
+    width: 4.6rem;
+  }
+
+  .kit-chip {
+    height: 2.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kit-chip,
+  .kit-art img,
+  .kit-wall img,
+  .kit-toast,
+  .kit-stage {
+    transition: none;
+  }
+}

@@ -1,68 +1,233 @@
+{{/* /style/: logo, colour, type, marks, merch, wallpapers, and the mixer.
+     data/press_kit.toml is the inventory; this file decides how each kind of
+     thing is shown. Words are kept to what a file needs to be found: alt text,
+     hex values, file types. */}}
+{{ define "head" }}
+{{ with resources.Get "press-kit.css" | fingerprint }}
+	<link rel="stylesheet" href="{{ .RelPermalink }}">
+{{ end }}
+{{ end }}
+
 {{ define "main" }}
-<main class="license-main">
-	<section class="index-window">
+{{ $kit := site.Data.press_kit }}
+<main class="kit-main">
+	<section class="index-window kit">
 		<div class="window-topline">
 			<h2>{{ .Title }}</h2>
+			<nav class="kit-jump" aria-label="Sections">
+				<a href="#logo">logo</a>
+				<a href="#color">color</a>
+				<a href="#type">type</a>
+				<a href="#marks">marks</a>
+				<a href="#walls">walls</a>
+				<a href="#mix">mix</a>
+			</nav>
 			<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
 				</div>
 
-				{{ with .Content }}<div class="archive-intro">{{ . }}</div>{{ end }}
-
-				{{ $sections := slice }}
-				{{ range $id, $meta := site.Data.press_kit }}
-					{{ $sections = $sections | append (merge $meta (dict "id" $id)) }}
-				{{ end }}
-				{{ range sort $sections "weight" }}
-					<section class="gallery-section">
-						<h3>{{ .title }}</h3>
-						<p>{{ .blurb | markdownify }}</p>
-						<div class="gallery-grid">
-							{{ range .items }}
-								{{ $item := . }}
-								{{ if .coming }}
-									<figure class="gallery-item gallery-item-coming">
-										<div class="gallery-coming">coming soon</div>
-										<figcaption>{{ .name }}</figcaption>
-									</figure>
-								{{ else if .src }}
-									{{ $src := relURL .src }}
-									<figure class="gallery-item">
-										<a href="{{ or .href $src }}" download><img src="{{ $src }}" alt="{{ .name }}" loading="lazy"></a>
-										<figcaption>
-											<code>{{ .name }}</code>
-											{{ with .alt }}<a class="gallery-alt" href="{{ relURL . }}" download>{{ $item.alt_label | default "alt" }}</a>{{ end }}
-											{{ with .note }}<span class="gallery-note">{{ . }}</span>{{ end }}
-										</figcaption>
-									</figure>
-								{{ else }}
-									{{/* No local preview: a source file served from elsewhere. */}}
-									<figure class="gallery-item gallery-item-source">
-										<a href="{{ .href }}"{{ if .external }} rel="noopener"{{ end }}><code>{{ .name }}</code></a>
-										<figcaption>
-											{{ if .external }}<span class="gallery-offsite">offsite</span>{{ end }}
-											{{ with .note }}<span class="gallery-note">{{ . }}</span>{{ end }}
-										</figcaption>
-									</figure>
+				{{ with .Params.brief }}
+					<figure class="kit-brief">
+						{{/* Split by hand rather than markdownified: the typographer
+						     would curl the apostrophes, and this is a verbatim quote. */}}
+						<blockquote>
+							<ul>
+								{{ range split (trim . "\n") "\n" }}
+									<li>{{ strings.TrimPrefix "* " . }}</li>
 								{{ end }}
+							</ul>
+						</blockquote>
+						{{ with $.Params.brief_by }}<figcaption>— <a href="{{ . }}" rel="noopener">{{ . }}</a></figcaption>{{ end }}
+					</figure>
+				{{ end }}
+
+				{{/* Logo. The lockups swap into the stage; without JS each one is
+				     a plain download. */}}
+				{{ $main := index $kit.logo.lockups 0 }}
+				<section id="logo" class="kit-block kit-logo" aria-label="Logo">
+					<div class="kit-stage" data-stage="night">
+						<img class="kit-hero" src="{{ $main.src | relURL }}" alt="{{ $main.alt }}" width="512" height="512" data-hero>
+					</div>
+					<div class="kit-logo-side">
+						<div class="kit-lockups" role="group" aria-label="Lockups">
+							{{ range $i, $l := $kit.logo.lockups }}
+								<a class="kit-lockup" href="{{ $l.href | relURL }}" download data-lockup data-src="{{ $l.src | relURL }}" data-alt="{{ $l.alt }}" aria-current="{{ cond (eq $i 0) "true" "false" }}">
+									<img src="{{ $l.src | relURL }}" alt="{{ $l.alt }}" width="512" height="512" loading="lazy">
+								</a>
 							{{ end }}
 						</div>
-					</section>
-				{{ end }}
+						<div class="kit-stages" role="group" aria-label="Backdrop" data-stages hidden>
+							{{ range slice "night" "sky" "orange" "paper" }}
+								<button type="button" class="kit-dot kit-dot-{{ . }}" data-stage-pick="{{ . }}" aria-label="{{ . }}" aria-pressed="{{ cond (eq . "night") "true" "false" }}"></button>
+							{{ end }}
+						</div>
+						<p class="kit-files">
+							<a class="kit-file" href="{{ $main.href | relURL }}" download data-hero-png>PNG <small>4096²</small></a>
+							<a class="kit-file" href="{{ $kit.logo.svg | relURL }}" download title="Live text: {{ $kit.logo.svg_fonts }}">SVG <small>{{ $kit.logo.svg_fonts }}</small></a>
+						</p>
+						{{ with $kit.logo.charm }}
+							<a class="kit-charm" href="{{ .src | relURL }}" download><img src="{{ .src | relURL }}" alt="{{ .alt }}" width="192" height="224" loading="lazy"></a>
+						{{ end }}
+					</div>
+					<details class="kit-alts">
+						<summary>alt</summary>
+						<ul>
+							{{ range $kit.alt_logos }}
+								<li>
+									<a href="{{ .src | relURL }}" download><img src="{{ .src | relURL }}" alt="{{ .alt }}" loading="lazy"></a>
+									<a class="kit-file" href="{{ .png | relURL }}" download>PNG</a>
+								</li>
+							{{ end }}
+						</ul>
+					</details>
+				</section>
 
-				<aside class="press-kit-note">
+				{{/* Colour. The first row is the theme's own tokens, read out of the
+				     stylesheet that defines them so this page can never disagree
+				     with it. Hex tokens only: the rgba() ones are tints of these. */}}
+				{{ $tokens := slice }}
+				{{ with resources.Get "themes/wirenook/01-tokens.css" }}
+					{{ $tokens = findRESubmatch `--([a-z-]+):\s*(#[0-9a-fA-F]{3,8})\s*;` .Content -1 }}
+				{{ end }}
+				<section id="color" class="kit-block" aria-label="Color">
+					<div class="kit-swatches" role="group" aria-label="Site tokens">
+						{{ range $tokens }}
+							{{ $hex := lower (index . 2) }}
+							<button type="button" class="kit-swatch" style="--c: {{ $hex | safeCSS }}" data-copy="{{ $hex }}">
+								<span class="kit-chip" aria-hidden="true"></span>
+								<code>{{ $hex }}</code>
+								<small>--{{ index . 1 }}</small>
+							</button>
+						{{ end }}
+						<button type="button" class="kit-file kit-copy-root" data-copy-root hidden>:root</button>
+					</div>
+					{{ range $kit.palette }}
+						<div class="kit-swatches" role="group" aria-label="{{ .alt }}">
+							{{ range .colors }}
+								<button type="button" class="kit-swatch" style="--c: {{ . | safeCSS }}" data-copy="{{ . }}">
+									<span class="kit-chip" aria-hidden="true"></span>
+									<code>{{ . }}</code>
+								</button>
+							{{ end }}
+						</div>
+					{{ end }}
+				</section>
+
+				<section id="type" class="kit-block kit-type" aria-label="Type">
+					{{ range $kit.type }}
+						<figure class="kit-face">
+							<p class="kit-face-big" style="font-family: {{ .family | safeCSS }}">{{ .sample }}</p>
+							<p class="kit-face-set" style="font-family: {{ .family | safeCSS }}">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 !?&amp;@#*%</p>
+							<figcaption>
+								<a class="kit-file" href="{{ .file | relURL }}" download style="font-family: {{ .family | safeCSS }}">{{ path.Base .file }}</a>
+								{{ range .cuts }}
+									<a class="kit-file" href="{{ .file | relURL }}" download style="font-family: {{ .family | safeCSS }}">{{ path.Base .file | replaceRE `^.*-(\w+)\.ttf$` "$1" }}</a>
+								{{ end }}
+							</figcaption>
+						</figure>
+					{{ end }}
+					<p class="kit-license"><a href="{{ "fonts/OFL.txt" | relURL }}">OFL 1.1</a></p>
+				</section>
+
+				<section id="marks" class="kit-block kit-grid kit-marks" aria-label="Marks">
+					{{ range $kit.marks }}
+						{{ $src := .src | relURL }}
+						{{ $alt := .alt }}
+						<figure class="kit-card{{ if .wide }} kit-card-wide{{ end }}">
+							<a class="kit-art{{ if .pixel }} kit-pixel{{ end }}" href="{{ $src }}" download>
+								{{ if .pixel }}
+									<img src="{{ $src }}" alt="{{ $alt }}" width="88" height="31" loading="lazy">
+								{{ else }}
+									{{/* Line art: PNG, per responsive-image.html. The link
+									     still hands over the master. */}}
+									{{ partial "responsive-image.html" (dict
+										"src" .src
+										"widths" (cond .wide (slice 640 1280) (slice 320 640))
+										"format" "png"
+										"sizes" (cond .wide "40rem" "20rem")
+										"alt" $alt
+										"loading" "lazy"
+										)
+									}}
+								{{ end }}
+							</a>
+							{{ if .embed }}
+								<figcaption><button type="button" class="kit-file" data-copy="{{ printf `<a href="https://wirenook.net/"><img src="https://wirenook.net/%s" width="88" height="31" alt="%s"></a>` .src .alt }}">&lt;/&gt;</button></figcaption>
+							{{ end }}
+						</figure>
+					{{ end }}
+					{{ range $kit.wear }}
+						{{ $src := .src | relURL }}
+						<figure class="kit-card{{ if .round }} kit-card-round{{ end }}">
+							<a class="kit-art" href="{{ $src }}" download><img src="{{ $src }}" alt="{{ .alt }}" loading="lazy"></a>
+							{{ with .source }}
+								<figcaption><a class="kit-file" href="{{ . }}" rel="noopener">SVG</a></figcaption>
+							{{ end }}
+						</figure>
+					{{ end }}
+				</section>
+
+				<section id="walls" class="kit-block kit-walls" aria-label="Wallpapers">
+					{{ range $kind := slice "desktop" "phone" }}
+						<div class="kit-wall-row kit-wall-{{ $kind }}">
+							{{ range where $kit.walls "kind" $kind }}
+								{{ $href := or .href .src | relURL }}
+								<a class="kit-wall" href="{{ $href }}" download>
+									{{ partial "responsive-image.html" (dict
+										"src" .src
+										"widths" (cond (eq $kind "phone") (slice 200 400) (slice 480 960))
+										"sizes" (cond (eq $kind "phone") "12rem" "22rem")
+										"alt" .alt
+										"loading" "lazy"
+										)
+									}}
+									<small>{{ .size }}</small>
+								</a>
+							{{ end }}
+						</div>
+					{{ end }}
+				</section>
+
+				{{/* The mixer is all script; without it there is nothing to show. */}}
+				{{ $tri := slice }}
+				{{ range $kit.logo.lockups }}
+					{{ $tri = $tri | append (dict "p" (relURL .src) "m" (relURL .href)) }}
+				{{ end }}
+				{{ $mixAssets := dict
+					"tri" $tri
+					"charm" (relURL $kit.logo.charm.src)
+					"bunny" (relURL "images/wirenook/poly-bunyn-dithered.png")
+				}}
+				<section id="mix" class="kit-block kit-mix" aria-label="Mixer" data-mixer data-assets="{{ jsonify $mixAssets }}" hidden>
+					<div class="kit-mix-view">
+						<canvas data-mix-canvas role="img" aria-label="Generated background"></canvas>
+					</div>
+					<form class="kit-mix-controls" data-mix-form>
+						<fieldset class="kit-mix-row" data-mix-sizes>
+							<legend>size</legend>
+						</fieldset>
+						<fieldset class="kit-mix-row" data-mix-palettes>
+							<legend>palette</legend>
+						</fieldset>
+						<div class="kit-mix-layers" data-mix-layers></div>
+						<div class="kit-mix-row kit-mix-actions">
+							<button type="button" class="kit-file" data-mix-roll aria-label="Shuffle">⚄</button>
+							<button type="button" class="kit-file" data-mix-png>PNG</button>
+							<button type="button" class="kit-file" data-mix-css hidden>CSS</button>
+							<button type="button" class="kit-file" data-mix-link>#</button>
+						</div>
+					</form>
+				</section>
+
+				<footer class="kit-foot">
+					{{ with .Content }}<div class="kit-credit">{{ . }}</div>{{ end }}
 					<p>
-						Some fonts might not render in browser if not installed.
-						Examples:
-						<a href="{{ "fonts/Unique.ttf" | relURL }}">Unique</a> and
-						<a href="{{ "fonts/AtkinsonHyperlegible-Regular.ttf" | relURL }}">Atkinson Hyperlegible</a>
-						(<a href="{{ "fonts/OFL.txt" | relURL }}">OFL 1.1</a>).
+						<a href="{{ "licenses/" | relURL }}">licenses</a>
+						<a href="https://github.com/CassidyPrather/cassidyprather.github.io/tree/main/design" rel="noopener">design/</a>
+						<a href="https://github.com/CassidyPrather/cassidyprather.github.io" rel="noopener">source</a>
 					</p>
-					<p>
-						Extra unused design assets:
-						<a href="https://github.com/CassidyPrather/cassidyprather.github.io/tree/main/design" rel="noopener">design/ on GitHub</a>.
-						Terms: <a href="{{ "licenses/" | relURL }}">licenses</a>.
-					</p>
-				</aside>
+				</footer>
 			</section>
 		</main>
+		<div class="kit-toast" data-toast role="status" aria-live="polite"></div>
+		{{ with resources.Get "press-kit.js" | fingerprint }}<script src="{{ .RelPermalink }}" defer></script>{{ end }}
 {{ end }}
