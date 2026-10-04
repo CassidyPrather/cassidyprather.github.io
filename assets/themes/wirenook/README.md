@@ -15,7 +15,7 @@ cascade.
 | `05-widgets.css` | panels, socials, badges, webring, death clock, footer |
 | `06-pages.css` | licenses/archive lists, guestbook |
 | `07-blog.css` | blog feed, post bodies, Markdown prose, code blocks |
-| `08-works.css` | per-work card skins (Amoeba, Space Trucking) |
+| `08-works.css` | per-work card skins (Amoeba, VRChat) |
 | `09-responsive.css` | the breakpoints and `prefers-reduced-motion` |
 
 Files 08 and 09 are the only ones tied to this site in particular, and 09 is
