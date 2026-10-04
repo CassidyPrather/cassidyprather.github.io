@@ -11,7 +11,7 @@
 				<div class="license-list">
 					{{/* The cohost archive is deliberately absent: it is reached from the
            blog and from cohost's own chrome, not listed here as a work. */}}
-					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "space-trucking" "vrchat") }}
+					{{ $pages := where site.RegularPages "Type" "in" (slice "amoeba" "lancer" "game-prototypes" "vrchat") }}
 					{{/* Sorted and labelled by LinkTitle, which is `linkTitle` in front
              matter where a page sets one and its title otherwise. A page
              names itself for the thing it is, and that is not always what
