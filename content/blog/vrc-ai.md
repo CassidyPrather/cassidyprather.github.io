@@ -31,7 +31,7 @@ Sure, if somebody lies about whether or not they used AI, they are opening thems
 
 ## Content Quality
 
-I suppose any platform based on user-generated content is subject to Robloxification, right? And like, that's definitely a bad thing for everyone: The casual quest users, the die-hard hobbiests, and the creators working super hard to show off all kinds of cool technology. Nobody likes Robloxification other than grifters! But prohibiting AI is not going to reverse that trend. It made me very glad, reading the developer update, to see all of these efforts dedicated towards aggregating and serving high-quality content. I just wish this hot-button subject of AI didn't have to be grafted onto it.
+I suppose any platform based on user-generated content is subject to Robloxification, right? And like, that's definitely a bad thing for everyone: The casual quest users, the die-hard hobbiests, and the creators working super hard to show off all kinds of cool technology. Nobody likes Robloxification other than grifters! It made me very glad, reading the developer update, to see all of these efforts dedicated towards aggregating and serving high-quality content. I just wish this hot-button subject of AI didn't have to be grafted onto it.
 
 I found this back-to-back exchange quite stark, yesterday a prefab scene slop creator posted:
 
