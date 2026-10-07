@@ -45,7 +45,7 @@ I found this back-to-back exchange quite stark, yesterday a prefab scene slop cr
 > 
 > #VRChat #VRC #VRChat_World
 
-\- plz 
+\- name redacted
 
 Life comes at you fast:
 
