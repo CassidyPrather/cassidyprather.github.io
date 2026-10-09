@@ -2,7 +2,8 @@
 
    Every entry on /blog/ carries a `--drift` between 0 and 1 written by
    layouts/blog/list.html: 0 for a post written here, climbing to 1 across the
-   first several posts of the cohost archive. Everything below interpolates
+   first several posts of the cohost archive and falling back to 0 across as
+   many after its last (layouts/partials/blog/drift.html has the ramp). Everything below interpolates
    against that one number, so scrolling down the feed walks the cards from the
    wirenook panel they are now to the cohost post box they used to be, and the
    change lands over a run of posts instead of at a line.
@@ -127,35 +128,22 @@
 	border-top-style: solid;
 }
 
-/* A quiet note on where the post came from, so the changed skin reads as an
-   answer rather than a glitch. Only emitted on archive-era entries, which are
-   exactly the entries that cause this file to be linked at all. */
-.entry-origin {
-	border: 1px solid currentColor;
-	border-radius: 0.375rem;
-	padding: 0 0.4em;
-	font-size: 0.92em;
-	opacity: 0.85;
-}
-
 /* The page itself, not just the cards on it. styles.css leaves .blog-feed
    transparent onto the striped index-window behind it, so this shows only in
    the 1rem gutters between cards — a column of paper warming up under the feed
-   as the archive takes over. list.html writes the two endpoints from the drift
-   of the first and last entry it renders, which keeps the wash continuous
-   across a page break rather than restarting at every page.
+   as the archive takes over, and cooling again below it as the feed fades back
+   out of the era. list.html writes the gradient's stops into --drift-wash, one
+   per entry on either ramp, positioned by where the entry sits on the page;
+   this file owns the colour they are drawn in, through the two properties
+   below, so the template only ever says where and how much.
 
    Kept faint on purpose: the cards are opaque and carry the actual transition.
    This is the room they sit in agreeing with them. */
 .blog-feed {
-	--drift-from: 0;
-	--drift-to: 0;
+	--drift-wash-rgb: 255 249 242;
+	--drift-wash-alpha: 0.5;
 
-	background: linear-gradient(
-		to bottom,
-		rgb(255 249 242 / calc(var(--drift-from) * 0.5)),
-		rgb(255 249 242 / calc(var(--drift-to) * 0.5))
-	);
+	background: var(--drift-wash, none);
 }
 
 /* ------------------------------------------------------- the room they sit in

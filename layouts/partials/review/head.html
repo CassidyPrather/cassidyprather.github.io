@@ -1,0 +1,35 @@
+{{- /*
+	The top of a review: the thing reviewed, and what the review made of it.
+
+	Shared by the review's card on the feed and its own page, which differ in
+	where it all points. On the feed the card is a link to the post, like
+	every other card there, so the title and the art go to the post. On the
+	post the title and the art go to the thing itself — the store page, the
+	book, the novel — which is the "what is this" link a reader came for.
+
+	Takes a dict: `page` is the review, and `card` is true on the feed.
+*/ -}}
+{{- $p := .page -}}
+{{- $r := $p.Params.review -}}
+{{- $href := cond .card $p.RelPermalink $r.item_url -}}
+{{- $account := index site.Data.reviews $r.site -}}
+<header class="review-head">
+	{{ with $r.image }}
+		{{/* Hotlinked from the site that hosts it, not mirrored: the art is
+			     theirs, and none of it is ours to republish. On the feed the
+			     title next to it is the same link, so this one stays out of the
+			     tab order and the accessibility tree rather than being read
+			     twice. */}}
+		<a class="review-cover" href="{{ $href }}" {{ if $.card }}tabindex="-1" aria-hidden="true"{{ end }}>
+			<img src="{{ . }}" alt="{{ if not $.card }}{{ $p.Title }} on {{ $account.name }}{{ end }}" {{ with $r.image_width }}width="{{ . }}"{{ end }} {{ with $r.image_height }}height="{{ . }}"{{ end }} loading="lazy" referrerpolicy="no-referrer">
+		</a>
+	{{ end }}
+	<div class="review-heading">
+		{{ if .card }}
+			<h3 class="entry-title"><a href="{{ $href }}">{{ $p.Title }}</a></h3>
+		{{ else }}
+			<p class="review-item"><a href="{{ $href }}">{{ $p.Title }}</a></p>
+		{{ end }}
+		{{ partial "review/verdict.html" $p }}
+	</div>
+</header>

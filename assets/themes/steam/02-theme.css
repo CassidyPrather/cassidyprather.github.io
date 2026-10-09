@@ -1,0 +1,226 @@
+/* steam — the skin itself.
+
+   A review as Steam prints one: the game's art on the left, a dark bar beside
+   it with the thumb, the verdict and the hours, and the review under that in
+   steel-blue text on navy. Two surfaces wear it and every rule below names
+   both — the review's own page (.review-single on a .theme-steam page) and
+   its card on the blog feed (.blog-entry.entry-steam) — so the card is the
+   page in miniature rather than a second design that happens to be blue.
+
+   The structure under it is wirenook's (themes/wirenook/07-blog.css, the
+   reviews section); this file only re-dresses it. Both selectors are two
+   classes deep, which is what lets them win over blog-drift.css, linked
+   before this on the feed and re-pointing the same properties on every card
+   at one class. */
+
+/* ---- the box ----------------------------------------------------------
+   Steam's review boxes sit on a navy page under a faint top-down gradient.
+   The page's own frame (the sky, the striped window) stays wirenook's; this
+   is the review lying on it. */
+:is(.theme-steam .review-single, .blog-entry.entry-steam) {
+  /* Wirenook's link hover is a magenta tuned for light panels, and its focus
+     ring is near-black: on navy one is 2.6:1 and the other invisible. These
+     are the surfaces that need re-pointing, and only these — the topline and
+     the site header around them are still light. */
+  --link-hover: var(--st-blue-hot);
+  --link-active: var(--st-blue);
+  --focus-ring: var(--st-blue);
+
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(180deg, var(--st-page) 0%, var(--st-box) 100%);
+  box-shadow: 0 0.6rem 1.6rem rgba(0, 0, 0, 0.35);
+  color: var(--st-text);
+  font-family: var(--st-font);
+}
+
+.theme-steam .review-single {
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+/* ---- the head ---------------------------------------------------------
+   The capsule art left, the vote bar right. On the page the head loses the
+   panel wirenook gives it and becomes part of the box. */
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-head {
+  gap: 0.75rem;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin-bottom: 0.75rem;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-cover {
+  width: clamp(6rem, 34%, 14rem);
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.6);
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-heading {
+  padding: 0.45rem 0.6rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Steam puts no title in the box at all; the art is the title. The card
+   needs one to be a link, so it is set as small and quiet as the game name
+   above a store capsule. */
+:is(.theme-steam .review-single, .blog-entry.entry-steam) :is(.entry-title, .review-item) {
+  margin-bottom: 0.4rem;
+  color: var(--st-head);
+  font-family: var(--st-font);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) :is(.entry-title, .review-item) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) :is(.entry-title, .review-item) a:hover {
+  color: var(--st-blue);
+}
+
+/* The thumb in its square, the verdict beside it, the hours under that. */
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-verdict-steam {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.6rem;
+  align-items: center;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-thumb {
+  grid-row: span 2;
+  box-sizing: content-box;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.35rem;
+  background: linear-gradient(135deg, rgba(103, 193, 245, 0.18), rgba(103, 193, 245, 0.05));
+  color: var(--st-blue);
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .is-down .review-thumb {
+  background: linear-gradient(135deg, rgba(217, 119, 61, 0.2), rgba(217, 119, 61, 0.05));
+  color: var(--st-down);
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-verdict-label {
+  color: var(--st-head);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-hours {
+  color: var(--st-muted);
+  font-size: 0.78rem;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-flag {
+  border: 0;
+  padding: 0.1rem 0.45rem;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--st-muted);
+  font-size: 0.75rem;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-flag-early {
+  color: var(--st-green);
+}
+
+/* ---- the review -------------------------------------------------------- */
+:is(.theme-steam .review-single, .blog-entry.entry-steam) :is(.post-body, .entry-body) {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--st-text);
+  font-family: var(--st-font);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) :is(.post-body, .entry-body) a {
+  color: var(--st-blue);
+  text-decoration: none;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) :is(.post-body, .entry-body) a:hover {
+  color: var(--st-blue-hot);
+  text-decoration: underline;
+}
+
+/* BBCode headings come out as Steam draws them: bright, plain, a little
+   bigger than the text. */
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-text :is(h3, h4, h5, h6) {
+  margin: 0.6em 0 0.2em;
+  color: var(--st-blue);
+  font-family: var(--st-font);
+  font-size: 1.15em;
+  font-weight: 400;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-text blockquote {
+  margin: 0.6em 0;
+  padding: 0.5em 0.75em;
+  border: 1px solid var(--st-rule);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--st-muted);
+  font-size: 0.92em;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .review-spoiler {
+  background: var(--st-spoiler);
+}
+
+/* ---- underneath ------------------------------------------------------- */
+:is(.theme-steam .review-single, .blog-entry.entry-steam) :is(.entry-meta, .post-meta) {
+  border: 0;
+  border-top: 1px solid var(--st-rule);
+  background: none;
+  color: var(--st-muted);
+  font-family: var(--st-font);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* On the page the rule runs the width of the footer, over the date and the
+   links both, rather than stopping short under the date alone. */
+.theme-steam .review-single .review-foot {
+  align-items: flex-end;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--st-rule);
+}
+
+.theme-steam .review-single .post-meta {
+  border-top: 0;
+  width: auto;
+  padding: 0;
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .entry-permalink {
+  border: 0;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--st-head);
+}
+
+:is(.theme-steam .review-single, .blog-entry.entry-steam) .entry-more a {
+  color: var(--st-blue);
+  font-size: 0.85rem;
+}
+
+/* Steam's "hover fade" buttons: a wash of the blue that fills in under the
+   pointer. Theirs fills to the full bright blue, where white text is 2.1:1;
+   this stops at the deep end of their gradient, where it is 4.7:1 and up. */
+.theme-steam .review-single .review-links a {
+  border: 0;
+  border-radius: 2px;
+  padding: 0.35rem 0.75rem;
+  background: rgba(103, 193, 245, 0.2);
+  color: var(--st-blue);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.theme-steam .review-single .review-links a:hover {
+  background: linear-gradient(-60deg, #2f6a8c 5%, #417a9b 95%);
+  color: var(--st-blue-hot);
+}

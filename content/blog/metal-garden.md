@@ -2,6 +2,7 @@
 title: "Metal Garden"
 date: 2026-08-16T13:00:00-07:00
 highlight: false
+tags: ["review"]
 ---
 
 I absolutely *loved* [Metal Garden](https://tinerasoft.net/projects/metal-garden/),

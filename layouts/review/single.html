@@ -1,0 +1,49 @@
+{{/* A review mirrored from another site by tools/reviews.py.
+
+     The frame is blog/single.html's — same window, same topline, same way
+     back — and what sits inside it is dressed as the review site would dress
+     it. Each site is a sub-theme (themes/steam/, themes/goodreads/,
+     themes/vndb/) named in the post's `theme`, loaded and scoped exactly the
+     way a hand-written post's would be; blog/single.html has the note on the
+     two blocks.
+
+     Under the review: when it was posted, and the two links out — to the
+     review where it was written, which is the copy that gets corrected, and
+     to the thing it is a review of. */}}
+{{ define "body-class" }}{{ with .Params.theme }}theme-{{ . }}{{ end }}{{ end }}
+
+{{ define "head" }}{{ with .Params.theme }}{{ partial "sub-theme.html" . }}{{ end }}{{ end }}
+
+{{ define "main" }}
+{{ $r := .Params.review }}
+{{ $account := index site.Data.reviews $r.site }}
+{{ $rfc3339 := "2006-01-02T15:04:05Z07:00" }}
+<main class="blog-main">
+	<section class="index-window">
+		<div class="window-topline">
+			<h2>{{ .Title }}</h2>
+			<a class="status-light" href="{{ .CurrentSection.RelPermalink }}"><-- Blog</a>
+				</div>
+
+				<article class="post-single review-single">
+					{{ partial "review/head.html" (dict "page" . "card" false) }}
+					<div class="post-body">{{ .Content }}</div>
+					<footer class="review-foot">
+						<p class="post-meta">
+							<span>Posted <time datetime="{{ .Date.Format $rfc3339 }}">{{ .Date.Format "2 January 2006" }}</time></span>
+							{{ with $r.updated }}
+								{{ with time . }}
+									<span>Updated <time datetime="{{ .Format $rfc3339 }}">{{ .Format "2 January 2006" }}</time></span>
+								{{ end }}
+							{{ end }}
+						</p>
+						<p class="review-links">
+							<a href="{{ $r.url }}">Read it on {{ $account.name }}</a>
+							<a href="{{ $r.item_url }}">{{ $account.item }}</a>
+							{{ with site.GetPage "/tags/review" }}<a href="{{ .RelPermalink }}">All reviews</a>{{ end }}
+						</p>
+					</footer>
+				</article>
+			</section>
+		</main>
+{{ end }}

@@ -1,0 +1,182 @@
+/* goodreads — the skin itself.
+
+   A review as Goodreads prints one: the cover small on the left, the title
+   in a brown serif beside it, "by" and the author, then the stars and the
+   phrase Goodreads has for each count of them ("really liked it"), and the
+   review under a hairline in a reading serif. Two surfaces wear it and every
+   rule below names both — the review's own page (.review-single on a
+   .theme-goodreads page) and its card on the blog feed
+   (.blog-entry.entry-goodreads).
+
+   The structure under it is wirenook's (themes/wirenook/07-blog.css, the
+   reviews section); this file only re-dresses it. Both selectors are two
+   classes deep, which is what lets them win over blog-drift.css, linked
+   before this on the feed and re-pointing the same properties on every card
+   at one class. */
+
+/* ---- the box ---------------------------------------------------------- */
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) {
+  /* Wirenook's magenta hover lands at 5.6:1 on white, which passes, but it
+     isn't Goodreads; and its focus ring is fine on a light box. Only the link
+     colours move. */
+  --link-hover: var(--gr-link-hot);
+  --link-active: var(--gr-link-hot);
+
+  border: 1px solid var(--gr-rule);
+  border-radius: 0;
+  background: var(--gr-box);
+  box-shadow: none;
+  color: var(--gr-text);
+  font-family: var(--gr-sans);
+}
+
+/* The page is the cream, and the review a white sheet on it. */
+.theme-goodreads .review-single {
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  background: var(--gr-page);
+}
+
+/* ---- the head --------------------------------------------------------- */
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-head {
+  gap: 1rem;
+  border: 0;
+  background: none;
+  padding: 0 0 0.85rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid var(--gr-rule);
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-cover {
+  width: clamp(4rem, 16%, 7.5rem);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) :is(.entry-title, .review-item) {
+  margin-bottom: 0.25rem;
+  color: var(--gr-brown);
+  font-family: var(--gr-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) :is(.entry-title, .review-item) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) :is(.entry-title, .review-item) a:hover {
+  text-decoration: underline;
+}
+
+/* "by Author" on a line of its own, then the stars and their phrase. */
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-verdict-goodreads {
+  gap: 0.35rem 0.5rem;
+  color: var(--gr-muted);
+  font-size: 0.88rem;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-byline {
+  flex-basis: 100%;
+  color: var(--gr-text);
+  font-family: var(--gr-serif);
+  font-size: 0.95rem;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-star {
+  width: 1.2em;
+  height: 1.2em;
+  color: var(--gr-star-off);
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-star.is-on {
+  color: var(--gr-star);
+}
+
+/* ---- the review --------------------------------------------------------
+   Goodreads sets a review in its reading serif, a size up from the
+   interface around it. */
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) :is(.post-body, .entry-body) {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--gr-text);
+  font-family: var(--gr-serif);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) :is(.post-body, .entry-body) a {
+  color: var(--gr-link);
+  text-decoration: none;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) :is(.post-body, .entry-body) a:hover {
+  color: var(--gr-link-hot);
+  text-decoration: underline;
+}
+
+/* The feed Goodreads publishes drops a spoiler and leaves "[spoilers
+   removed]"; tools/reviews.py turns each into a link back to the review,
+   worded as Goodreads words its own spoiler toggle. */
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-spoiler-link {
+  font-family: var(--gr-sans);
+  font-size: 0.85em;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .review-spoiler {
+  background: var(--gr-text);
+}
+
+/* ---- underneath ------------------------------------------------------- */
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) :is(.entry-meta, .post-meta) {
+  border: 0;
+  border-top: 1px solid var(--gr-rule);
+  background: none;
+  color: var(--gr-muted);
+  font-family: var(--gr-sans);
+  font-size: 0.8rem;
+}
+
+/* On the page the rule runs the width of the footer, over the date and the
+   links both, rather than stopping short under the date alone. */
+.theme-goodreads .review-single .review-foot {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--gr-rule);
+}
+
+.theme-goodreads .review-single .post-meta {
+  border-top: 0;
+  width: auto;
+  padding: 0;
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .entry-permalink {
+  border-color: var(--gr-rule);
+  background: var(--gr-band);
+  color: var(--gr-brown);
+}
+
+:is(.theme-goodreads .review-single, .blog-entry.entry-goodreads) .entry-more a {
+  color: var(--gr-link);
+  font-family: var(--gr-sans);
+  font-size: 0.88rem;
+}
+
+/* Goodreads' beige buttons, with the brown border its old "Want to Read"
+   shelf button had. */
+.theme-goodreads .review-single .review-links a {
+  border: 1px solid #d6d0c4;
+  border-radius: 3px;
+  padding: 0.3rem 0.7rem;
+  background: var(--gr-band);
+  color: var(--gr-brown);
+  font-family: var(--gr-sans);
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+.theme-goodreads .review-single .review-links a:hover {
+  background: #ede6d6;
+  color: var(--gr-brown);
+}

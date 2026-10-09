@@ -77,6 +77,12 @@ clock are driven entirely from script. See `assets/script.js` in this repo.
 loads *after* the whole of wirenook and scopes itself to a class on `<body>`,
 so it can only reach the pages that opt in.
 
+`../steam/`, `../goodreads/` and `../vndb/` do the same for reviews mirrored
+from those sites, with one difference: each also dresses its review's card on
+the blog feed, scoped to that card's class rather than to `<body>`, and the
+feed links whichever it needs. The shape they all dress is here, in the
+reviews section of `07-blog.css`.
+
 `../merx/` is scoped the same way and is not one of them: it replaces this
 theme rather than layering over it, for a page that is deliberately not
 supposed to look like this site.

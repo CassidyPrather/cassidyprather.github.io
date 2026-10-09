@@ -24,6 +24,19 @@ pip install pyoxipng           # only `optimize` needs this
 python tools/images.py optimize  # losslessly recompress the tiers, then restamp
 ```
 
+Reviews from Steam, Goodreads and VNDB are mirrored into the blog under
+`content/blog/reviews/`. The posts are generated — fix a review where it was
+written, then pull it back down — and committed, so a pull is a diff to read:
+
+```sh
+python tools/reviews.py pull           # rewrite every review post from the sources
+python tools/reviews.py pull steam     # ...or just one site
+python tools/reviews.py check          # say what a pull would change; write nothing
+```
+
+The accounts are in `data/reviews.toml`. CI runs `check` weekly and reports how
+far behind the committed posts are; it never pulls.
+
 Overflow is a pain:
 
 ```sh
