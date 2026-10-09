@@ -616,8 +616,13 @@
    shows when none is: on a card inside the cohost era, which wears the drift
    instead of its skin (layouts/blog/list.html says why), and for anyone whose
    browser didn't fetch the skin. */
+/* The art and the heading share a row while there is room for both, and the
+   heading drops under the art when there isn't. 12rem is about what
+   "Not Recommended" and its thumb need, and being in rem it grows with a
+   reader's font setting, which is exactly when the row runs out first. */
 .review-head {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.9rem;
   align-items: flex-start;
   margin-bottom: 0.8rem;
@@ -639,8 +644,11 @@
 }
 
 .review-heading {
-  flex: 1;
+  flex: 1 1 12rem;
   min-width: 0;
+  /* At the narrowest widths and the largest fonts a single word can still be
+     wider than the column; breaking it beats pushing the card off screen. */
+  overflow-wrap: anywhere;
 }
 
 .review-heading .entry-title {
