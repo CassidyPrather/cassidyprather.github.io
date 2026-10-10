@@ -2,6 +2,7 @@
 title: "Pathologic is the Best Video Game Ever"
 date: 2024-04-08T17:11:46-07:00
 type: cohost
+tags: ["review"]
 cohost:
   id: 5480655
   url: "https://cohost.org/CassidyCo/post/5480655-pathologic-is-the-be"

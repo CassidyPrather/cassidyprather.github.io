@@ -1,0 +1,33 @@
+# The review accounts tools/reviews.py imports from, and the names the site
+# gives them. The same three are linked from the socials panel on the home page
+# (layouts/index.html); keep the two in step.
+#
+# The script reads the ids. The templates read the rest: `name` is what a
+# review card's origin chip says and what the link back to the review is
+# called, `item` names the link to the thing reviewed, and `profile` is where
+# the reviews page sends a reader for the whole account.
+#
+# Everything under content/blog/reviews/ is generated from these accounts and
+# overwritten on every run. Edit a review where it was written.
+
+# Review timestamps are written into front matter in this zone, so they sit in
+# the feed beside hand-written posts dated the same way.
+timezone = "America/Los_Angeles"
+
+[steam]
+name = "Steam"
+item = "Store page"
+id = "76561198042226688"
+profile = "https://steamcommunity.com/profiles/76561198042226688/"
+
+[goodreads]
+name = "Goodreads"
+item = "Book page"
+id = "88078370"
+profile = "https://www.goodreads.com/user/show/88078370-cassidy"
+
+[vndb]
+name = "VNDB"
+item = "Visual novel page"
+id = "u183483"
+profile = "https://vndb.org/u183483"

@@ -8,12 +8,21 @@
 	mind about what it is somewhere in the middle of the archive rather than
 	at a hard line.
 
-	The ramp starts at the first cohost-era post and takes `blog.archiveFade`
-	posts to arrive, so everything written since stays untouched and the
-	archive is what fades in. Keying on the count of archive posts rather than
-	on dates is deliberate: the gap between the last cohost post and the first
-	wirenook one is nearly two years wide, and a date-driven ramp would spend
-	the whole transition inside that gap and land as a hard switch anyway.
+	The era is the run of the feed from the newest cohost post to the oldest,
+	and everything inside it drifts, whatever it is: a Steam review posted the
+	week of a cohost post sits in the feed as a cohost-era card, not as a
+	Steam one. The ramp in starts at the first cohost post and takes
+	`blog.archiveFade` entries to arrive, so everything written since stays
+	untouched and the archive is what fades in. The ramp out starts after the
+	last cohost post and takes as many again, so the feed fades back into
+	wirenook below it and the reviews written before cohost existed come out
+	the far side in their own dress. If the era is shorter than the fade, the
+	ramp out leaves from wherever the ramp in had got to.
+
+	Keying on the count of entries rather than on dates is deliberate: the gap
+	between the last cohost post and the first wirenook one is nearly two
+	years wide, and a date-driven ramp would spend the whole transition inside
+	that gap and land as a hard switch anyway.
 
 	`max` is the highest drift on this page, and it is the whole reason this
 	partial hands back a summary instead of the caller working it out inline:
@@ -21,32 +30,62 @@
 	zero, so a page holding nothing but recent posts pays nothing for any of
 	this. See the note there.
 
+	`wash` is the colour stops for the paper wash behind the feed: one for
+	every entry on either ramp and at each end of them, positioned by that
+	entry's place in the list. The flat stretches get none, since a gradient
+	already holds a colour between two equal stops and past its last one.
+
 	Pagination: `.Pages` stays the full section list even once a paginated
 	list page exists, so the ramp below is always measured against the whole
-	archive — post 3 of the archive is 3/8 of the way across whether it opens
-	page two or closes page one. Only `$shown` needs to change when that day
-	comes: point it at `.Paginator.Pages` and everything else already holds.
+	archive — the third archive entry is 3/8 of the way across whether it
+	opens page two or closes page one. Only `$shown` needs to change when that
+	day comes: point it at `.Paginator.Pages` and everything else already
+	holds.
 */ -}}
 
 {{- $all := .Pages.ByDate.Reverse -}}
 {{- $shown := $all -}}
 
 {{- /* One post would be a hard cut, so the floor is two. */ -}}
-{{- $fade := math.Max 2 (int (site.Params.blog.archiveFade | default 8)) -}}
+{{- $fade := float (math.Max 2 (int (site.Params.blog.archiveFade | default 8))) -}}
+
+{{- /* The era's two ends, as positions in the whole feed. */ -}}
+{{- $first := -1 -}}
+{{- $last := -1 -}}
+{{- range $i, $p := $all -}}
+	{{- if eq $p.Type "cohost" -}}
+		{{- if lt $first 0 }}{{ $first = $i }}{{ end -}}
+		{{- $last = $i -}}
+	{{- end -}}
+{{- end -}}
 
 {{- $entries := slice -}}
 {{- $max := 0.0 -}}
-{{- $depth := 0 -}}
-{{- range $all -}}
+{{- range $i, $p := $all -}}
 	{{- $drift := 0.0 -}}
-	{{- if eq .Type "cohost" -}}
-		{{- $depth = add $depth 1 -}}
-		{{- $drift = math.Min 1.0 (div (float $depth) (float $fade)) -}}
+	{{- if and (ge $first 0) (ge $i $first) -}}
+		{{- $in := math.Min 1.0 (div (add (sub (math.Min $i $last) $first) 1) $fade) -}}
+		{{- $drift = $in -}}
+		{{- if gt $i $last -}}
+			{{- $drift = math.Max 0.0 (sub $in (div (sub $i $last) $fade)) -}}
+		{{- end -}}
 	{{- end -}}
-	{{- if in $shown . -}}
-		{{- $entries = $entries | append (dict "page" . "drift" $drift) -}}
+	{{- if in $shown $p -}}
+		{{- $entries = $entries | append (dict "page" $p "drift" $drift) -}}
 		{{- $max = math.Max $max $drift -}}
 	{{- end -}}
 {{- end -}}
 
-{{- return (dict "entries" $entries "max" $max) -}}
+{{- $wash := slice -}}
+{{- $span := math.Max 1 (sub (len $entries) 1) -}}
+{{- range $i, $e := $entries -}}
+	{{- $before := $e.drift -}}
+	{{- $after := $e.drift -}}
+	{{- if gt $i 0 }}{{ $before = (index $entries (sub $i 1)).drift }}{{ end -}}
+	{{- if lt (add $i 1) (len $entries) }}{{ $after = (index $entries (add $i 1)).drift }}{{ end -}}
+	{{- if or (ne $before $e.drift) (ne $after $e.drift) -}}
+		{{- $wash = $wash | append (dict "drift" $e.drift "at" (mul 100.0 (div (float $i) $span))) -}}
+	{{- end -}}
+{{- end -}}
+
+{{- return (dict "entries" $entries "max" $max "wash" $wash) -}}

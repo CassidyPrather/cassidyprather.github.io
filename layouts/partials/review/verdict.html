@@ -1,0 +1,55 @@
+{{- /*
+	What a review concluded, the way the site it was written on says it.
+
+	Steam has a thumb and a line of hours, Goodreads has five stars and a
+	phrase for each count, and VNDB has a vote out of ten. Each is a line of
+	plain text and inline SVG with a class per part, so the same markup reads
+	as a wirenook card when no skin is loaded — on a review inside the cohost
+	era, say — and as the site's own when one is.
+
+	Takes the review's page. The fields are the ones tools/reviews.py writes
+	under `review:` in front matter.
+*/ -}}
+{{- $r := .Params.review -}}
+{{- if eq $r.site "steam" -}}
+	<p class="review-verdict review-verdict-steam {{ cond $r.recommended "is-up" "is-down" }}">
+		{{/* A drawn thumb rather than Steam's icon image, so nothing on the
+			     page loads from their servers but the game art. Pointing down is
+			     the same thumb turned over in CSS. */}}
+		<svg class="review-thumb" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<path fill="currentColor" d="M2 10h4v11H2zM8 10l4.5-7c1.1 0 2 .9 1.8 2l-.7 4H20c1.1 0 2 .9 1.8 2l-1.4 8.4c-.2.9-1 1.6-1.9 1.6H8z"/>
+		</svg>
+		<span class="review-verdict-label">{{ cond $r.recommended "Recommended" "Not Recommended" }}</span>
+		{{ with $r.hours }}<span class="review-hours">{{ lang.FormatNumber 1 . }} hrs at review time</span>{{ end }}
+	</p>
+	{{ if or $r.early_access $r.free }}
+		<p class="review-flags">
+			{{ if $r.early_access }}<span class="review-flag review-flag-early">Early Access Review</span>{{ end }}
+			{{ if $r.free }}<span class="review-flag">Product received for free</span>{{ end }}
+		</p>
+	{{ end }}
+{{- else if eq $r.site "goodreads" -}}
+	<p class="review-verdict review-verdict-goodreads">
+		{{ with $r.author }}<span class="review-byline">by {{ . }}</span>{{ end }}
+		{{ with $r.rating }}
+			{{ $rating := . }}
+			<span class="review-stars" role="img" aria-label="Rated {{ $rating }} of 5 stars">
+				{{ range seq 5 }}
+					<svg class="review-star{{ if le . $rating }} is-on{{ end }}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+						<path fill="currentColor" d="M12 2l3.1 6.6 7 .7-5.3 4.7 1.5 7L12 17.3 5.7 21l1.5-7L2 9.3l7-.7z"/>
+					</svg>
+				{{ end }}
+			</span>
+			{{ with $r.rating_text }}<span class="review-verdict-label">{{ . }}</span>{{ end }}
+		{{ end }}
+	</p>
+{{- else if eq $r.site "vndb" -}}
+	<p class="review-verdict review-verdict-vndb">
+		{{ with $r.vote }}
+			<span class="review-vote">Vote: <strong>{{ if eq (math.Floor .) (float .) }}{{ int . }}{{ else }}{{ . }}{{ end }}</strong></span>
+		{{ end }}
+		{{ with $r.original_title }}<span class="review-original" {{ with $r.original_language }}lang="{{ . }}"{{ end }}>{{ . }}</span>{{ end }}
+		{{ with $r.developers }}<span class="review-byline">{{ delimit . ", " }}</span>{{ end }}
+		{{ with $r.released }}<span class="review-released">{{ . }}</span>{{ end }}
+	</p>
+{{- end -}}

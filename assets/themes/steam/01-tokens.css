@@ -1,0 +1,44 @@
+/* steam — design tokens.
+   Layers over ../wirenook/; load the whole of that theme first. Scoped to
+   .theme-steam on <body>, which a review's own page sets, and to the card the
+   blog feed draws for the same review, which is the other place this theme
+   is loaded (layouts/blog/list.html).
+
+   The palette is the Steam client's and the community site's: the navy the
+   store is printed on, the steel-blue text, the one bright blue. Names follow
+   what the colour does on Steam, so a value can be checked against a review
+   page with the inspector open.
+
+   No webfont. Steam sets Motiva Sans, its own licensed face, which is not
+   ours to serve; Arial is the fallback Steam itself names behind it. */
+.theme-steam,
+.blog-entry.entry-steam {
+  --st-font: "Motiva Sans", Arial, Helvetica, sans-serif;
+
+  /* The page, the review box on it, and the darker bar the thumb and verdict
+     sit in. */
+  --st-page: #1b2838;
+  --st-box: #16202d;
+  --st-bar: #0e141b;
+  --st-rule: rgba(255, 255, 255, 0.08);
+
+  /* Text, brightest first. The verdict line, the review body, and the small
+     print (hours, dates). Measured on --st-box: 10.9:1, 7.7:1 and 5.6:1;
+     the last is 5.1:1 at the lighter top of the box's gradient. */
+  --st-head: #c6d4df;
+  --st-text: #acb2b8;
+  --st-muted: #8f98a0;
+
+  /* The blue. Links, the thumb up, the hover on everything. 8.1:1. */
+  --st-blue: #66c0f4;
+  --st-blue-hot: #ffffff;
+
+  /* A thumb down is the same icon in Steam's warning orange. 5.2:1. */
+  --st-down: #d9773d;
+
+  /* The early access tag, in the store's "new" green. 9.1:1. */
+  --st-green: #a4d007;
+
+  /* Spoilers are a black bar until hovered. */
+  --st-spoiler: #000000;
+}

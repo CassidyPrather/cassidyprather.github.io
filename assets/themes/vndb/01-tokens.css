@@ -1,0 +1,45 @@
+/* vndb — design tokens.
+   Layers over ../wirenook/; load the whole of that theme first. Scoped to
+   .theme-vndb on <body>, which a review's own page sets, and to the card the
+   blog feed draws for the same review, which is the other place this theme
+   is loaded (layouts/blog/list.html).
+
+   The palette is VNDB's default skin, "angel", read out of the custom
+   properties at the top of its stylesheet; the names here are theirs with a
+   prefix, so a value can be checked against the source it came from.
+
+   Two of their values are moved, both for the same reason. Their --boxtitle
+   (#258) is the colour of every heading on the site and their --grayedout
+   (#37a) the colour of the small print, and on their own box colour those
+   measure 2.4:1 and 3.8:1. The lifted versions below keep the hue and clear
+   the bar. #258 is kept for the borders, which mark out boxes the text
+   already separates and carry no information of their own, and which are
+   most of what makes it look like VNDB.
+
+   No webfont. VNDB names Tahoma for text and Futura for titles and serves
+   neither, so it looks the same here as it does there: whatever the reader
+   has. */
+.theme-vndb,
+.blog-entry.entry-vndb {
+  --vn-font: Tahoma, Arial, sans-serif;
+  --vn-title-font: Futura, "Century Gothic", "Century New Gothic", Arial, sans-serif;
+
+  /* --bodybg, and --boxbg as it lands on it: their box is translucent
+     rgba(7, 28, 48, 0.737) over black, which is the --blendbg they declare
+     for exactly this. */
+  --vn-page: #000000;
+  --vn-box: #051523;
+  --vn-tab: #001122;
+  --vn-border: #225588;
+
+  /* --maintext and --link. On --vn-box: 13.6:1 and 8.7:1. */
+  --vn-text: #dddddd;
+  --vn-link: #77bbdd;
+
+  /* --boxtitle and --grayedout, lifted (see above). 6.7:1 and 5.9:1. */
+  --vn-title: #6f9fd6;
+  --vn-muted: #6b95c4;
+
+  /* --standout, for the vote. 4.9:1. */
+  --vn-standout: #ee4444;
+}

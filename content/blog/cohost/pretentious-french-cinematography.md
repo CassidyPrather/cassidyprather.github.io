@@ -3,6 +3,7 @@ title: "Pretentious French Cinematography"
 date: 2024-04-29T00:00:00-07:00
 type: cohost
 draft: true
+tags: ["review"]
 cohost:
   id: 5846770
   url: "https://cohost.org/CassidyCo/post/5846770-pretentious-french-c/59cf4dba3dcc4de0bc6f94fb64033b3d"

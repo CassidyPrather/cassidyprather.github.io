@@ -1,0 +1,15 @@
+{{- /*
+	A review's card on the blog feed, inside the <article> list.html opens.
+
+	The review is cut down to its opening few lines rather than shown whole.
+	There are a couple of hundred of these interleaved with the posts, and the
+	feed is one page; at full length they would bury everything written here.
+	`truncate` is HTML-aware, so a cut never leaves a tag open, and a spoiler
+	that falls inside the excerpt stays a spoiler.
+*/ -}}
+{{- $excerpt := .Content | truncate 420 -}}
+{{ partial "review/head.html" (dict "page" . "card" true) }}
+<div class="entry-body">{{ $excerpt }}</div>
+{{ if ne $excerpt .Content }}
+	<p class="entry-more"><a href="{{ .RelPermalink }}">Read more</a></p>
+{{ end }}

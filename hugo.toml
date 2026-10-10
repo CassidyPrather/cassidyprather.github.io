@@ -3,10 +3,19 @@ languageCode = "en"
 title = "wirenook"
 enableRobotsTXT = true
 
-# Skip the unused taxonomies (tags/categories) to keep the published site to
-# just the pages we author. The feed is off by default too ([outputs] below);
-# the blog section opts back in via its front matter.
-disableKinds = ["taxonomy", "term"]
+# One taxonomy, and only its term pages. Tags exist so the blog can gather the
+# posts that are reviews -- every post tools/reviews.py imports, plus the
+# hand-written ones tagged to match -- onto one page, /blog/tags/review/. The
+# page listing every tag is left off ("taxonomy") because there is one tag.
+#
+# A term page is a blog feed with a filter on it, so it is typed "blog" and
+# rendered by layouts/blog/list.html rather than a layout of its own; the
+# cascade at the bottom of this file does that. Its words live in
+# content/tags/<term>/_index.md. Categories stay off.
+#
+# The feed is off by default ([outputs] below); the blog section opts back in
+# via its front matter, and a term page has no feed of its own.
+disableKinds = ["taxonomy"]
 
 # Publish future-dated posts immediately — a timestamp a few hours ahead
 # should never silently drop a post from a deploy.
@@ -28,9 +37,19 @@ buildFuture = true
 # their file.
 enableGitInfo = true
 
+# The one taxonomy disableKinds above leaves standing, and where its pages go:
+# under /blog/, since a tag's page is a filtered blog feed.
+[taxonomies]
+  tag = "tags"
+
+[permalinks]
+  [permalinks.term]
+    tags = "/blog/tags/:slug/"
+
 [outputs]
   home = ["html"]
   section = ["html"]
+  term = ["html"]
 
 # CI passes --baseURL from the Pages configuration step, so the value above
 # is only a fallback for local builds.
@@ -92,6 +111,12 @@ enableGitInfo = true
 
 [markup.goldmark.renderer]
   unsafe = true
+
+# Every term page wears the blog feed. See the taxonomy note at the top.
+[[cascade]]
+  type = "blog"
+  [cascade._target]
+    kind = "term"
 
 # design/ is the working art library: ~800 MB of Git LFS sources that the site
 # deliberately does not publish. The press kit on /style/ offers a handful of

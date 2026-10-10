@@ -1,0 +1,41 @@
+name: Reviews
+
+# How far the posts under content/blog/reviews/ have fallen behind the Steam,
+# Goodreads and VNDB accounts they mirror. Report only: this never writes a
+# post or opens a pull request. Pulling is done by hand, so the result can be
+# read as a diff before it is committed -- see tools/reviews.py.
+#
+# The count lands as a warning on the run and a table in its summary. A run
+# goes red only when the script itself fails (a site changed its markup, or
+# would not answer), which is the case that needs looking at before the next
+# manual pull rather than after it.
+
+on:
+  schedule:
+    # Weekly, Monday morning Pacific. Off the hour so it isn't queued behind
+    # everyone else's.
+    - cron: "23 15 * * 1"
+  # And after anything that could change the answer, so a fresh pull reads
+  # back as zero behind.
+  push:
+    branches: ["main"]
+    paths:
+      - "content/blog/reviews/**"
+      - "data/reviews.toml"
+      - "tools/reviews.py"
+      - ".github/workflows/reviews.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  behind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Standard library only, on the runner's own Python.
+      - name: Compare the posts with their sources
+        run: python3 tools/reviews.py check --github

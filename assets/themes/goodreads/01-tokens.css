@@ -1,0 +1,44 @@
+/* goodreads — design tokens.
+   Layers over ../wirenook/; load the whole of that theme first. Scoped to
+   .theme-goodreads on <body>, which a review's own page sets, and to the card
+   the blog feed draws for the same review, which is the other place this
+   theme is loaded (layouts/blog/list.html).
+
+   The palette is Goodreads' long-running one, the one the reviews here were
+   written under: cream paper, a brown that stands in for black in the
+   headings, the teal every link on the site is, and the orange of the stars.
+
+   No webfont. Goodreads loads Merriweather and Lato from its own CDN; both
+   are open fonts, but this site serves only its own two faces, so the stacks
+   name them for the reader who has them installed and fall back to the
+   nearest system face — Georgia for the serif, which is what Goodreads names
+   behind Merriweather itself. */
+.theme-goodreads,
+.blog-entry.entry-goodreads {
+  --gr-serif: Merriweather, Georgia, "Times New Roman", serif;
+  --gr-sans: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* The cream the site is printed on, the white of a review box, and the
+     beige of its header bar. */
+  --gr-page: #f9f7f4;
+  --gr-box: #ffffff;
+  --gr-band: #f4f1ea;
+  --gr-rule: #d8d8d8;
+
+  /* Ink. Body text, the brown of titles, and the grey of the small print.
+     On --gr-box: 17.8:1, 15.1:1 and 5.7:1; the last
+     is 5.4:1 on the cream. */
+  --gr-text: #181818;
+  --gr-brown: #382110;
+  --gr-muted: #666666;
+
+  /* Links, and their hover. 7.1:1 and 12.5:1. */
+  --gr-link: #00635d;
+  --gr-link-hot: #003b37;
+
+  /* The stars. Lit, and the grey of an unlit one. Graphics rather than text,
+     so the bar is 3:1, and lit ones clear it at 3.0:1. The rating is in
+     the stars' accessible name too, so nothing rests on telling them apart. */
+  --gr-star: #e87400;
+  --gr-star-off: #c8c8c8;
+}

@@ -1,0 +1,174 @@
+/* vndb — the skin itself.
+
+   A review as VNDB prints one: a flat navy box with a hairline blue border on
+   a black page, small Tahoma text, the title in Futura, and the vote set off
+   on its own in bold. Two surfaces wear it and every rule below names both —
+   the review's own page (.review-single on a .theme-vndb page) and its card
+   on the blog feed (.blog-entry.entry-vndb).
+
+   The structure under it is wirenook's (themes/wirenook/07-blog.css, the
+   reviews section); this file only re-dresses it. Both selectors are two
+   classes deep, which is what lets them win over blog-drift.css, linked
+   before this on the feed and re-pointing the same properties on every card
+   at one class. */
+
+/* ---- the box ---------------------------------------------------------- */
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) {
+  /* Wirenook's magenta hover and near-black focus ring are both lost on
+     navy; VNDB's own hover is a dotted underline in the text colour. */
+  --link-hover: var(--vn-text);
+  --link-active: var(--vn-text);
+  --focus-ring: var(--vn-link);
+
+  border: 1px solid var(--vn-border);
+  border-radius: 0;
+  background: var(--vn-box);
+  box-shadow: none;
+  color: var(--vn-text);
+  font-family: var(--vn-font);
+}
+
+/* The page is VNDB's black, with the box on it. */
+.theme-vndb .review-single {
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  background: var(--vn-page);
+}
+
+/* ---- the head ---------------------------------------------------------
+   VNDB's review page is a two-column table, labels right-aligned on the left;
+   at this width that is the cover's column instead, with the title and vote
+   beside it. */
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-head {
+  border: 1px solid var(--vn-border);
+  background: var(--vn-box);
+  padding: 0.6rem;
+  margin-bottom: 0;
+}
+
+.blog-entry.entry-vndb .review-head {
+  border: 0;
+  padding: 0;
+  margin-bottom: 0.75rem;
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-cover {
+  width: clamp(4rem, 18%, 8rem);
+  border: 1px solid var(--vn-border);
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) :is(.entry-title, .review-item) {
+  margin-bottom: 0.4rem;
+  color: var(--vn-title);
+  font-family: var(--vn-title-font);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) :is(.entry-title, .review-item) a {
+  color: var(--vn-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+/* VNDB's hover: a dotted underline in the text colour, drawn as a border so
+   it sits where theirs does. */
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) :is(.entry-title, .review-item, .post-body, .entry-body) a:hover {
+  border-bottom: 1px dotted var(--vn-text);
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-verdict-vndb {
+  gap: 0.2rem 0.75rem;
+  color: var(--vn-muted);
+  font-size: 0.82rem;
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-vote {
+  color: var(--vn-text);
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-vote strong {
+  color: var(--vn-standout);
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-original {
+  flex-basis: 100%;
+  color: var(--vn-text);
+}
+
+/* ---- the review -------------------------------------------------------- */
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) :is(.post-body, .entry-body) {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--vn-text);
+  font-family: var(--vn-font);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.theme-vndb .review-single .post-body {
+  border: 1px solid var(--vn-border);
+  border-top: 0;
+  padding: 0.75rem;
+  background: var(--vn-box);
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) :is(.post-body, .entry-body) a {
+  border-bottom: 1px solid transparent;
+  color: var(--vn-link);
+  text-decoration: none;
+}
+
+/* VNDB's [quote]: a dotted rule down the left, in the small-print colour. */
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-text blockquote {
+  margin: 0.4em 0.75em;
+  padding: 0 0.4em;
+  border-left: 1px dotted var(--vn-border);
+  color: var(--vn-muted);
+}
+
+/* A black bar, as theirs is, with their border round it so it can be told
+   from the box it sits in. */
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .review-spoiler {
+  outline: 1px solid var(--vn-border);
+  background: #000000;
+}
+
+/* ---- underneath ------------------------------------------------------- */
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) :is(.entry-meta, .post-meta) {
+  border: 0;
+  border-top: 1px solid var(--vn-border);
+  background: none;
+  color: var(--vn-muted);
+  font-family: var(--vn-font);
+  font-size: 0.78rem;
+}
+
+.theme-vndb .review-single .post-meta {
+  width: auto;
+  padding: 0.55rem 0 0;
+  border-top: 0;
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .entry-permalink {
+  border-color: var(--vn-border);
+  background: var(--vn-tab);
+  color: var(--vn-link);
+}
+
+:is(.theme-vndb .review-single, .blog-entry.entry-vndb) .entry-more a {
+  color: var(--vn-link);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+/* VNDB's tabs: boxed, bordered, the link colour on the darker tab fill. */
+.theme-vndb .review-single .review-links a {
+  border: 1px solid var(--vn-border);
+  padding: 0.25rem 0.75rem;
+  background: var(--vn-tab);
+  color: var(--vn-link);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
