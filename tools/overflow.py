@@ -86,7 +86,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
 
     from playwright.sync_api import Page
 
@@ -438,7 +438,7 @@ def _load(paths: list[Path]) -> dict[str, Finding]:
 
 
 @contextlib.contextmanager
-def _serving(root: Path) -> Iterator[str]:
+def _serving(root: Path) -> Generator[str, None, None]:
     """Serve a directory over loopback HTTP for the duration of the block.
 
     Loading over ``file://`` would change how relative URLs and the guestbook
