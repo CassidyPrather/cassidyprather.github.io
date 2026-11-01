@@ -4,4 +4,4 @@ title: "Reviews"
 slug: "review"
 ---
 
-Everything I've reviewed on Steam, Goodreads and VNDB, mirrored from where it was written, alongside the posts here that are reviews too.
+Everything I've reviewed on Steam, Goodreads and VNDB, mirrored from where it was written, alongside the posts here that are reviews too. The board game reviews came over from an old account in one go, so their dates are approximate.
