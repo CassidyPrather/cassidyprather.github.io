@@ -45,6 +45,12 @@
 .entry-title {
   margin-bottom: 0.4rem;
   font-size: 1.3rem;
+  /* One long word in a title sets the card's min-content width, and with it
+     the whole feed column's. "Cinematography" in the cohost-era Atkinson Bold
+     (blog-drift.css) is 276px at a 24px base font, which is wider than a
+     320px phone leaves the column; the feed only showed it once a new post
+     pushed that card past the halfway mark of the drift. */
+  overflow-wrap: anywhere;
 }
 
 .entry-body {
