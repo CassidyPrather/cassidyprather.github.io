@@ -105,8 +105,8 @@
 						{{ $label := .Title | default (.Date.Format "2 January 2006") }}
 						{{ $review := eq .Type "review" }}
 						{{/* A post that wears a sub-theme on its own page gets a card
-											     here in the same dress, the way /pages/ dresses the entries
-											     that lead to the VRChat pages. The wirenook posts' skins are
+											     here in the same dress, so it already looks like where it
+											     goes. The wirenook posts' skins are
 											     in the base theme, not the sub-theme: this page never loads
 											     one. The review sites' skins are the exception, linked in
 											     "head" above.

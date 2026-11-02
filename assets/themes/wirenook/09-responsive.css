@@ -144,6 +144,16 @@
     grid-template-columns: 1fr;
   }
 
+  /* One column, in source order: the archive is this site's own pages, so it
+     comes before the badges, which lead off it. */
+  .content-grid {
+    grid-template-areas:
+      "intro"
+      "socials"
+      "archive"
+      "badges";
+  }
+
   .rail-link {
     min-height: 3.7rem;
   }

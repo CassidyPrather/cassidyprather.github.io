@@ -1,10 +1,11 @@
 # wirenook
 
-The skin wirenook.net wears. Plain CSS in nine numbered files, meant to be
+The skin wirenook.net wears. Plain CSS in eight numbered files, meant to be
 concatenated in filename order — the numbers are the load order, not
 decoration. Later files re-point earlier ones at equal specificity, and
 `09-responsive.css` is nothing but overrides, so shuffling them breaks the
-cascade.
+cascade. There is no 08: it held the skins for a list of works the site no
+longer has, and closing the gap would rename a file for nothing.
 
 | File | What it holds |
 | --- | --- |
@@ -12,21 +13,19 @@ cascade.
 | `02-base.css` | element defaults: `html`, `body`, links, focus rings |
 | `03-backdrop.css` | `.page-shell` and the fixed decorative layers behind it |
 | `04-shell.css` | banner, layout grid, link rail, the index-window frame |
-| `05-widgets.css` | panels, socials, badges, webring, death clock, footer |
-| `06-pages.css` | licenses/archive lists, guestbook |
+| `05-widgets.css` | panels, socials, badges, the archive list, webring, death clock, footer |
+| `06-pages.css` | licenses list, section intros, guestbook |
 | `07-blog.css` | blog feed, post bodies, Markdown prose, code blocks |
-| `08-works.css` | per-work card skins (Amoeba, VRChat) |
 | `09-responsive.css` | the breakpoints and `prefers-reduced-motion` |
 
-Files 08 and 09 are the only ones tied to this site in particular, and 09 is
-still load-bearing for everything above it. A consumer that wants the shell
-without the Works cards can drop 08 and keep the rest.
+`09-responsive.css` is the one file tied to this site's own markup in
+particular, and it is still load-bearing for everything above it.
 
 ## Using it
 
 ```html
 <link rel="stylesheet" href="wirenook/01-tokens.css">
-<!-- ...through... -->
+<!-- ...through 07, then... -->
 <link rel="stylesheet" href="wirenook/09-responsive.css">
 ```
 

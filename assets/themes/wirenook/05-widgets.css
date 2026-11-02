@@ -1,18 +1,56 @@
+/* Named areas rather than auto-placement, because the archive is a short
+   list under the socials and the badges are a tall block beside both: placed
+   in source order, the archive took the badges' column and pushed them into a
+   row of their own. The source order is the reading order on a phone, where
+   09-responsive.css restacks these areas into one column. */
 .content-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    "intro intro"
+    "socials badges"
+    "archive badges";
   gap: 0.8rem;
 }
 
 .intro-panel,
 .link-card,
-.socials-panel {
+.socials-panel,
+.archive-panel {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);
 }
 
 .socials-panel {
+  grid-area: socials;
   padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+/* Same panel as the socials above it, holding the same kind of list as the
+   blog's highlights rail (.blog-highlights in 07-blog.css): a heading and
+   some links, nothing else. */
+.archive-panel {
+  grid-area: archive;
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.archive-panel h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+}
+
+.archive-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  font-family: Atkinson-Regular, arial, sans-serif;
+  line-height: 1.4;
+  /* A title is a handful of words in a column that can run under 200px wide
+     at a large default font; let one long word break rather than set the
+     panel's min-content width. */
+  overflow-wrap: anywhere;
 }
 
 .socials-list {
@@ -90,7 +128,7 @@
 }
 
 .intro-panel {
-  grid-column: 1 / -1;
+  grid-area: intro;
   /* Hug the poem's longest line rather than spanning the whole window;
      fit-content still allows wrapping when the column gets narrow. */
   width: fit-content;
@@ -126,6 +164,7 @@
 }
 
 .badge-card {
+  grid-area: badges;
   align-content: start;
   gap: 0.5rem;
   padding: 0.6rem;
