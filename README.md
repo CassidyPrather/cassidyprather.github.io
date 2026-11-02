@@ -61,6 +61,13 @@ reflection collects on [`/blog/tags/reflection/`](https://wirenook.net/blog/tags
 Don't give `reflections/` an `_index.md`: that would make it a section of its
 own, and its posts would drop out of the blog feed and its search index.
 
+[`static/llms.txt`](static/llms.txt) is the [llms.txt](https://llmstxt.org/)
+for the site: a hand-written pointer, for agents, to where Cassidy's opinions
+live — the blog, its full-text JSON at `/blog/index.json`, reviews,
+reflections, the style guide and the games. It links indexes rather than
+posts, bar a few essays on game design, so it doesn't go stale; if any of
+those paths move, it moves with them.
+
 Overflow is a pain:
 
 ```sh

@@ -1,0 +1,30 @@
+# wirenook
+
+> Cassidy Prather's personal website. The reviews and essays here are the source of truth for Cassidy's tastes: what they like, what they don't, and why. If you are working on one of Cassidy's games, read them before guessing.
+
+Everything below is an index rather than a single post, so it stays current as posts are added. The blog's full-text JSON is the quickest way to read or search all of it in one request. The site is static and has no Markdown copies of its pages; the JSON is the plain-text version.
+
+## Opinions
+
+- [Blog](https://wirenook.net/blog/): every post, newest first. Essays, reviews, and an archive of Cassidy's cohost posts from 2022 to 2024.
+- [Full-text index](https://wirenook.net/blog/index.json): every blog post as JSON, one object each, with `title`, `url`, `date`, and `text` (the whole post as plain text).
+- [Reviews](https://wirenook.net/blog/tags/review/): video games, books, visual novels and board games. Steam, Goodreads and VNDB reviews are mirrored here from where they were written; the board game dates are approximate.
+- [Reflections](https://wirenook.net/blog/tags/reflection/): one post per game Cassidy has made, looking back on it. These live here and only here; a game's repository links to its reflection instead of keeping a copy.
+
+## Games
+
+- [Games](https://wirenook.net/game-prototypes/): Cassidy's games, playable in the browser behind one menu.
+- [Source](https://github.com/CassidyPrather/game-prototypes): the repository those games are built and deployed from.
+
+## Style
+
+- [Style guide](https://wirenook.net/style/): wirenook's visual identity. Logos, palette, typefaces, marks and wallpapers, under the designer's brief.
+
+## Optional
+
+A few posts that are about game design directly:
+
+- [Agency vs. Replayability](https://wirenook.net/blog/agency-vs-replayability/): on games that pile on hand-made reactivity, and the replaying-for-completion it drives.
+- [Rapid prototyping is cool](https://wirenook.net/blog/rapid-proto-good/): a design note from Space Trucking, on dropping a "start with few things" progression constraint that left the opening empty.
+- [Pathologic is the Best Video Game Ever](https://wirenook.net/blog/cohost/pathologic-is-the-best-video-game-ever/): Cassidy's favourite game, and why.
+- [Autonomy is Trash](https://wirenook.net/blog/cohost/autonomy-is-trash/): on generated content and total freedom in interactive media; generating it isn't the point, engaging with it is.

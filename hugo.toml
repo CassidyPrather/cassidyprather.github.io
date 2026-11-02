@@ -125,6 +125,8 @@ enableGitInfo = true
     # the old path needs a redirect stub left behind in this repo
     # (layouts/_default/redirect.html): Pages does not redirect after a
     # rename, so every link to /game-prototypes/ would otherwise 404.
+    # static/llms.txt names the path too, being hand-written, and changes
+    # with it.
     url = "/game-prototypes/"
 
 [markup.goldmark.renderer]
