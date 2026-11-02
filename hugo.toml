@@ -109,6 +109,21 @@ enableGitInfo = true
     # post is just a cut. layouts/partials/blog/drift.html reads this.
     archiveFade = 8
 
+  [params.games]
+    # Where the games are played. Nothing in this repo serves that path: it
+    # belongs to the CassidyPrather/game-prototypes repo, whose own Pages
+    # deploy lands it on this domain, so this is a link out of the site that
+    # happens to share a hostname. The home page's link rail and the cohost
+    # sidebar both read it here, and use it as written rather than through
+    # relURL: the path is the other repo's, so it has no reason to move with
+    # this site's baseURL.
+    #
+    # If that repo is ever renamed to `games`, this line changes with it, and
+    # the old path needs a redirect stub left behind in this repo
+    # (layouts/_default/redirect.html): Pages does not redirect after a
+    # rename, so every link to /game-prototypes/ would otherwise 404.
+    url = "/game-prototypes/"
+
 [markup.goldmark.renderer]
   unsafe = true
 

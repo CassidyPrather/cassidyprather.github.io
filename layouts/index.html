@@ -3,9 +3,11 @@
 {{ define "main" }}
 <main class="layout-grid">
 	<nav class="link-rail" aria-label="Main links">
-		<a class="rail-link" href="{{ "pages/" | relURL }}" data-label="archive">
+		{{/* Out of the site and into the game-prototypes repo's own deploy, with
+		     nothing of ours in between; hugo.toml has the note on the path. */}}
+		<a class="rail-link" href="{{ site.Params.games.url }}" data-label="games">
 			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
-			<span>Works</span>
+			<span>Games</span>
 		</a>
 		<a class="rail-link" href="{{ "blog/" | relURL }}" data-label="blog">
 			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
