@@ -67,6 +67,14 @@
 					{{ with site.GetPage "/tags/review" }}
 						<a class="status-light" href="{{ .RelPermalink }}">Reviews</a>
 					{{ end }}
+					{{/* The reflections page is published from its _index.md before
+					     any reflection is, and a link to an empty feed is a link to
+					     nothing, so this one waits for the first post. */}}
+					{{ with site.GetPage "/tags/reflection" }}
+						{{ if .Pages }}
+							<a class="status-light" href="{{ .RelPermalink }}">Reflections</a>
+						{{ end }}
+					{{ end }}
 					<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
 				{{ end }}
 			</p>
@@ -170,6 +178,20 @@
 						<li>
 							<a href="{{ $blog.RelPermalink }}">This blog</a>
 							<span class="highlight-date">{{ len (where $.Pages "Type" "!=" "review") }} posts</span>
+						</li>
+					</ul>
+				</aside>
+			{{ else if and (eq .Kind "term") (eq .Data.Term "reflection") }}
+				{{/* Nor does the reflections page, and the one place worth pointing
+				     from a page of posts about games is the games. Left to the
+				     highlights below, it would find none and say something had gone
+				     wrong. */}}
+				<aside class="blog-highlights" aria-label="The games">
+					<h3>Games</h3>
+					<ul>
+						<li>
+							<a href="{{ site.Params.games.url }}">Play them</a>
+							<span class="highlight-date">{{ len .Pages }} {{ cond (eq (len .Pages) 1) "reflection" "reflections" }}</span>
 						</li>
 					</ul>
 				</aside>

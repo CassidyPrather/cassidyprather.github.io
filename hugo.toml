@@ -3,10 +3,13 @@ languageCode = "en"
 title = "wirenook"
 enableRobotsTXT = true
 
-# One taxonomy, and only its term pages. Tags exist so the blog can gather the
-# posts that are reviews -- every post tools/reviews.py imports, plus the
-# hand-written ones tagged to match -- onto one page, /blog/tags/review/. The
-# page listing every tag is left off ("taxonomy") because there is one tag.
+# One taxonomy, and only its term pages. Tags exist so the blog can gather two
+# kinds of post onto pages of their own: reviews -- every post
+# tools/reviews.py imports, plus the hand-written ones tagged to match -- on
+# /blog/tags/review/, and reflections on Cassidy's own games on
+# /blog/tags/reflection/ (the README has that convention). The page listing
+# every tag is left off ("taxonomy"): there are two, and the blog's topline
+# links each by name, the reflections from their first post on.
 #
 # A term page is a blog feed with a filter on it, so it is typed "blog" and
 # rendered by layouts/blog/list.html rather than a layout of its own; the
@@ -113,10 +116,10 @@ enableGitInfo = true
     # Where the games are played. Nothing in this repo serves that path: it
     # belongs to the CassidyPrather/game-prototypes repo, whose own Pages
     # deploy lands it on this domain, so this is a link out of the site that
-    # happens to share a hostname. The home page's link rail and the cohost
-    # sidebar both read it here, and use it as written rather than through
-    # relURL: the path is the other repo's, so it has no reason to move with
-    # this site's baseURL.
+    # happens to share a hostname. The home page's link rail, the cohost
+    # sidebar, and a reflection post and the reflections page all read it
+    # here, and use it as written rather than through relURL: the path is the
+    # other repo's, so it has no reason to move with this site's baseURL.
     #
     # If that repo is ever renamed to `games`, this line changes with it, and
     # the old path needs a redirect stub left behind in this repo

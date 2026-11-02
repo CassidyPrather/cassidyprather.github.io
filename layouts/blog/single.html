@@ -26,6 +26,15 @@
 				<article class="post-single">
 					<p class="post-meta">
 						<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 January 2006" }}</time>
+						{{/* A reflection is about a game you can play, so it says where,
+						     in the same chip as the date and no louder than it. `game`
+						     is the game's slug, and the README at the root of this repo
+						     has the convention; only its presence is read here, because
+						     the games share one menu at one address and there is no
+						     per-game path to send anyone to. */}}
+						{{ with .Params.game }}
+							<a class="post-play" href="{{ site.Params.games.url }}">Play it --&gt;</a>
+						{{ end }}
 					</p>
 					<div class="post-body">{{ .Content }}</div>
 				</article>

@@ -263,10 +263,22 @@
      this is the smallest text on the page set in the display face. So it
      gets a flat panel to sit on, the same chip the topline links use. */
   width: fit-content;
+  /* A reflection puts a second item in here (.post-play below), and the pair
+     is wider than a cover-screen phone at a large default font. */
+  flex-wrap: wrap;
   padding: 0.3rem 0.6rem;
   border: 1px solid var(--line);
   background: var(--panel-strong);
   color: var(--ink);
+}
+
+/* The "play it" link on a reflection. The chip already draws the surface, so
+   this only marks the seam between the date and the link: a rule in the same
+   faint ink the feed cards divide their meta row with. */
+.post-play {
+  padding-left: 0.55rem;
+  border-left: 1px dashed rgba(39, 20, 82, 0.25);
+  white-space: nowrap;
 }
 
 .post-body {
