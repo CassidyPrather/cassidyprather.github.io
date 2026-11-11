@@ -586,3 +586,30 @@ if (proseAsides.length) {
   addEventListener("resize", placeAsides);
   asideFloats.addEventListener("change", placeAsides);
 }
+
+// A reflection's game: the screenshot links to the game, and a click puts
+// the game itself where the screenshot was. A modified click still opens the
+// link as usual, in a tab of its own.
+document.querySelectorAll("[data-game-embed]").forEach((figure) => {
+  const preview = figure.querySelector("a");
+  preview?.addEventListener("click", (event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    const frame = document.createElement("iframe");
+    frame.src = preview.href;
+    frame.title = figure.dataset.gameEmbed;
+    frame.allow = "autoplay; fullscreen";
+    // The game reads keys off its canvas, so it gets focus straight away
+    // rather than after a second click. The games share this origin, so the
+    // canvas is reachable; if it isn't, the click into the frame still works.
+    frame.addEventListener("load", () => {
+      frame.focus();
+      try {
+        frame.contentDocument?.getElementById("glcanvas")?.focus();
+      } catch {
+        // Another origin: leave focus on the frame.
+      }
+    });
+    preview.replaceWith(frame);
+  });
+});

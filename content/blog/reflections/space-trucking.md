@@ -1,6 +1,7 @@
 ---
 title: "Space Trucking"
 date: 2026-11-10T23:01:00-07:00
+game: "space-trucking"
 tags: ["reflection"]
 ---
 

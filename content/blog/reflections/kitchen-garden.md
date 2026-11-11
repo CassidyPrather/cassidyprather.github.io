@@ -1,6 +1,7 @@
 ---
 title: "Kitchen Garden"
 date: 2026-11-10T23:04:00-07:00
+game: "kitchen-garden"
 tags: ["reflection"]
 ---
 

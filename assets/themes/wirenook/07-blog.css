@@ -287,6 +287,56 @@
   white-space: nowrap;
 }
 
+/* A reflection's game, at the top of the post: a screenshot standing in for
+   it until clicked, then the game in a frame of the same 4:3 box. The night
+   behind it is the games' own, so the frame doesn't flash the stripes while
+   the wasm loads. No wider than the games' own 800x600, so the screenshot is
+   never upscaled and a wide window still shows some of the post. */
+.post-game {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  max-width: 800px;
+  margin: 0 auto 1rem;
+  border: 1px solid var(--line);
+  background: #0b0c25;
+  box-shadow: 0 0.35rem 0.85rem var(--shadow);
+}
+
+.post-game-preview,
+.post-game img,
+.post-game iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.post-game-preview:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* The cue says what a click does, in the chip the post's date sits in. */
+.post-game-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--ink);
+  white-space: nowrap;
+  box-shadow: 0 0.2rem 0 rgba(109, 44, 149, 0.45);
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.post-game-preview:hover .post-game-cue,
+.post-game-preview:focus-visible .post-game-cue {
+  background: var(--link-hover);
+  color: var(--panel-strong);
+}
+
 .post-body {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: var(--panel);

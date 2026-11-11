@@ -1,6 +1,7 @@
 ---
 title: "AmoebaRL"
 date: 2026-11-10T23:00:00-07:00
+game: "amoeba"
 tags: ["reflection"]
 ---
 
