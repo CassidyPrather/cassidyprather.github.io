@@ -16,3 +16,12 @@ Well, actually, the puzzle at the end of the game was *okay*. It took me like 15
 Anyway, maybe this was a harsh test, but I still think there is a long road ahead before these things become competent at game development.
 
 In addition to the gameplay itself being poor, the visuals and audio are not good either.
+
+## Mitigations
+
+I am extremely hesitant to write any solid list of mitigations, as I'm sure they'll be 100% obsolete by this time next year.
+Still, for the sake of being thorough, a few things come to mind:
+
+- Need to provide at least a list of style references. Pinterest may be dead but there are plenty of alternatives.
+- Claude is addicted to synthetic noises and doesn't want to touch a sample library.
+- Claude is terrible at extrapolating taste on its own (well as of today)
