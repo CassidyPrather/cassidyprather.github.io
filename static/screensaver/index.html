@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wirenook screensaver</title>
+		<meta name="description" content="An animated wirenook screensaver: drifting glyphs, contour lines, a ticker and a clock. Space pauses, F goes fullscreen.">
+		<link rel="icon" href="../images/wirenook/link-charm.png">
+
+		<!--
+			A gift from the designer, made in Figma Make. The project as it was
+			delivered, React and Tailwind and all, is kept untouched in
+			design/wirenook/screensaver/ so it can go back into Figma Make; this
+			is the same page with the build step taken out. App.tsx, waves.ts
+			and index.css are transcribed here as plain script and style, and
+			the few Tailwind Preflight rules the design leans on are written
+			out at the top of the stylesheet. If the two ever disagree, the
+			design/ copy is the original.
+
+			The one deliberate difference: the original pulls Archivo Black and
+			Space Mono from Google Fonts, and this site requests nothing from
+			anyone else, so the faces are served from fonts/ beside this file
+			under their own OFL notices.
+		-->
+
+		<style>
+			@font-face {
+				font-family: "Archivo Black";
+				src: url("fonts/ArchivoBlack-Regular.ttf") format("truetype");
+				font-weight: 400;
+				font-display: swap;
+			}
+
+			@font-face {
+				font-family: "Space Mono";
+				src: url("fonts/SpaceMono-Regular.ttf") format("truetype");
+				font-weight: 400;
+				font-display: swap;
+			}
+
+			@font-face {
+				font-family: "Space Mono";
+				src: url("fonts/SpaceMono-Bold.ttf") format("truetype");
+				font-weight: 700;
+				font-display: swap;
+			}
+
+			/* What Tailwind's Preflight was doing for the original. */
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+				border: 0 solid;
+			}
+
+			html {
+				line-height: 1.5;
+				-webkit-text-size-adjust: 100%;
+			}
+
+			button {
+				font: inherit;
+				letter-spacing: inherit;
+				color: inherit;
+				background-color: transparent;
+				border-radius: 0;
+			}
+
+			svg {
+				display: block;
+			}
+
+			/* From here down, src/index.css as delivered. */
+			:root {
+				color: #f6f5d7;
+				background: #132f66;
+				font-family: "Space Mono", monospace;
+				font-synthesis: none;
+			}
+
+			html,
+			body {
+				width: 100%;
+				min-width: 320px;
+				height: 100%;
+				margin: 0;
+				overflow: hidden;
+			}
+
+			button {
+				cursor: pointer;
+			}
+
+			.screensaver {
+				--ink: #15164e;
+				--blue: #56a5d9;
+				--cyan: #9ef8ed;
+				--cream: #fffbd0;
+				--pink: #ff6de2;
+				position: relative;
+				isolation: isolate;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				background:
+					radial-gradient(circle at 50% 46%, rgba(152, 248, 237, 0.24), transparent 26%),
+					radial-gradient(circle at 15% 10%, rgba(255, 109, 226, 0.16), transparent 25%),
+					linear-gradient(145deg, #163a75 0%, #367db4 43%, #494395 70%, #4a2379 100%);
+			}
+
+			.screensaver::after {
+				position: absolute;
+				z-index: 20;
+				inset: 0;
+				pointer-events: none;
+				content: "";
+				opacity: 0.2;
+				background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+				mix-blend-mode: soft-light;
+			}
+
+			.aurora {
+				position: absolute;
+				z-index: -4;
+				width: 85vmax;
+				height: 85vmax;
+				top: -58vmax;
+				left: 7vw;
+				border: 10vmax solid rgba(255, 251, 208, 0.12);
+				border-radius: 50%;
+				box-shadow:
+					0 0 10vmax rgba(158, 248, 237, 0.25),
+					inset 0 0 10vmax rgba(255, 109, 226, 0.15);
+				animation: breathe 9s ease-in-out infinite;
+			}
+
+			.topography {
+				position: absolute;
+				z-index: -3;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0.22;
+				filter: drop-shadow(0 0 8px rgba(255, 109, 226, 0.5));
+			}
+
+			.topography path {
+				fill: none;
+				stroke: var(--cream);
+				stroke-width: 1.4;
+				vector-effect: non-scaling-stroke;
+			}
+
+			.topography path:nth-child(3n) {
+				stroke: var(--pink);
+			}
+
+			.scanlines {
+				position: absolute;
+				z-index: -2;
+				inset: 0;
+				opacity: 0.14;
+				background: repeating-linear-gradient(to bottom, transparent 0 4px, #10133e 5px 7px);
+				animation: scan 11s linear infinite;
+			}
+
+			.perspective-grid {
+				position: absolute;
+				z-index: -1;
+				left: -25%;
+				right: -25%;
+				bottom: -31%;
+				height: 62%;
+				transform: perspective(460px) rotateX(62deg);
+				transform-origin: center top;
+				border-top: 2px solid rgba(158, 248, 237, 0.7);
+				background-image:
+					linear-gradient(rgba(158, 248, 237, 0.45) 1px, transparent 1px),
+					linear-gradient(90deg, rgba(158, 248, 237, 0.45) 1px, transparent 1px);
+				background-size: 6vmin 4vmin;
+				filter: drop-shadow(0 0 8px rgba(158, 248, 237, 0.65));
+				animation: grid-move 3s linear infinite;
+			}
+
+			.brand {
+				position: absolute;
+				z-index: 10;
+				top: clamp(20px, 4vw, 52px);
+				left: clamp(20px, 4vw, 60px);
+				display: flex;
+				align-items: center;
+				gap: 14px;
+			}
+
+			.brand-mark {
+				display: grid;
+				width: 48px;
+				height: 48px;
+				place-items: center;
+				border: 2px solid var(--cream);
+				color: var(--cream);
+				font-family: "Archivo Black", sans-serif;
+				font-size: 26px;
+				transform: rotate(-4deg);
+				box-shadow: 5px 5px 0 var(--pink);
+			}
+
+			.brand p {
+				margin: 0;
+			}
+
+			.brand-name {
+				color: var(--cream);
+				font-family: "Archivo Black", sans-serif;
+				font-size: clamp(15px, 1.6vw, 24px);
+				letter-spacing: -0.06em;
+			}
+
+			.brand-sub {
+				margin-top: 4px !important;
+				color: var(--cyan);
+				font-size: 9px;
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+			}
+
+			.status {
+				position: absolute;
+				z-index: 10;
+				top: clamp(28px, 4.5vw, 62px);
+				right: clamp(20px, 4vw, 60px);
+				display: flex;
+				align-items: center;
+				gap: 9px;
+				color: var(--cream);
+				font-size: 9px;
+				letter-spacing: 0.2em;
+			}
+
+			.status-dot {
+				width: 7px;
+				height: 7px;
+				border-radius: 50%;
+				background: var(--pink);
+				box-shadow: 0 0 10px var(--pink);
+				animation: blink 1.5s ease-in-out infinite;
+			}
+
+			.ticker {
+				position: absolute;
+				z-index: 5;
+				right: 0;
+				bottom: 15%;
+				left: 0;
+				overflow: hidden;
+				padding: 9px 0;
+				border-block: 1px solid rgba(255, 251, 208, 0.35);
+				color: var(--cream);
+				background: rgba(20, 22, 78, 0.35);
+				font-size: clamp(10px, 1vw, 13px);
+				font-weight: 700;
+				letter-spacing: 0.22em;
+				white-space: nowrap;
+			}
+
+			.ticker-track {
+				display: flex;
+				width: max-content;
+				animation: ticker 40s linear infinite;
+			}
+
+			.ticker-group {
+				display: flex;
+				flex-shrink: 0;
+				align-items: center;
+			}
+
+			.ticker-group span {
+				display: flex;
+				align-items: center;
+			}
+
+			.ticker-group i {
+				width: 6px;
+				height: 6px;
+				margin: 0 2.2em;
+				background: var(--pink);
+				transform: rotate(45deg);
+			}
+
+			.blobs {
+				position: absolute;
+				z-index: 1;
+				inset: 0;
+				filter: blur(60px);
+			}
+
+			.blob {
+				position: absolute;
+				border-radius: 50%;
+				mix-blend-mode: screen;
+			}
+
+			.blob-a {
+				top: 18%;
+				left: 12%;
+				width: 42vmax;
+				height: 34vmax;
+				background: rgba(158, 248, 237, 0.55);
+				animation: drift-a 22s ease-in-out infinite alternate;
+			}
+
+			.blob-b {
+				top: 30%;
+				right: 6%;
+				width: 40vmax;
+				height: 38vmax;
+				background: rgba(255, 109, 226, 0.4);
+				animation: drift-b 26s ease-in-out infinite alternate;
+			}
+
+			.blob-c {
+				bottom: 6%;
+				left: 34%;
+				width: 36vmax;
+				height: 28vmax;
+				background: rgba(130, 90, 255, 0.55);
+				animation: drift-c 30s ease-in-out infinite alternate;
+			}
+
+			.glyphs {
+				position: absolute;
+				z-index: 4;
+				inset: 0;
+			}
+
+			.glyph {
+				position: absolute;
+				background: var(--cream);
+				opacity: 0.9;
+				filter: drop-shadow(0 0 22px rgba(158, 248, 237, 0.75));
+			}
+
+			.glyph-square {
+				top: 30%;
+				left: 18%;
+				width: clamp(50px, 8vw, 120px);
+				aspect-ratio: 1;
+				animation: float-a 17s ease-in-out infinite alternate;
+			}
+
+			.glyph-circle {
+				top: 44%;
+				left: 52%;
+				width: clamp(60px, 10vw, 150px);
+				aspect-ratio: 1;
+				border-radius: 50%;
+				animation: float-b 21s ease-in-out infinite alternate;
+			}
+
+			.glyph-triangle {
+				top: 26%;
+				right: 16%;
+				width: clamp(56px, 9vw, 135px);
+				aspect-ratio: 1.15;
+				clip-path: polygon(0 0, 100% 0, 50% 100%);
+				animation: float-c 19s ease-in-out infinite alternate;
+			}
+
+			.controls {
+				position: absolute;
+				z-index: 30;
+				right: clamp(20px, 4vw, 60px);
+				bottom: clamp(18px, 3vw, 40px);
+				left: clamp(20px, 4vw, 60px);
+				display: flex;
+				align-items: flex-end;
+				justify-content: space-between;
+			}
+
+			.time {
+				color: var(--cream);
+				font-family: "Archivo Black", sans-serif;
+				font-size: clamp(25px, 3.2vw, 46px);
+				letter-spacing: -0.08em;
+				text-shadow: 4px 4px 0 var(--ink);
+			}
+
+			.control-actions {
+				display: flex;
+				gap: 8px;
+				opacity: 0.48;
+				transition: opacity 180ms ease;
+			}
+
+			.control-actions:hover {
+				opacity: 1;
+			}
+
+			.control-actions button {
+				padding: 9px 11px;
+				border: 1px solid rgba(255, 251, 208, 0.6);
+				color: var(--cream);
+				background: rgba(18, 19, 66, 0.35);
+				font-family: "Space Mono", monospace;
+				font-size: 8px;
+				letter-spacing: 0.12em;
+				backdrop-filter: blur(5px);
+			}
+
+			.control-actions button:hover {
+				color: var(--ink);
+				background: var(--cream);
+			}
+
+			.control-actions span {
+				margin-left: 8px;
+				opacity: 0.55;
+			}
+
+			.is-paused *,
+			.is-paused *::before,
+			.is-paused *::after {
+				animation-play-state: paused !important;
+			}
+
+			@keyframes breathe {
+				50% {
+					transform: scale(1.06) translateY(3%);
+					opacity: 0.72;
+				}
+			}
+
+			@keyframes scan {
+				to {
+					background-position-y: 70px;
+				}
+			}
+
+			@keyframes grid-move {
+				to {
+					background-position-y: 4vmin;
+				}
+			}
+
+			@keyframes blink {
+				50% {
+					opacity: 0.3;
+				}
+			}
+
+			@keyframes ticker {
+				to {
+					transform: translateX(-50%);
+				}
+			}
+
+			@media (max-width: 640px) {
+
+				.brand-sub,
+				.status,
+				.control-actions span {
+					display: none;
+				}
+
+				.ticker {
+					bottom: 18%;
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+
+				*,
+				*::before,
+				*::after {
+					animation-duration: 1ms !important;
+					animation-iteration-count: 1 !important;
+				}
+			}
+
+			@keyframes drift-a {
+				to {
+					transform: translate(18vw, 10vh) scale(1.2);
+				}
+			}
+
+			@keyframes drift-b {
+				to {
+					transform: translate(-20vw, -8vh) scale(0.85);
+				}
+			}
+
+			@keyframes drift-c {
+				to {
+					transform: translate(-14vw, -12vh) scale(1.25);
+				}
+			}
+
+			@keyframes float-a {
+				to {
+					transform: translate(24vw, 14vh) rotate(90deg);
+				}
+			}
+
+			@keyframes float-b {
+				to {
+					transform: translate(-22vw, -10vh);
+				}
+			}
+
+			@keyframes float-c {
+				to {
+					transform: translate(-18vw, 24vh) rotate(-60deg);
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<main class="screensaver" aria-label="Wirenook animated screensaver" data-screensaver>
+			<div class="aurora"></div>
+			<svg class="topography" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true" data-topography></svg>
+			<div class="scanlines"></div>
+			<div class="perspective-grid"></div>
+
+			<header class="brand">
+				<span class="brand-mark">W</span>
+				<div>
+					<p class="brand-name">WIRENOOK.NET</p>
+					<p class="brand-sub">Cassidy Co. / Signal 12</p>
+				</div>
+			</header>
+
+			<div class="status">
+				<span class="status-dot"></span>
+				DREAM MODE
+			</div>
+
+			<div class="blobs" aria-hidden="true">
+				<span class="blob blob-a"></span>
+				<span class="blob blob-b"></span>
+				<span class="blob blob-c"></span>
+			</div>
+
+			<div class="glyphs" aria-hidden="true">
+				<span class="glyph glyph-square"></span>
+				<span class="glyph glyph-circle"></span>
+				<span class="glyph glyph-triangle"></span>
+			</div>
+
+			<div class="ticker" aria-hidden="true">
+				<div class="ticker-track" data-ticker></div>
+			</div>
+
+			<footer class="controls">
+				<div class="time" aria-label="Current time" data-time></div>
+				<div class="control-actions">
+					<button type="button" data-pause>PAUSE <span>SPACE</span></button>
+					<button type="button" data-fullscreen>FULLSCREEN <span>F</span></button>
+				</div>
+			</footer>
+		</main>
+
+		<script>
+			(() => {
+				const root = document.querySelector("[data-screensaver]");
+				const svg = root.querySelector("[data-topography]");
+				const pauseButton = root.querySelector("[data-pause]");
+				const timeLabel = root.querySelector("[data-time]");
+				const ticker = root.querySelector("[data-ticker]");
+				const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+				// waves.ts: a traveling swell plus a softer ripple keeps the
+				// contours fluid, not rigid.
+				const wavePath = (index, seconds) => {
+					const baseline = 130 + index * 38;
+					const points = [];
+					for (let x = -80; x <= 1520; x += 16) {
+						const y =
+							baseline +
+							Math.sin(x * 0.0055 - seconds * 0.65 + index * 0.13) * 54 +
+							Math.sin(x * 0.0105 - seconds * 0.95 + index * 0.19) * 15;
+						points.push(`${x},${y.toFixed(2)}`);
+					}
+					return `M${points.join(" L")}`;
+				};
+
+				const paths = Array.from({ length: 15 }, (_, index) => {
+					const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+					path.setAttribute("d", wavePath(index, 0));
+					svg.append(path);
+					return path;
+				});
+
+				// Two identical groups, so translating the track by -50% loops.
+				const tickerText = ["WIRENOOK.NET", "HOP, BUT NEVER STOP", "CASSIDY CO.", "KEEP MOVING"];
+				for (let copy = 0; copy < 2; copy++) {
+					const group = document.createElement("div");
+					group.className = "ticker-group";
+					for (const item of tickerText) {
+						const span = document.createElement("span");
+						span.append(item, document.createElement("i"));
+						group.append(span);
+					}
+					ticker.append(group);
+				}
+
+				let paused = false;
+				let elapsed = 0;
+				let previous = null;
+				let frame = 0;
+
+				const draw = (timestamp) => {
+					if (previous !== null) elapsed += (timestamp - previous) / 1000;
+					previous = timestamp;
+					paths.forEach((path, index) => path.setAttribute("d", wavePath(index, elapsed)));
+					frame = requestAnimationFrame(draw);
+				};
+
+				const syncMotion = () => {
+					cancelAnimationFrame(frame);
+					previous = null;
+					if (!paused && !motion.matches) frame = requestAnimationFrame(draw);
+				};
+
+				const setPaused = (value) => {
+					paused = value;
+					root.classList.toggle("is-paused", paused);
+					pauseButton.firstChild.nodeValue = paused ? "PLAY " : "PAUSE ";
+					syncMotion();
+				};
+
+				const tick = () => {
+					timeLabel.textContent = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+				};
+
+				const toggleFullscreen = async () => {
+					if (document.fullscreenElement) await document.exitFullscreen();
+					else await document.documentElement.requestFullscreen?.();
+				};
+
+				tick();
+				setInterval(tick, 1000);
+				syncMotion();
+				motion.addEventListener("change", syncMotion);
+
+				pauseButton.addEventListener("click", () => setPaused(!paused));
+				root.querySelector("[data-fullscreen]").addEventListener("click", toggleFullscreen);
+				window.addEventListener("keydown", (event) => {
+					if (event.code === "Space") {
+						event.preventDefault();
+						setPaused(!paused);
+					}
+					if (event.key.toLowerCase() === "f") {
+						void document.documentElement.requestFullscreen?.();
+					}
+				});
+			})();
+		</script>
+	</body>
+
+</html>

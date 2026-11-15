@@ -1,0 +1,10 @@
+{
+  "description": "Create a personalized screensaver from your chosen images and ideas, adding a relaxing visual display to any screen.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

@@ -5,6 +5,7 @@
 #       pipeline and gets width/height; anything else is linked verbatim)
 # href  the file a click downloads, when it isn't the preview itself
 # alt   alt text; also the only caption a card carries
+# page  href is a page to open, not a file to download
 
 # The triangle lockup. `main` is the hero; the lockups swap into it. Previews
 # are white on black grayscale, so the page screens them onto its stage; the
@@ -144,6 +145,16 @@ src = "images/wirenook/wallpaper/desktop/nightmode-1.png"
 href = "press-kit/wallpaper/desktop/nightmode-1.png"
 size = "2560×1440"
 alt = "Night sky, Poly Bunyn in the moon"
+
+# A page rather than a file: `page` opens it instead of downloading it. The
+# preview is a still of it; the Figma Make source is design/wirenook/screensaver/.
+[[walls]]
+kind = "desktop"
+src = "images/wirenook/wallpaper/desktop/screensaver.png"
+href = "screensaver/"
+page = true
+size = "live"
+alt = "Animated: cream square, circle and triangle drift over contour lines and a neon grid, ticker, clock"
 
 [[walls]]
 kind = "phone"

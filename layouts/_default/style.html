@@ -171,7 +171,7 @@
 						<div class="kit-wall-row kit-wall-{{ $kind }}">
 							{{ range where $kit.walls "kind" $kind }}
 								{{ $href := or .href .src | relURL }}
-								<a class="kit-wall" href="{{ $href }}" download>
+								<a class="kit-wall" href="{{ $href }}"{{ if not .page }} download{{ end }}>
 									{{ partial "responsive-image.html" (dict
 										"src" .src
 										"widths" (cond (eq $kind "phone") (slice 200 400) (slice 480 960))
