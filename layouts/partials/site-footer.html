@@ -1,6 +1,6 @@
 <footer class="site-footer">
 	<p>
-		<a href="{{ "licenses/" | relURL }}">Licenses</a> | <a href="{{ "style/" | relURL }}">Press kit</a> | ✨ <a href="https://vgel.me/fiction/gas-town/">thanks claube</a>
+		<a href="{{ "licenses/" | relURL }}">Licenses</a> | <a href="{{ "style/" | relURL }}">Press kit</a> | ✨ <a href="https://vgel.me/fiction/gas-town/">thanks {{ partial "mode/only.html" (dict "page" . "mode" "wet" "content" "claube") }}{{ partial "mode/only.html" (dict "page" . "mode" "dry" "content" "claude") }}</a>
 	</p>
 </footer>
 

@@ -4,4 +4,7 @@ title: "wirenook"
 # it. The games went to their own deploy and the rest to the Archive panel on
 # this page, so a link to the old list lands here, where both are a click away.
 aliases: ["/pages/"]
+# "wet" and "dry" are this page as each mode renders it, at /wet/ and /dry/;
+# hugo.toml has the note under `mode`. "llms" is /llms.txt.
+outputs: ["html", "wet", "dry", "llms"]
 ---

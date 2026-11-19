@@ -560,3 +560,105 @@
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
+
+/* The dry home page (layouts/partials/home/portfolio.html): the resume's
+   highlights across the top, the poem under them, then the game beside the
+   contact details. The same panels as the wet page, rearranged. */
+.content-grid.is-dry {
+  grid-template-areas:
+    "portfolio portfolio"
+    "intro intro"
+    "game contact";
+  align-items: start;
+}
+
+.portfolio-panel,
+.game-panel,
+.contact-panel {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--panel);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  min-width: 0;
+}
+
+.portfolio-panel {
+  grid-area: portfolio;
+}
+
+.game-panel {
+  grid-area: game;
+}
+
+.contact-panel {
+  grid-area: contact;
+}
+
+.portfolio-panel h3,
+.game-panel h3,
+.contact-panel h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+}
+
+.portfolio-body,
+.portfolio-links,
+.game-note,
+.contact-list {
+  font-family: Atkinson-Regular, arial, sans-serif;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.portfolio-body h3 {
+  margin: 1rem 0 0.3rem;
+  font-size: 1rem;
+}
+
+.portfolio-body h4 {
+  margin: 0.8rem 0 0.2rem;
+  font-size: 0.95rem;
+}
+
+.portfolio-body > :first-child {
+  margin-top: 0;
+}
+
+.portfolio-body ul {
+  margin: 0.3rem 0;
+  padding-left: 1.2rem;
+}
+
+.portfolio-links {
+  margin: 0.8rem 0 0;
+}
+
+.game-panel .post-game {
+  margin: 0;
+}
+
+/* The panel is half the width of a post's column, so the cue may need two
+   lines where a reflection's never does. */
+.game-panel .post-game-cue {
+  max-width: calc(100% - 1rem);
+  white-space: normal;
+  text-align: center;
+}
+
+.game-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+}
+
+.contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

@@ -1,0 +1,17 @@
+{{- /* Which mode this render of a page is in: "wet" or "dry".
+
+    Every page is rendered in the site's mode (`mode` in hugo.toml), except
+    the home page and the blog index, which are also rendered once per mode
+    at /wet/ and /dry/ (/blog/wet/, /blog/dry/). Those renders are output
+    formats of the same page, and .RelPermalink answers for the format being
+    rendered, so comparing it with each format's URL says which one this is.
+
+    This is the build's answer. Which mode a reader is in is decided in the
+    browser, by partials/mode/head.html. */ -}}
+{{- $mode := site.Params.mode | default "wet" -}}
+{{- range slice "wet" "dry" -}}
+	{{- with $.OutputFormats.Get . -}}
+		{{- if eq $.RelPermalink .RelPermalink }}{{ $mode = .Name }}{{ end -}}
+	{{- end -}}
+{{- end -}}
+{{- return $mode -}}

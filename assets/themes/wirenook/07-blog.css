@@ -12,6 +12,11 @@
 
 .blog-feed {
   display: grid;
+  /* An explicit track, not the implicit `auto` one, which grows to the
+     widest card's min-content: one unbreakable line in one card and every
+     card hangs off a phone. Dry mode's short feed was the first to have
+     nothing else holding it in. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   min-width: 0;
 }
@@ -70,8 +75,13 @@
 .entry-meta,
 .post-meta {
   display: flex;
+  /* A review's origin tag makes this row three items, and at 320px with a
+     24px base font the third stops fitting. blog-drift.css said so first, but
+     only a feed that reaches the cohost archive loads that; a dry-mode feed
+     doesn't, and every feed can hold a review. */
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.35rem 0.55rem;
   font-size: 0.82rem;
   color: rgba(39, 20, 82, 0.72);
 }

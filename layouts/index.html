@@ -1,8 +1,28 @@
 {{ define "title" }}{{ site.Title }}{{ end }}
 
 {{ define "main" }}
+{{/* This page is rendered once per mode (hugo.toml has the note under
+     `mode`). Dry mode is the portfolio: a resume and a handful of posts, the
+     contact details an application needs, and one game to play. The wet
+     page's socials, archive, badges, webring and guestbook are not hidden in
+     it but absent, so a stranger's copy of the page (or a model's) holds
+     none of them. */}}
+{{ $mode := partial "mode/of.html" . }}
+{{ $resume := site.GetPage "/resume" }}
 <main class="layout-grid">
 	<nav class="link-rail" aria-label="Main links">
+		{{ if eq $mode "dry" }}
+			{{ with $resume }}
+				<a class="rail-link" href="{{ .RelPermalink }}" data-label="resume">
+					<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
+					<span>Resume</span>
+				</a>
+			{{ end }}
+			<a class="rail-link" href="{{ "blog/" | relURL }}" data-label="blog">
+				<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
+				<span>Blog</span>
+			</a>
+		{{ else }}
 		{{/* Out of the site and into the game-prototypes repo's own deploy, with
 		     nothing of ours in between; hugo.toml has the note on the path. */}}
 		<a class="rail-link" href="{{ site.Params.games.url }}" data-label="games">
@@ -17,34 +37,25 @@
 			<img class="link-charm" src="{{ "images/wirenook/link-charm.png" | relURL }}" alt="">
 			<span>Guestbook</span>
 		</a>
+		{{ end }}
 	</nav>
 
 	<section class="index-window" aria-labelledby="index-title">
 		<div class="window-topline">
 			<h2 id="index-title">Index</h2>
-			<span class="status-light"><span class="blink-dot" aria-hidden="true"></span>Online</span>
+			{{ if eq $mode "dry" }}
+				<span class="status-light mode-disclosure">website in portfolio mode</span>
+			{{ else }}
+				<span class="status-light"><span class="blink-dot" aria-hidden="true"></span>Online</span>
+			{{ end }}
 		</div>
 
+		{{ if eq $mode "dry" }}
+			{{ partial "home/portfolio.html" (dict "page" . "resume" $resume) }}
+		{{ else }}
 		<div class="content-grid">
 			<article class="intro-panel">
-				<p>
-					I met a traveller from an antique land<br/>
-					Who said: Two vast and trunkless legs of stone<br/>
-					Stand in the desart. Near them, on the sand,<br/>
-					Half sunk, a shattered visage lies, whose frown,<br/>
-					And wrinkled lip, and sneer 1of cold command,<br/>
-					Tell that its sculptor well those passions read<br/>
-					Which yet survive, stamped on these lifeless things,<br/>
-					The hand that mocked them and the heart that fed:<br/>
-					And on the pedestal these words appear:<br/>
-					"My name is Ozymandias, King of Kings:<br/>
-					Look on my works, ye Mighty, and despair!"<br/>
-					Nothing beside remains. Round the decay<br/>
-					Of that colossal wreck, boundless and bare<br/>
-					The lone and level sands stretch far away.<br/><br/>
-
-					— Percy Shelley, "Ozymandias", 1819 edition
-				</p>
+				{{ partial "home/ozymandias.html" . }}
 			</article>
 
 			<article class="socials-panel" id="connect" aria-label="Connect">
@@ -178,9 +189,11 @@
 				<p class="badge-note">(please invite me to lobste.rs!!!)</p>
 			</article>
 		</div>
+		{{ end }}
 	</section>
 
-	<aside class="right-stack" aria-label="Webring and featured content">
+	<aside class="right-stack" aria-label="{{ if eq $mode "dry" }}Featured content{{ else }}Webring and featured content{{ end }}">
+		{{ if eq $mode "wet" }}
 		{{ $webring := os.ReadFile "static/udurgh-webring.yaml" | transform.Unmarshal }}
 		{{ $members := $webring.members }}
 		{{ $count := len $members }}
@@ -226,6 +239,7 @@
 				</a>
 			</div>
 		</section>
+		{{ end }}
 
 		{{ partial "death-clock.html" . }}
 

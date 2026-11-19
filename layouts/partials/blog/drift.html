@@ -43,7 +43,8 @@
 	holds.
 */ -}}
 
-{{- $all := .Pages.ByDate.Reverse -}}
+{{- /* In dry mode, only the posts kept for it (partials/mode/posts.html). */ -}}
+{{- $all := (partial "mode/posts.html" .).ByDate.Reverse -}}
 {{- $shown := $all -}}
 
 {{- /* One post would be a hard cut, so the floor is two. */ -}}

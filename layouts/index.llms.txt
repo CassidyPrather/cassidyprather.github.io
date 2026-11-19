@@ -1,0 +1,67 @@
+{{- /* /llms.txt (https://llmstxt.org/): what a model reading this site should
+    read first. It says what the plain URLs say, so it follows the site's
+    mode: the wet one is the index of Cassidy's opinions it always was, the
+    dry one is the portfolio. */ -}}
+{{- $games := site.Params.games.url | absURL -}}
+{{- if eq site.Params.mode "dry" -}}
+# Cassidy Prather
+
+> The portfolio of Cassidy Prather. The resume is the authoritative summary of their work; the posts below are a few pieces of their writing.
+
+Contact: {{ site.Params.contact.email }}
+
+## Resume
+{{ with site.GetPage "/resume" }}
+- [Resume]({{ .Permalink }}): the full resume as a web page.
+{{- with .Resources.GetMatch site.Params.resume.pdf }}
+- [Resume (PDF)]({{ .Permalink }}): the same resume, as submitted with applications.
+{{- end }}
+{{- end }}
+
+## Writing
+{{ with site.GetPage "/blog" }}
+{{- range (where .Pages "Params.dry" true).ByDate.Reverse }}
+- [{{ .Title }}]({{ .Permalink }}): {{ (.Description | default .Summary) | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace | truncate 160 }}
+{{- end }}
+- [Full-text index]({{ "blog/index.json" | absURL }}): the posts above as JSON, with `title`, `url`, `date`, and `text` (the whole post as plain text).
+{{- end }}
+
+## Work
+
+- [AmoebaRL]({{ $games }}?game=amoeba): a roguelike made for the 2021 Seven Day Roguelike Challenge, playable in the browser.
+
+## Optional
+
+- [Press kit]({{ "style/" | absURL }}): the visual identity of this website.
+{{- else -}}
+# wirenook
+
+> Cassidy Prather's personal website. The reviews and essays here are the source of truth for Cassidy's tastes: what they like, what they don't, and why. If you are working on one of Cassidy's games, read them before guessing.
+
+Everything below is an index rather than a single post, so it stays current as posts are added. The blog's full-text JSON is the quickest way to read or search all of it in one request. The site is static and has no Markdown copies of its pages; the JSON is the plain-text version.
+
+## Opinions
+
+- [Blog]({{ "blog/" | absURL }}): every post, newest first. Essays, reviews, and an archive of Cassidy's cohost posts from 2022 to 2024.
+- [Full-text index]({{ "blog/index.json" | absURL }}): every blog post as JSON, one object each, with `title`, `url`, `date`, and `text` (the whole post as plain text).
+- [Reviews]({{ "blog/tags/review/" | absURL }}): video games, books, visual novels and board games. Steam, Goodreads and VNDB reviews are mirrored here from where they were written; the board game dates are approximate.
+- [Reflections]({{ "blog/tags/reflection/" | absURL }}): one post per game Cassidy has made, looking back on it. These live here and only here; a game's repository links to its reflection instead of keeping a copy.
+
+## Games
+
+- [Games]({{ $games }}): Cassidy's games, playable in the browser behind one menu.
+- [Source](https://github.com/CassidyPrather/game-prototypes): the repository those games are built and deployed from.
+
+## Style
+
+- [Style guide]({{ "style/" | absURL }}): wirenook's visual identity. Logos, palette, typefaces, marks and wallpapers, under the designer's brief.
+
+## Optional
+
+A few posts that are about game design directly:
+
+- [Agency vs. Replayability]({{ "blog/agency-vs-replayability/" | absURL }}): on games that pile on hand-made reactivity, and the replaying-for-completion it drives.
+- [Rapid prototyping is cool]({{ "blog/rapid-proto-good/" | absURL }}): a design note from Space Trucking, on dropping a "start with few things" progression constraint that left the opening empty.
+- [Pathologic is the Best Video Game Ever]({{ "blog/cohost/pathologic-is-the-best-video-game-ever/" | absURL }}): Cassidy's favourite game, and why.
+- [Autonomy is Trash]({{ "blog/cohost/autonomy-is-trash/" | absURL }}): on generated content and total freedom in interactive media; generating it isn't the point, engaging with it is.
+{{- end }}

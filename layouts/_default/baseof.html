@@ -5,6 +5,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{{ block "title" . }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
+		{{/* First thing after the title, so the mode is settled (and a reader
+		     who belongs on the other copy of this page is on their way) before
+		     a single stylesheet is asked for. */}}
+		{{ partial "mode/head.html" . }}
 		{{ partial "social-meta.html" . }}
 		<link rel="icon" href="{{ "images/wirenook/link-charm.png" | relURL }}">
 		{{/* Discord tints the bar down the side of a link card with this, and a
@@ -18,7 +22,10 @@
 		     which is what the cohost shell already does from its own <head>.
 		     The type is a literal for the reason layouts/blog/list.rss.xml
 		     gives. */}}
-		{{ with site.GetPage "/blog" }}
+		{{/* Not in dry mode, where the blog is cut down to a handful of posts
+		     and the feed is not: friends' readers keep their subscription, but
+		     nothing a stranger lands on points at the rest. */}}
+		{{ with and (eq (partial "mode/of.html" .) "wet") (site.GetPage "/blog") }}
 			{{ $title := printf "%s — %s" .Title site.Title }}
 			{{/* "rss" is Hugo's key for the Atom format; hugo.toml says why. */}}
 			{{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/atom+xml" title="{{ $title }}" href="{{ .RelPermalink }}">{{ end }}

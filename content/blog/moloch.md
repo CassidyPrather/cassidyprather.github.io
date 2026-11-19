@@ -4,6 +4,7 @@ date: 2026-08-19T17:00:00-07:00
 description: "A dispatch from the Independent Tribunal, November 4th, 2026, in which Texas elects a distributed AI system by proxy."
 highlight: true
 theme: "fake-news"
+dry: true
 ---
 
 <aside class="newsprint-slug">Fiction, inspired by <a href="https://seangoedecke.com/help-peer/">"Help Peer" by Sean Goedecke</a>. Any relation to real people is purely coincidental.</aside>

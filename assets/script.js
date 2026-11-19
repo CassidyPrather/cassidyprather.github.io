@@ -1,3 +1,10 @@
+// Wet and dry mode: the other mode's decoration ships inside <template>s
+// (layouts/partials/mode/only.html), and a reader in that mode gets it stamped
+// out here. First, so everything below sees the page as the reader will.
+document
+  .querySelectorAll(`template[data-mode-only="${document.documentElement.dataset.mode}"]`)
+  .forEach((template) => template.replaceWith(template.content));
+
 const spinner = document.querySelector("[data-spinner]");
 const spinButton = document.querySelector("[data-spin-button]");
 

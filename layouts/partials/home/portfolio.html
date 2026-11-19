@@ -1,0 +1,96 @@
+{{- /* The middle of the dry home page: the portfolio. layouts/index.html
+    renders it in place of the wet page's socials, archive and badges.
+
+    Most of it is the resume's own words. content/resume/index.md is the one
+    copy of those, and the sections named in hugo.toml (`homeSections` under
+    [params.resume]) are lifted out of it here, so the home page and the PDF
+    can never disagree about a date or a title. They are found by their `##`
+    headings, and each comes down a level to sit under this page's own.
+
+    Takes a dict: `page`, the home page; `resume`, the resume page or nil. */ -}}
+{{- $resume := .resume -}}
+{{- $contact := site.Params.contact -}}
+<div class="content-grid is-dry">
+	<article class="portfolio-panel" aria-labelledby="portfolio-title">
+		<h3 id="portfolio-title">Portfolio</h3>
+		{{ with $resume }}
+			{{ $want := apply site.Params.resume.homeSections "lower" "." }}
+			{{ $sections := slice }}
+			{{ $first := "" }}
+			{{/* Everything before the first `##` is the name and contact lines,
+			     which this page already has. */}}
+			{{ range after 1 (split .Content "<h2") }}
+				{{ $section := print "<h2" . }}
+				{{ $heading := "" }}
+				{{ with findRESubmatch `<h2[^>]*>((?s).*?)</h2>` $section 1 }}
+					{{ $heading = index . 0 1 | plainify | htmlUnescape | strings.TrimSpace | lower }}
+				{{ end }}
+				{{ if not $first }}{{ $first = $section }}{{ end }}
+				{{ if in $want $heading }}{{ $sections = $sections | append $section }}{{ end }}
+			{{ end }}
+			{{ if and (not $sections) $first }}
+				{{ warnf "home/portfolio.html: no resume section is headed any of %v; showing the first" site.Params.resume.homeSections }}
+				{{ $sections = slice $first }}
+			{{ end }}
+			<div class="portfolio-body">
+				{{ range $sections }}
+					{{ . | replaceRE `<(/?)h3` "<${1}h4" | replaceRE `<(/?)h2` "<${1}h3" | safeHTML }}
+				{{ end }}
+			</div>
+			<p class="portfolio-links">
+				Full resume:
+				<a href="{{ .RelPermalink }}">web page</a>
+				{{ with .Resources.GetMatch site.Params.resume.pdf }}
+					· <a href="{{ .RelPermalink }}" download>PDF</a>
+				{{ end }}
+			</p>
+		{{ else }}
+			{{ warnf "home/portfolio.html: dry mode with no resume at content/resume/index.md" }}
+		{{ end }}
+	</article>
+
+	<article class="intro-panel">
+		{{ partial "home/ozymandias.html" . }}
+	</article>
+
+	{{/* The one game left standing. Same figure as a reflection post's
+	     (layouts/blog/single.html): a screenshot that links to the game, which
+	     assets/script.js swaps for the game itself on click. */}}
+	<article class="game-panel" aria-labelledby="game-title">
+		<h3 id="game-title">AmoebaRL</h3>
+		{{ $play := printf "%s?game=amoeba" site.Params.games.url }}
+		<figure class="post-game" data-game-embed="AmoebaRL">
+			<a class="post-game-preview" href="{{ $play }}">
+				<img src="{{ "images/wirenook/blog/reflections/amoeba.png" | relURL }}" width="800" height="600" alt="A screenshot of AmoebaRL." loading="lazy">
+				<span class="post-game-cue">Play in the browser</span>
+			</a>
+		</figure>
+		<p class="game-note">
+			A roguelike from the 2021 Seven Day Roguelike Challenge, where it
+			tied for first on aggregate score among 240 entries. Remastered for
+			the web in 2026.
+		</p>
+	</article>
+
+	<article class="contact-panel" aria-labelledby="contact-title">
+		<h3 id="contact-title">Contact</h3>
+		<ul class="contact-list">
+			{{ with $contact.email }}
+				<li>
+					<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+						<path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 2-8 5-8-5Zm0 12H4V8.5l8 5 8-5Z"/>
+					</svg>
+					<a href="mailto:{{ . }}">{{ . }}</a>
+				</li>
+			{{ end }}
+			{{ with $contact.phone }}
+				<li>
+					<svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+						<path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/>
+					</svg>
+					<a href="tel:{{ replaceRE `[^0-9+]` "" . }}">{{ . }}</a>
+				</li>
+			{{ end }}
+		</ul>
+	</article>
+</div>

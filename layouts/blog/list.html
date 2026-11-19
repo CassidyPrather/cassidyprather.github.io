@@ -49,6 +49,8 @@
 {{ end }}
 
 {{ define "main" }}
+{{ $mode := partial "mode/of.html" . }}
+{{ $posts := partial "mode/posts.html" . }}
 {{ $drift := partial "blog/drift.html" . }}
 {{ $entries := $drift.entries }}
 {{ $blog := site.GetPage "/blog" }}
@@ -59,6 +61,13 @@
 			<p class="topline-links">
 				{{ if eq .Kind "term" }}
 					<a class="status-light" href="{{ $blog.RelPermalink }}"><-- Blog</a>
+				{{ else if eq $mode "dry" }}
+					{{/* Dry mode keeps few enough posts that the review and
+					     reflection filters would be pages of one or none, and the
+					     feed still carries every post (baseof.html has the note), so
+					     all three links go. What replaces them says why. */}}
+					<span class="status-light mode-disclosure">website in portfolio mode<br>Limited content featured</span>
+					<a class="status-light" href="{{ site.Home.RelPermalink }}"><-- Index</a>
 				{{ else }}
 					{{/* "rss" is Hugo's key for the Atom format; hugo.toml says why. */}}
 					{{ with .OutputFormats.Get "rss" }}
@@ -102,7 +111,12 @@
 				{{ $wash = printf "--drift-wash: linear-gradient(to bottom, %s)" (delimit $stops ", ") }}
 			{{ end }}
 			<div class="blog-feed" {{ with $wash }}data-drift-feed style="{{ . | safeCSS }}"{{ end }}>
-				<form class="blog-search" role="search" data-blog-search data-index="{{ "blog/index.json" | relURL }}" hidden>
+				{{/* blog/index.json holds the site's mode's posts, like the plain
+				     URL of this page does; a wet copy of this page in a dry site
+				     searches the index that has them all. */}}
+				{{ $index := "blog/index.json" }}
+				{{ if and (eq $mode "wet") (eq site.Params.mode "dry") }}{{ $index = "blog/all.json" }}{{ end }}
+				<form class="blog-search" role="search" data-blog-search data-index="{{ $index | relURL }}" hidden>
 					<input type="search" name="q" placeholder="Search blog..." aria-label="Search blog">
 				</form>
 				<p class="search-status" data-search-status aria-live="polite" hidden></p>
@@ -198,7 +212,7 @@
 			{{ else }}
 				<aside class="blog-highlights" aria-label="Highlights">
 					<h3>Highlights</h3>
-					{{ $highlights := (where .Pages ".Params.highlight" true).ByDate.Reverse }}
+					{{ $highlights := (where $posts ".Params.highlight" true).ByDate.Reverse }}
 					{{ if $highlights }}
 						<ul>
 							{{ range $highlights }}

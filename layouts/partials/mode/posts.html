@@ -1,0 +1,10 @@
+{{- /* A list page's posts, as this render's mode has them. Wet mode is every
+    post. Dry mode is only the ones that say `dry: true` in front matter: the
+    handful kept for strangers. A generated review can't be edited to say so,
+    since tools/reviews.py rewrites it, so data/reviews.toml lists those and
+    the script writes the line itself.
+
+    The rest are still built, at the same URLs; they are just not listed. */ -}}
+{{- $pages := .Pages -}}
+{{- if eq (partial "mode/of.html" .) "dry" }}{{ $pages = where $pages "Params.dry" true }}{{ end -}}
+{{- return $pages -}}

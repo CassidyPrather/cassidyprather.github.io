@@ -6,7 +6,8 @@
 	<div class="death-clock-topline">
 		<h3 class="death-clock-title">TIME</h3>
 		<span class="status-light death-clock-status">
-			<span class="blink-dot" aria-hidden="true"></span>
+			{{- /* Steady in dry mode, where nothing on the page blinks. */}}
+			{{ if eq (partial "mode/of.html" .) "wet" }}<span class="blink-dot" aria-hidden="true"></span>{{ end }}
 			<span data-death-status data-status-alive="LTS" data-status-overtime="Deprecated">LTS</span>
 		</span>
 	</div>

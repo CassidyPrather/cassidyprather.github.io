@@ -18,7 +18,13 @@
 	"alt" ""
 -}}
 <div class="wave-field" aria-hidden="true"></div>
-<img class="cloud-field cloud-field-one" src="{{ "images/wirenook/wirenook-grill.png" | relURL }}" alt="">
+{{/* The dithered grill floating in the sky is wet mode's alone. */}}
+{{ partial "mode/only.html" (dict
+	"page" .
+	"mode" "wet"
+	"content" (printf `<img class="cloud-field cloud-field-one" src="%s" alt="">` ("images/wirenook/wirenook-grill.png" | relURL))
+	)
+}}
 {{ partial "responsive-image.html" (merge $clouds (dict
 	"class" "cloud-field volume-cloud cloud-field-two"
 	"sizes" "min(46rem, 58vw)"

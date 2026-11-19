@@ -85,9 +85,73 @@ enableGitInfo = true
     mediaType = "application/atom+xml"
     baseName = "feed"
 
+  # The home page and the blog index as each mode renders them, whichever the
+  # site is in: /wet/, /dry/, /blog/wet/, /blog/dry/. See `mode` under
+  # [params]. The two content files opt in through their own `outputs`.
+  [outputFormats.wet]
+    mediaType = "text/html"
+    isHTML = true
+    permalinkable = true
+    path = "wet"
+    baseName = "index"
+
+  [outputFormats.dry]
+    mediaType = "text/html"
+    isHTML = true
+    permalinkable = true
+    path = "dry"
+    baseName = "index"
+
+  # The blog's full-text index with every post in it. /blog/index.json follows
+  # the site's mode like the page beside it does; this is what the wet blog
+  # searches when the site is dry.
+  [outputFormats.all]
+    mediaType = "application/json"
+    baseName = "all"
+    isPlainText = true
+
+  # /llms.txt, which says something different in each mode, so it is a
+  # template now (layouts/index.llms.txt) rather than a file in static/.
+  [outputFormats.llms]
+    mediaType = "text/plain"
+    baseName = "llms"
+    isPlainText = true
+
 [params]
   description = "Cassidy Prather's Website"
   author = "Cassidy Prather"
+
+  # Which face the site shows a stranger: "wet" is the whole site as it has
+  # always been, "dry" is the portfolio -- the home page and the blog cut down
+  # to what an employer (or the model screening for one) should land on, and
+  # the decoration toned down site-wide. Nothing is deleted in dry mode: every
+  # page still builds at its own URL, so a direct link keeps working, and
+  # `?wet` on any URL switches a browser back for good (`?dry` the other way).
+  #
+  # The home page and the blog index are the two pages the modes really
+  # disagree about, so both are rendered twice more, at /wet/ and /dry/ (and
+  # /blog/wet/, /blog/dry/): the output formats below. The page at the plain
+  # URL is whichever one this says. layouts/partials/mode/ has the rest.
+  #
+  # This line is the switch. Flip it to "dry" when the applications go out.
+  mode = "wet"
+
+  # Shown on the dry home page only. The phone number in particular is never
+  # rendered in wet mode -- but this file is public, and so is its history, so
+  # a number written here stays findable after it is taken back out.
+  [params.contact]
+    email = "cassidy@wirenook.net"
+    phone = ""
+
+  [params.resume]
+    # The PDF tools/resume.py prints from /resume/, written next to
+    # content/resume/index.md and published beside the page. Named the way a
+    # recruiter's downloads folder wants it.
+    pdf = "Cassidy-Prather-Resume.pdf"
+    # The resume's own sections, by their `##` heading, that the dry home page
+    # repeats in its portfolio panel. Matched case-insensitively; the first
+    # section stands in if none match.
+    homeSections = ["Summary", "Projects", "Skills"]
 
   [params.feed]
     # Authority and date for the RFC 4151 tag: URIs that identify feed entries.
@@ -125,12 +189,20 @@ enableGitInfo = true
     # the old path needs a redirect stub left behind in this repo
     # (layouts/_default/redirect.html): Pages does not redirect after a
     # rename, so every link to /game-prototypes/ would otherwise 404.
-    # static/llms.txt names the path too, being hand-written, and changes
-    # with it.
+    # layouts/index.llms.txt reads it here too.
     url = "/game-prototypes/"
 
 [markup.goldmark.renderer]
   unsafe = true
+
+# The resume is a plain Markdown file, written to be read as one, so it carries
+# no front matter of its own: its title and layout come from here. Put it at
+# content/resume/index.md. layouts/resume/single.html and tools/resume.py.
+[[cascade]]
+  title = "Resume"
+  layout = "resume"
+  [cascade._target]
+    path = "/resume"
 
 # Every term page wears the blog feed. See the taxonomy note at the top.
 [[cascade]]

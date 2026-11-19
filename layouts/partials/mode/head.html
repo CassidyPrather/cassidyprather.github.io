@@ -1,0 +1,52 @@
+{{- /* Settles which mode the reader is in, before anything paints.
+
+    In order: `?wet` or `?dry` on the URL; else, on /wet/ or /dry/ itself,
+    that page's mode (a bookmark to /wet/ is a way of asking); else what this
+    browser asked for last; else the site's mode. The first two are
+    remembered, so a friend who arrives on `?wet` once stays wet from then on,
+    including on the plain URLs. A browser that won't store anything just gets
+    the site's mode back on the next plain URL.
+
+    The answer goes on <html> as data-mode, which the decoration that differs
+    between modes keys off (partials/mode/only.html). And on the two pages
+    rendered once per mode, a reader in the other mode is sent on to that
+    mode's copy, carrying the rest of the query and the fragment along. The
+    copy that matches the site's mode is the plain URL, so a stranger is never
+    redirected anywhere at all.
+
+    The copies at /wet/ and /dry/ say noindex. They exist for readers who ask
+    for them; a search engine (or a crawler feeding a model) should index the
+    plain URLs and see the site the way a stranger does. */ -}}
+{{- $site := site.Params.mode | default "wet" -}}
+{{- $copies := dict -}}
+{{- $isCopy := false -}}
+{{- with .OutputFormats.Get "wet" -}}
+	{{- $plain := ($.OutputFormats.Get "html").RelPermalink -}}
+	{{- $copies = dict "wet" .RelPermalink "dry" ($.OutputFormats.Get "dry").RelPermalink -}}
+	{{- $copies = merge $copies (dict $site $plain) -}}
+	{{- $isCopy = ne $.RelPermalink $plain -}}
+{{- end -}}
+{{- if $isCopy }}
+<meta name="robots" content="noindex">
+{{- end }}
+<script>
+(() => {
+	const site = {{ $site }};
+	const copies = {{ if $copies }}{{ $copies }}{{ else }}null{{ end }};
+	const here = {{ if $isCopy }}{{ partial "mode/of.html" . }}{{ else }}null{{ end }};
+	const query = new URLSearchParams(location.search);
+	let mode = query.has("wet") ? "wet" : query.has("dry") ? "dry" : here;
+	try {
+		if (mode) localStorage.setItem("wirenook-mode", mode);
+		else mode = localStorage.getItem("wirenook-mode");
+	} catch {}
+	if (mode !== "wet" && mode !== "dry") mode = site;
+	document.documentElement.dataset.mode = mode;
+	if (copies && copies[mode] !== location.pathname) {
+		query.delete("wet");
+		query.delete("dry");
+		const rest = query.toString();
+		location.replace(copies[mode] + (rest ? `?${rest}` : "") + location.hash);
+	}
+})();
+</script>

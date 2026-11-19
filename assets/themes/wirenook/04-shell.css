@@ -187,3 +187,14 @@ h2 {
   box-shadow: 0 0 0.75rem var(--cyan);
   animation: blinkDot 1.1s steps(2, end) infinite;
 }
+
+/* Dry mode's disclosure on the home page and the blog (two lines tall on the
+   blog): the same chip, but one that gives. It is longer than any chip it sits
+   among, and at a large font on a phone it is what has to wrap. */
+.mode-disclosure {
+  flex-shrink: 1;
+  min-width: 0;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+}

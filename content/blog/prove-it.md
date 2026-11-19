@@ -2,6 +2,7 @@
 title: "Thinking Scientifically about Using Technology"
 date: 2026-07-28T16:00:00-07:00
 highlight: true
+dry: true
 ---
 
 This one's for my friends.

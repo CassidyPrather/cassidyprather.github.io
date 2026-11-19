@@ -1,5 +1,9 @@
+{{- /* The full-text index the blog's search reads, and llms.txt points a
+    model at. It holds what the plain blog page lists: in dry mode, only the
+    posts kept for it (partials/mode/posts.html). list.all.json is the one
+    with everything. */ -}}
 {{- $index := slice -}}
-{{- range .Pages.ByDate.Reverse -}}
+{{- range (partial "mode/posts.html" .).ByDate.Reverse -}}
 	{{- $index = $index | append (dict "title" .Title "url" .RelPermalink "date" (.Date.Format "2006-01-02T15:04:05Z07:00") "text" (.Plain | htmlUnescape)) -}}
 {{- end -}}
 {{- jsonify $index -}}

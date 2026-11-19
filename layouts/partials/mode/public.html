@@ -1,0 +1,15 @@
+{{- /* Whether a page is one dry mode shows a stranger: the home page, the
+    blog index, the posts kept for dry mode, the resume, and the licenses and
+    press kit the footer links on every page. Everything else still builds and
+    still answers a direct link; this only decides what the sitemap offers.
+    In wet mode, everything is. */ -}}
+{{- $public := true -}}
+{{- if eq site.Params.mode "dry" -}}
+	{{- $public = or
+		.IsHome
+		(and (eq .Kind "section") (eq .Section "blog"))
+		(eq .Params.dry true)
+		(in (slice "/resume" "/licenses" "/style") .Path)
+	-}}
+{{- end -}}
+{{- return $public -}}

@@ -154,6 +154,15 @@
       "badges";
   }
 
+  /* Dry mode: what an application is after first, and the poem last. */
+  .content-grid.is-dry {
+    grid-template-areas:
+      "portfolio"
+      "contact"
+      "game"
+      "intro";
+  }
+
   .rail-link {
     min-height: 3.7rem;
   }

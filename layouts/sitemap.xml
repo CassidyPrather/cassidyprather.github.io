@@ -1,0 +1,16 @@
+{{- /* Hugo's own sitemap, less what dry mode keeps off the front of the site
+    (partials/mode/public.html). In wet mode it is the same list Hugo would
+    write. */ -}}
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	{{- range where .Pages "Sitemap.Disable" "ne" true }}
+		{{- if and .Permalink (partial "mode/public.html" .) }}
+	<url>
+		<loc>{{ .Permalink }}</loc>
+		{{- if not .Lastmod.IsZero }}
+		<lastmod>{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</lastmod>
+		{{- end }}
+	</url>
+		{{- end }}
+	{{- end }}
+</urlset>

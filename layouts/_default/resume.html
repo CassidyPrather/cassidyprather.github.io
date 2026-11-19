@@ -1,0 +1,204 @@
+{{- /* The resume: content/resume/index.md, as a web page and as the PDF that
+    tools/resume.py prints from this same page. One source, one stylesheet,
+    so the two can't drift.
+
+    A whole document of its own rather than a block in baseof.html, because
+    none of the wirenook shell belongs on it: what a resume is for is being
+    read in seven seconds by a person and parsed without a mistake by a
+    machine, and docs/resume.md has the evidence behind every choice below.
+    In short:
+
+    - One column, in source order. The text layer of the PDF comes out in
+      the order the Markdown was written, which is the order every parser
+      reads it in.
+    - Grayscale. Nothing here depends on colour to mean anything.
+    - Atkinson Hyperlegible, the one thing carried over from wirenook: it is
+      the site's body face, and it was drawn (for the Braille Institute) to
+      keep similar letterforms apart. Embedded by Chromium as a subset with a
+      ToUnicode map, so copying text out of the PDF gives back the text.
+    - No ligatures. A "fi" drawn as one glyph can come out of a careless
+      extractor as one unknown character, and "profile" stops matching.
+    - Real headings, lists and links, and a tagged PDF (tools/resume.py),
+      so the structure survives into the file rather than being implied by
+      font sizes.
+    - Nothing in headers, footers, tables, text boxes or images. */ -}}
+{{- $pdf := .Resources.GetMatch site.Params.resume.pdf -}}
+<!doctype html>
+<html lang="{{ site.Language.Lang }}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{ site.Params.author }} — Resume</title>
+	<meta name="author" content="{{ site.Params.author }}">
+	<meta name="description" content="{{ .Summary | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace | truncate 300 }}">
+	<link rel="canonical" href="{{ .Permalink }}">
+	<link rel="icon" href="{{ "images/wirenook/link-charm.png" | relURL }}">
+	<style>
+		@font-face {
+			font-family: "Atkinson Hyperlegible";
+			src: url("{{ "fonts/AtkinsonHyperlegible-Regular.ttf" | relURL }}") format("truetype");
+			font-weight: 400;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: "Atkinson Hyperlegible";
+			src: url("{{ "fonts/AtkinsonHyperlegible-Italic.ttf" | relURL }}") format("truetype");
+			font-weight: 400;
+			font-style: italic;
+		}
+		@font-face {
+			font-family: "Atkinson Hyperlegible";
+			src: url("{{ "fonts/AtkinsonHyperlegible-Bold.ttf" | relURL }}") format("truetype");
+			font-weight: 700;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: "Atkinson Hyperlegible";
+			src: url("{{ "fonts/AtkinsonHyperlegible-BoldItalic.ttf" | relURL }}") format("truetype");
+			font-weight: 700;
+			font-style: italic;
+		}
+
+		@page {
+			size: letter;
+			margin: 0.55in 0.65in;
+		}
+
+		:root {
+			color-scheme: light;
+			--ink: #111;
+			--muted: #444;
+			--rule: #999;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			background: #e6e6e6;
+		}
+
+		body {
+			margin: 0;
+			color: var(--ink);
+			font-family: "Atkinson Hyperlegible", Arial, sans-serif;
+			font-size: 10.5pt;
+			line-height: 1.38;
+			font-variant-ligatures: none;
+			font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+			hyphens: manual;
+		}
+
+		.resume-bar {
+			max-width: 8.5in;
+			margin: 0 auto;
+			padding: 0.75rem 1rem;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			gap: 0.5rem 1rem;
+			font-size: 0.95rem;
+		}
+
+		.resume {
+			max-width: 8.5in;
+			margin: 0 auto 2rem;
+			padding: 0.55in 0.65in;
+			background: #fff;
+			box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.18);
+		}
+
+		h1 {
+			margin: 0 0 0.15rem;
+			font-size: 20pt;
+			line-height: 1.15;
+			letter-spacing: 0.01em;
+		}
+
+		/* The contact line: the paragraph straight after the name. */
+		h1 + p {
+			margin: 0 0 0.6rem;
+			color: var(--muted);
+		}
+
+		h2 {
+			margin: 1rem 0 0.35rem;
+			padding-bottom: 0.1rem;
+			border-bottom: 0.75pt solid var(--rule);
+			font-size: 12pt;
+			break-after: avoid;
+		}
+
+		h3 {
+			margin: 0.6rem 0 0.05rem;
+			font-size: 10.5pt;
+			break-after: avoid;
+		}
+
+		/* The dates-and-place line under a role. */
+		h3 + p {
+			margin: 0 0 0.2rem;
+			color: var(--muted);
+		}
+
+		p {
+			margin: 0 0 0.4rem;
+		}
+
+		ul,
+		ol {
+			margin: 0.15rem 0 0.4rem;
+			padding-left: 1.15rem;
+		}
+
+		li {
+			margin: 0.08rem 0;
+			break-inside: avoid;
+		}
+
+		a {
+			color: inherit;
+			text-decoration-thickness: 0.5pt;
+			text-underline-offset: 0.15em;
+			overflow-wrap: anywhere;
+		}
+
+		@media print {
+			html {
+				background: none;
+			}
+
+			.resume-bar {
+				display: none;
+			}
+
+			.resume {
+				max-width: none;
+				margin: 0;
+				padding: 0;
+				box-shadow: none;
+			}
+
+			a {
+				text-decoration: none;
+			}
+		}
+
+		@media (max-width: 40rem) {
+			.resume {
+				padding: 1.25rem 1rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<nav class="resume-bar" aria-label="Resume links">
+		<a href="{{ site.Home.RelPermalink }}">← wirenook.net</a>
+		{{ with $pdf }}<a href="{{ .RelPermalink }}" download>Download PDF</a>{{ end }}
+	</nav>
+	<main class="resume">
+		{{ .Content }}
+	</main>
+</body>
+</html>

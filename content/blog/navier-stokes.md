@@ -3,6 +3,7 @@ title: Navier-Stokes
 date: 2026-09-08T11:20:00-07:00
 layout: redirect
 redirect: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+dry: true
 ---
 
 Turns out I already solved Navier-Stokes and didn't even realize?

@@ -25,6 +25,13 @@ name = "Goodreads"
 item = "Book page"
 id = "88078370"
 profile = "https://www.goodreads.com/user/show/88078370-cassidy"
+# Reviews kept on the blog in dry mode (`mode` in hugo.toml), by their id at
+# the source -- the number in the review's URL. tools/reviews.py writes
+# `dry: true` into those posts, which is what the blog reads; the same key is
+# read from any of the three sites' tables.
+dry = [
+  "8837151882", # Working Effectively with Legacy Code
+]
 
 [vndb]
 name = "VNDB"

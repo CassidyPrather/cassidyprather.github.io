@@ -1,0 +1,24 @@
+{{- /* Decoration that belongs to one mode, on a page that isn't rendered once
+    per mode: the grill in the backdrop, the footer's joke. The page is built
+    in the site's mode but read in the reader's (partials/mode/head.html), so
+    both have to be on it.
+
+    What belongs to the mode being rendered goes out as markup, and the rule
+    in themes/wirenook/02-base.css hides it from a reader in the other mode.
+    What belongs to the other mode goes out inside a <template>, which renders
+    nothing, fetches nothing, and is not part of the document a crawler reads
+    as text; assets/script.js stamps it out for a reader who is in that mode.
+    So a stranger's copy of a dry page carries none of the wet one.
+
+    Takes a dict:
+      page     the page being rendered
+      mode     "wet" or "dry": who this is for
+      content  the markup, as a string
+      tag      the wrapper, "span" by default. It is display: contents, so it
+               adds no box of its own; it is only there to carry the mode. */ -}}
+{{- $tag := .tag | default "span" -}}
+{{- if eq .mode (partial "mode/of.html" .page) -}}
+	{{- printf "<%s class=\"mode-only\" data-mode-only=\"%s\">%s</%s>" $tag .mode .content $tag | safeHTML -}}
+{{- else -}}
+	{{- printf "<template data-mode-only=\"%s\"><%s class=\"mode-only\" data-mode-only=\"%s\">%s</%s></template>" .mode $tag .mode .content $tag | safeHTML -}}
+{{- end -}}

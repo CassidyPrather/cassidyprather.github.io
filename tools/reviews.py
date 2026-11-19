@@ -784,6 +784,9 @@ def render(review: Review, slug: str, zone: ZoneInfo, account: dict[str, Any]) -
         'type: "review"',
         f"theme: {_yaml(review.site)}",
         'tags: ["review"]',
+        # Kept on the blog in dry mode (`mode` in hugo.toml), by its id at the
+        # source. Written here because a hand edit would not survive a pull.
+        *(["dry: true"] if review.key in account.get("dry", []) else []),
         "review:",
         # An absent field is left out rather than written empty, so a review
         # that gains one later shows up in the diff as a line added.

@@ -55,3 +55,18 @@ a:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
+
+/* Wet and dry mode (`mode` in hugo.toml). A page built in one mode carries
+   the other's decoration inside a <template> (layouts/partials/mode/only.html)
+   and its own in one of these wrappers, which add no box of their own. A
+   reader in the other mode -- data-mode on <html>, set before first paint by
+   layouts/partials/mode/head.html -- has this page's own decoration hidden,
+   and assets/script.js stamps out theirs. */
+.mode-only {
+  display: contents;
+}
+
+html[data-mode="dry"] [data-mode-only="wet"],
+html[data-mode="wet"] [data-mode-only="dry"] {
+  display: none !important;
+}
